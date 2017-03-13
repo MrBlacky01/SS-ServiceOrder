@@ -192,7 +192,6 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -278,6 +277,16 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceOrder.Logic\ServiceOrder.Logic.csproj">
+      <Project>{b0bfc73c-bd37-497e-81d0-f2ec1e16af79}</Project>
+      <Name>ServiceOrder.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServiceOrder.ViewModel\ServiceOrder.ViewModel.csproj">
+      <Project>{463b059d-2e33-4dc0-b2e0-36cb90194303}</Project>
+      <Name>ServiceOrder.ViewModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
