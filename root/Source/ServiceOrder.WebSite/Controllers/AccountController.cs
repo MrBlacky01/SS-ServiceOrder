@@ -15,7 +15,7 @@ namespace ServiceOrder.WebSite.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationSignInManager _signInManager;
+        /*private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
         public AccountController()
@@ -480,6 +480,6 @@ namespace ServiceOrder.WebSite.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        #endregion
+        #endregion*/
     }
 }

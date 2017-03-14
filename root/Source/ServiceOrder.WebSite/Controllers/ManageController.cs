@@ -13,7 +13,7 @@ namespace ServiceOrder.WebSite.Controllers
     [Authorize]
     public class ManageController : Controller
     {
-        private ApplicationSignInManager _signInManager;
+        /*private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
         public ManageController()
@@ -382,6 +382,6 @@ namespace ServiceOrder.WebSite.Controllers
             Error
         }
 
-#endregion
+#endregion*/
     }
 }

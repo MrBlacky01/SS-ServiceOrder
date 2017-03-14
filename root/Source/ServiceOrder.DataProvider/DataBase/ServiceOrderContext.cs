@@ -16,5 +16,14 @@ namespace ServiceOrder.DataProvider.DataBase
         {
             return new ServiceOrderContext();
         }
+
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<ServiceProvider> ServiceProviders { get; set; }
+        public DbSet<Photo> Photos { get; set; }
+        public DbSet<Region> Regions { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<ServiceCategory> ServiceCategories { get; set; }
+        public DbSet<ServiceType> ServiceTypes { get; set; }
+
     }
 }
