@@ -98,6 +98,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ICategoryService.cs" />
     <Compile Include="Services\Implementations\CategoryService.cs" />
+    <Compile Include="Services\Implementations\ServiceTypeService.cs" />
+    <Compile Include="Services\IService.cs" />
+    <Compile Include="Services\IServiceTypeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

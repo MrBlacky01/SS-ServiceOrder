@@ -28,6 +28,7 @@ namespace ServiceOrder.WebSite.Utils
         private void AddBindings()
         {
             kernel.Bind<ICategoryService>().To<CategoryService>();
+            kernel.Bind<IServiceTypeService>().To<ServiceTypeService>();
         }
     }
 }
