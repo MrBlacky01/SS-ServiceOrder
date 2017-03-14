@@ -37,7 +37,7 @@ namespace ServiceOrder.WebSite.Controllers
 
         public ActionResult Category()
         {
-            IEnumerable<ServiceCategoryViewModel> categories = _categoryService.GetCategories();
+            IEnumerable<ServiceCategoryViewModel> categories = _categoryService.GetAll();
            
             return View(categories);
         }
@@ -50,26 +50,37 @@ namespace ServiceOrder.WebSite.Controllers
         [HttpPost]
         public ActionResult CreateCategory(ServiceCategoryViewModel category)
         {
-            _categoryService.AddCategory(category);
-            return Content("<h2>Сатегория успешно добавлена</h2>");
+            _categoryService.Add(category);
+            return View("MessageView", new ResultMessageViewModel() {Message = "Категория успешно добавлена"});
         }
 
         public ActionResult DeleteCategory(int? id)
         {
-            _categoryService.DeleteCategory(id);
-            return Content("<h2>Категория успешно удалена</h2>");
+            _categoryService.Delete(id);
+            return View("MessageView", new ResultMessageViewModel() { Message = "Категория успешно удалена" });
         }
 
         public ActionResult EditCategory(int? id)
         {
-            return View(_categoryService.GetCategory(id));
+            return View(_categoryService.Get(id));
         }
 
         [HttpPost]
         public ActionResult EditCategory(ServiceCategoryViewModel category)
         {
-            _categoryService.UpdateCategory(category);
-            return Content("<h2>Категория успешно изменена</h2>");
+            _categoryService.Update(category);
+            return View("MessageView", new ResultMessageViewModel() { Message = "Категория успешно изменена" });
+        }
+
+        public ActionResult DetailCategory(int? id)
+        {
+            return View(_categoryService.Get(id));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _categoryService.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

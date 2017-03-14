@@ -20,7 +20,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             DataBase = dataBase;
         }
 
-        public void AddCategory(ServiceCategoryViewModel category)
+        public void Add(ServiceCategoryViewModel category)
         {
 
             Mapper.Initialize(cfg => cfg.CreateMap<ServiceCategoryViewModel, ServiceCategory>());
@@ -29,7 +29,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             DataBase.Save();
         }
 
-        public void DeleteCategory(int? id)
+        public void Delete(int? id)
         {
             if (id == null)
                 throw new Exception("Не установлено id категории");
@@ -37,7 +37,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             DataBase.Save();
         }
 
-        public void UpdateCategory(ServiceCategoryViewModel category)
+        public void Update(ServiceCategoryViewModel category)
         {
             Mapper.Initialize(cfg => cfg.CreateMap<ServiceCategoryViewModel, ServiceCategory>());
             var model = Mapper.Map<ServiceCategoryViewModel, ServiceCategory>(category);
@@ -45,7 +45,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             DataBase.Save();
         }
 
-        public ServiceCategoryViewModel GetCategory(int? id)
+        public ServiceCategoryViewModel Get(int? id)
         {
             if (id == null)
                 throw new Exception("Не установлено id категории");
@@ -56,7 +56,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             return Mapper.Map<ServiceCategory, ServiceCategoryViewModel>(category);
         }
 
-        public IEnumerable<ServiceCategoryViewModel> GetCategories()
+        public IEnumerable<ServiceCategoryViewModel> GetAll()
         {
             Mapper.Initialize(config => config.CreateMap<ServiceCategory,ServiceCategoryViewModel>());
             return
