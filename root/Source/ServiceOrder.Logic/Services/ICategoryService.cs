@@ -7,13 +7,7 @@ using ServiceOrder.ViewModel;
 
 namespace ServiceOrder.Logic.Services
 {
-    public interface ICategoryService
+    public interface ICategoryService : IService<ServiceCategoryViewModel>
     {
-        void AddCategory(ServiceCategoryViewModel category);
-        void DeleteCategory(int? id);
-        void UpdateCategory(ServiceCategoryViewModel category);
-        ServiceCategoryViewModel GetCategory(int? id);
-        IEnumerable<ServiceCategoryViewModel> GetCategories();
-        void Dispose();
     }
 }
