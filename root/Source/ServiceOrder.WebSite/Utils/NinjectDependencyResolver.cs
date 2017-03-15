@@ -29,6 +29,7 @@ namespace ServiceOrder.WebSite.Utils
         {
             kernel.Bind<ICategoryService>().To<CategoryService>();
             kernel.Bind<IServiceTypeService>().To<ServiceTypeService>();
+            kernel.Bind<IRegionService>().To<RegionService>();
         }
     }
 }

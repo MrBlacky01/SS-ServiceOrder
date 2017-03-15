@@ -16,7 +16,7 @@ namespace ServiceOrder.WebSite
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "ServiceType", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Region", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

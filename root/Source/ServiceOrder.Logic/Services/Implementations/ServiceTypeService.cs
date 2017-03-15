@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
-using ServiceOrder.ViewModel;
+using ServiceOrder.ViewModel.ViewModels.Implementation;
 
 namespace ServiceOrder.Logic.Services.Implementations
 {

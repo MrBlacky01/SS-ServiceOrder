@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel;
+using ServiceOrder.ViewModel.ViewModels.Implementation;
 
 namespace ServiceOrder.WebSite.Controllers
 {
