@@ -7,6 +7,7 @@ using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
 using ServiceOrder.ViewModel;
+using ServiceOrder.ViewModel.ViewModels.Implementation;
 
 namespace ServiceOrder.Logic.Services.Implementations
 {
@@ -67,7 +68,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             Mapper.Initialize(config => config.CreateMap<ServiceType, ServiceTypeViewModel>()
             .ForMember(x => x.CategoryId, opt => opt.MapFrom(c => c.ServiceCategoryId))
             .ForMember(x => x.CategoryTitle, opt => opt.MapFrom(c => c.Category.Title)));
-            return Mapper.Map<IEnumerable<ServiceType>, List<ServiceTypeViewModel>>(
+            return Mapper.Map<IEnumerable<ServiceType>, IEnumerable<ServiceTypeViewModel>>(
                     DataBase.ServiceTypes.GetAll());
         }
 
