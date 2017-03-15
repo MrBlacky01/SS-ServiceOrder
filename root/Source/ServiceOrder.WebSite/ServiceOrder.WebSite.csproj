@@ -214,6 +214,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Controllers\ServiceTypeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -292,6 +293,9 @@
     <Content Include="Views\ServiceType\Create.cshtml" />
     <Content Include="Views\ServiceType\Index.cshtml" />
     <Content Include="Views\ServiceType\Edit.cshtml" />
+    <Content Include="Views\Region\Create.cshtml" />
+    <Content Include="Views\Region\Edit.cshtml" />
+    <Content Include="Views\Region\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
