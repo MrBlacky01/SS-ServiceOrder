@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Ninject;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.Logic.Services.Implementations;
@@ -30,6 +32,7 @@ namespace ServiceOrder.WebSite.Utils
             kernel.Bind<ICategoryService>().To<CategoryService>();
             kernel.Bind<IServiceTypeService>().To<ServiceTypeService>();
             kernel.Bind<IRegionService>().To<RegionService>();
+            
         }
     }
 }

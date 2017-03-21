@@ -29,18 +29,18 @@ namespace ServiceOrder.Logic
             return Task.FromResult(0);
         }
     }
-
-    // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-    public class UserManager : UserManager<User>
+/*
+    // Configure the application user manager used in this application. ApplicationUserManager is defined in ASP.NET Identity and is used by the application.
+    public class ApplicationUserManager : UserManager<User>
     {
-        public UserManager(IUserStore<User> store)
+        public ApplicationUserManager(IUserStore<User> store)
             : base(store)
         {
         }
 
-        public static UserManager Create(IdentityFactoryOptions<UserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new UserManager(new UserStore<User>(context.Get<ServiceOrderContext>()));
+            var manager = new ApplicationUserManager(new UserStore<User>(context.Get<ServiceOrderContext>()));
             // Configure validation logic for usernames
             manager.UserValidator = new UserValidator<User>(manager)
             {
@@ -73,7 +73,7 @@ namespace ServiceOrder.Logic
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
-            });*/
+            });
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;
@@ -89,19 +89,19 @@ namespace ServiceOrder.Logic
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<User, string>
     {
-        public ApplicationSignInManager(UserManager userManager, IAuthenticationManager authenticationManager)
+        public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
         }
 
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(User user)
         {
-            return user.GenerateUserIdentityAsync((UserManager)UserManager);
+            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
         }
 
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
-            return new ApplicationSignInManager(context.GetUserManager<UserManager>(), context.Authentication);
+            return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
-    }
+    }*/
 }

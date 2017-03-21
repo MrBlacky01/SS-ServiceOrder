@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using ServiceOrder.Logic.Services.Implementations;
 using ServiceOrder.WebSite.Models;
 
 namespace ServiceOrder.WebSite.Controllers
@@ -15,24 +16,24 @@ namespace ServiceOrder.WebSite.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        /*private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private ServiceOrderSignInManager _signInManager;
+        private ServiceOrderUserManager _userManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ServiceOrderUserManager userManager, ServiceOrderSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
+        public ServiceOrderSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ServiceOrderSignInManager>();
             }
             private set 
             { 
@@ -40,11 +41,11 @@ namespace ServiceOrder.WebSite.Controllers
             }
         }
 
-        public ApplicationUserManager UserManager
+        public ServiceOrderUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ServiceOrderUserManager>();
             }
             private set
             {

@@ -12,7 +12,7 @@ namespace ServiceOrder.DataProvider.DataBase
             Database.SetInitializer<ServiceOrderContext>(new ApplicationDbInitializer());
         }
 
-        public ServiceOrderContext Create()
+        public static ServiceOrderContext Create()
         {
             return new ServiceOrderContext();
         }
