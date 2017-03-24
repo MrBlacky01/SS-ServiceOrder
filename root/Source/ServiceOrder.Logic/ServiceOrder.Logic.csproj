@@ -99,10 +99,13 @@
     <Compile Include="Services\ICategoryService.cs" />
     <Compile Include="Services\Implementations\CategoryService.cs" />
     <Compile Include="Services\Implementations\RegionService.cs" />
+    <Compile Include="Services\Implementations\ServiceOrderSignInManager.cs" />
     <Compile Include="Services\Implementations\ServiceTypeService.cs" />
     <Compile Include="Services\IRegionService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IServiceTypeService.cs" />
+    <Compile Include="Services\Implementations\ServiceOrderUserManager.cs" />
+    <Compile Include="StartupConfigurations.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
