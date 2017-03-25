@@ -4,6 +4,7 @@ using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
+using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
 namespace ServiceOrder.Logic.Services.Implementations
 {

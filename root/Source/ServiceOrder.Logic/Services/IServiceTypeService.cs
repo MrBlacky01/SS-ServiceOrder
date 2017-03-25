@@ -1,4 +1,5 @@
 ﻿using ServiceOrder.ViewModel.ViewModels.Implementation;
+using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
 namespace ServiceOrder.Logic.Services
 {

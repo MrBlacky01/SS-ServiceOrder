@@ -7,7 +7,7 @@ namespace ServiceOrder.DataProvider.Entities
 {
     public class User : IdentityUser
     {
-        public int PhotoId { get; set; }
+        public int? PhotoId { get; set; }
 
         public Photo UserPhoto { get; set; }    
 

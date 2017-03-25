@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
+using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
 
 namespace ServiceOrder.WebSite.Controllers
 {
@@ -29,7 +30,7 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(RegionViewModel model)
+        public ActionResult Create(RegionEntityViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -44,7 +45,7 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(RegionViewModel model)
+        public ActionResult Edit(RegionEntityViewModel model)
         {
             if (ModelState.IsValid)
             {

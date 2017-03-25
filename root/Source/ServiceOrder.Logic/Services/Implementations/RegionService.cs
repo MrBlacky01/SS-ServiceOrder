@@ -4,6 +4,7 @@ using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
+using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
 
 namespace ServiceOrder.Logic.Services.Implementations
 {
@@ -16,10 +17,10 @@ namespace ServiceOrder.Logic.Services.Implementations
             DataBase = dataBase;
         }
 
-        public void Add(RegionViewModel item)
+        public void Add(RegionEntityViewModel item)
         {
-            Mapper.Initialize(config => config.CreateMap<RegionViewModel,Region>());
-            DataBase.Regions.Create(Mapper.Map<RegionViewModel,Region>(item));
+            Mapper.Initialize(config => config.CreateMap<RegionEntityViewModel,Region>());
+            DataBase.Regions.Create(Mapper.Map<RegionEntityViewModel,Region>(item));
             DataBase.Save();
         }
 
@@ -31,14 +32,14 @@ namespace ServiceOrder.Logic.Services.Implementations
             DataBase.Save();
         }
 
-        public void Update(RegionViewModel item)
+        public void Update(RegionEntityViewModel item)
         {
-            Mapper.Initialize(config => config.CreateMap<RegionViewModel, Region>());
-            DataBase.Regions.Update(Mapper.Map<RegionViewModel, Region>(item));
+            Mapper.Initialize(config => config.CreateMap<RegionEntityViewModel, Region>());
+            DataBase.Regions.Update(Mapper.Map<RegionEntityViewModel, Region>(item));
             DataBase.Save();
         }
 
-        public RegionViewModel Get(int? id)
+        public RegionEntityViewModel Get(int? id)
         {
 
             if (id == null)
@@ -48,14 +49,14 @@ namespace ServiceOrder.Logic.Services.Implementations
             {
                 throw new Exception("No region with this Id");
             }
-            Mapper.Initialize(config => config.CreateMap<Region,RegionViewModel>());
-            return Mapper.Map<Region, RegionViewModel>(region);
+            Mapper.Initialize(config => config.CreateMap<Region,RegionEntityViewModel>());
+            return Mapper.Map<Region, RegionEntityViewModel>(region);
         }
 
-        public IEnumerable<RegionViewModel> GetAll()
+        public IEnumerable<RegionEntityViewModel> GetAll()
         {
-            Mapper.Initialize(config => config.CreateMap<Region, RegionViewModel>());
-            return Mapper.Map<IEnumerable<Region>, IEnumerable<RegionViewModel>>(DataBase.Regions.GetAll());
+            Mapper.Initialize(config => config.CreateMap<Region, RegionEntityViewModel>());
+            return Mapper.Map<IEnumerable<Region>, IEnumerable<RegionEntityViewModel>>(DataBase.Regions.GetAll());
         }
 
         public void Dispose()

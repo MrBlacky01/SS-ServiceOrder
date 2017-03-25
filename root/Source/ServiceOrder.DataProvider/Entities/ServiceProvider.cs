@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServiceOrder.DataProvider.Entities
 {
@@ -7,6 +8,7 @@ namespace ServiceOrder.DataProvider.Entities
         public string Description { get; set; }
         public string WorkingTime { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
         public User ProviderUser { get; set; }

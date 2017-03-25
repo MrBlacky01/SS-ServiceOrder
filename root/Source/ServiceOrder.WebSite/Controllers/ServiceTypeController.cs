@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
+using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels;
+using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
 namespace ServiceOrder.WebSite.Controllers
 {
@@ -68,7 +70,7 @@ namespace ServiceOrder.WebSite.Controllers
             return View("Index", _serviceTypeService.GetAll());
         }
 
-        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<ServiceCategoryViewModel> elements)
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<ServiceCategoryEntityViewModel> elements)
         {
             var selectList = new List<SelectListItem>();
                  

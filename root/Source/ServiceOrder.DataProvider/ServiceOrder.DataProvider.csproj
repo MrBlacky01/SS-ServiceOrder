@@ -131,7 +131,6 @@
     <Compile Include="Repositories\ServiceProviderRepository.cs" />
     <Compile Include="Repositories\ServiceTypeRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

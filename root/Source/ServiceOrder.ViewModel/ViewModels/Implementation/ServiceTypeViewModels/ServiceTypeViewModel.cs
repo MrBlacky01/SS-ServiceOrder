@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace ServiceOrder.ViewModel.ViewModels.Implementation
+namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels
 {
     public class ServiceTypeViewModel 
     {

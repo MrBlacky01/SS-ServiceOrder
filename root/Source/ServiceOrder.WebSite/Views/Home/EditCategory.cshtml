@@ -1,4 +1,4 @@
-﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModel
+﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels.ServiceCategoryEntityViewModel
 
 @{
     ViewBag.Title = "EditCategory";
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>ServiceCategoryViewModel</h4>
+        <h4>ServiceCategoryEntityViewModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)

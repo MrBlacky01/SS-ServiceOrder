@@ -1,4 +1,4 @@
-﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModel
+﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels.RegionEntityViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>RegionViewModel</h4>
+        <h4>RegionEntityViewModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)

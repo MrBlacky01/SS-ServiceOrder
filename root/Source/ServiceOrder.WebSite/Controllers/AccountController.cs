@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using ServiceOrder.Logic.Services;
 using ServiceOrder.Logic.Services.Implementations;
+using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
 using ServiceOrder.WebSite.Models;
 
 namespace ServiceOrder.WebSite.Controllers
@@ -16,41 +15,11 @@ namespace ServiceOrder.WebSite.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private ServiceOrderSignInManager _signInManager;
-        private ServiceOrderUserManager _userManager;
+        private IAccountService _accountService;
 
-        public AccountController()
+        public AccountController(IAccountService accountService)
         {
-        }
-
-        public AccountController(ServiceOrderUserManager userManager, ServiceOrderSignInManager signInManager )
-        {
-            UserManager = userManager;
-            SignInManager = signInManager;
-        }
-
-        public ServiceOrderSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ServiceOrderSignInManager>();
-            }
-            private set 
-            { 
-                _signInManager = value; 
-            }
-        }
-
-        public ServiceOrderUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ServiceOrderUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            _accountService = accountService;          
         }
 
         //
@@ -76,15 +45,15 @@ namespace ServiceOrder.WebSite.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await _accountService.Login(model);
             switch (result)
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                /*case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });*/
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -92,6 +61,7 @@ namespace ServiceOrder.WebSite.Controllers
             }
         }
 
+        /*
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -133,7 +103,7 @@ namespace ServiceOrder.WebSite.Controllers
                     ModelState.AddModelError("", "Invalid code.");
                     return View(model);
             }
-        }
+        }*/
 
         //
         // GET: /Account/Register
@@ -152,12 +122,10 @@ namespace ServiceOrder.WebSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await _accountService.Register(model);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -173,6 +141,7 @@ namespace ServiceOrder.WebSite.Controllers
             return View(model);
         }
 
+        /*
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
@@ -184,7 +153,7 @@ namespace ServiceOrder.WebSite.Controllers
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }
+        }*/
 
         //
         // GET: /Account/ForgotPassword
@@ -194,6 +163,7 @@ namespace ServiceOrder.WebSite.Controllers
             return View();
         }
 
+        /*
         //
         // POST: /Account/ForgotPassword
         [HttpPost]
@@ -221,6 +191,7 @@ namespace ServiceOrder.WebSite.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        
 
         //
         // GET: /Account/ForgotPasswordConfirmation
@@ -228,7 +199,7 @@ namespace ServiceOrder.WebSite.Controllers
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
-        }
+        }*/
 
         //
         // GET: /Account/ResetPassword
@@ -249,19 +220,20 @@ namespace ServiceOrder.WebSite.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
+            try
             {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                var result = await _accountService.ResetPassword(model);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                }
+                AddErrors(result);
+                return View();
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            if (result.Succeeded)
+            catch (Exception)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            AddErrors(result);
-            return View();
+            }         
         }
 
         //
@@ -271,7 +243,8 @@ namespace ServiceOrder.WebSite.Controllers
         {
             return View();
         }
-
+        
+        /*
         //
         // POST: /Account/ExternalLogin
         [HttpPost]
@@ -347,7 +320,7 @@ namespace ServiceOrder.WebSite.Controllers
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
-
+        /*
         //
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
@@ -385,7 +358,7 @@ namespace ServiceOrder.WebSite.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
-
+        */
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -408,17 +381,7 @@ namespace ServiceOrder.WebSite.Controllers
         {
             if (disposing)
             {
-                if (_userManager != null)
-                {
-                    _userManager.Dispose();
-                    _userManager = null;
-                }
-
-                if (_signInManager != null)
-                {
-                    _signInManager.Dispose();
-                    _signInManager = null;
-                }
+                _accountService.Dispose();
             }
 
             base.Dispose(disposing);

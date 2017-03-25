@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ServiceOrder.WebSite.Models
 {
-    public class ExternalLoginConfirmationViewModel
+    /*public class ExternalLoginConfirmationViewModel
     {
         [Required]
         [Display(Name = "Email")]
@@ -108,5 +108,5 @@ namespace ServiceOrder.WebSite.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
-    }
+    }*/
 }

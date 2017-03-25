@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
+using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels;
 
 namespace ServiceOrder.WebSite.Controllers
 {
@@ -37,7 +35,7 @@ namespace ServiceOrder.WebSite.Controllers
 
         public ActionResult Category()
         {
-            IEnumerable<ServiceCategoryViewModel> categories = _categoryService.GetAll();
+            IEnumerable<ServiceCategoryEntityViewModel> categories = _categoryService.GetAll();
            
             return View(categories);
         }
@@ -48,9 +46,9 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateCategory(ServiceCategoryViewModel category)
+        public ActionResult CreateCategory(ServiceCategoryEntityViewModel categoryEntity)
         {
-            _categoryService.Add(category);
+            _categoryService.Add(categoryEntity);
             return View("MessageView", new ResultMessageViewModel() {Message = "Категория успешно добавлена"});
         }
 
@@ -66,9 +64,9 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditCategory(ServiceCategoryViewModel category)
+        public ActionResult EditCategory(ServiceCategoryEntityViewModel categoryEntity)
         {
-            _categoryService.Update(category);
+            _categoryService.Update(categoryEntity);
             return View("MessageView", new ResultMessageViewModel() { Message = "Категория успешно изменена" });
         }
 
