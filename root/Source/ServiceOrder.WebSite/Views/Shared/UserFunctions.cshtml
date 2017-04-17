@@ -1,0 +1,8 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    if (User.IsInRole("client"))
+    {
+        <li>@Html.ActionLink("Services", "Index", "ServiceProviders")</li>
+    }
+}

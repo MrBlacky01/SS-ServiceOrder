@@ -5,14 +5,14 @@ namespace ServiceOrder.DataProvider.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<User> Userss { get; }
-        IRepository<Client> Clients { get; }
-        IRepository<ServiceProvider> ServiceProviders { get; }
-        IRepository<Photo> Photos { get; }
-        IRepository<Region> Regions { get; }
-        IRepository<Order> Orders { get; }
-        IRepository<ServiceCategory> ServiceCategories { get; }
-        IRepository<ServiceType> ServiceTypes { get; }
+        IRepository<User,string> Userss { get; }
+        IRepository<Client, string> Clients { get; }
+        IRepository<ServiceProvider, string> ServiceProviders { get; }
+        IRepository<Photo,int> Photos { get; }
+        IRepository<Region, int> Regions { get; }
+        IRepository<Order, int> Orders { get; }
+        IRepository<ServiceCategory, int> ServiceCategories { get; }
+        IRepository<ServiceType, int> ServiceTypes { get; }
         void Save();
     }
 }

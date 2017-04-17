@@ -73,6 +73,7 @@
     <Compile Include="ViewModels\Implementation\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AccountViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceTypeViewModels\ServiceTypeViewModel.cs" />
     <Compile Include="ViewModels\Implementation\RegionViewModels\RegionEntityViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ResultMessageViewModel.cs" />
@@ -85,7 +86,6 @@
   <ItemGroup>
     <Folder Include="ViewModels\Implementation\AdminViewModels\" />
     <Folder Include="ViewModels\Implementation\ClientViewModels\" />
-    <Folder Include="ViewModels\Implementation\ServiceProviderViewModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

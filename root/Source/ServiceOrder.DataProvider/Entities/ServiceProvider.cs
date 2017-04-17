@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceOrder.DataProvider.Entities
 {
-    public class ServiceProvider : Entity
+    public class ServiceProvider 
     {
         public string Description { get; set; }
         public string WorkingTime { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        [Key]
+        [ForeignKey("ProviderUser")]
+        public string UserId { get; set; }
 
         public User ProviderUser { get; set; }
 

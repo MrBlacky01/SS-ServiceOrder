@@ -6,7 +6,7 @@ namespace ServiceOrder.DataProvider.Entities
     public class Order : Entity
     {
 
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
         public int RegionId { get; set; }
         public int ServiceTypeId { get; set; }
         public int ServiceProviderId { get; set; }

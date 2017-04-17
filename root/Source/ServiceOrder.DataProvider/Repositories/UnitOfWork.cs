@@ -21,23 +21,23 @@ namespace ServiceOrder.DataProvider.Repositories
             db = new ServiceOrderContext();
         }
 
-        public IRepository<User> Userss { get; }
+        public IRepository<User,string> Userss { get; }
 
-        public IRepository<Client> Clients => clientRepository ?? (clientRepository = new ClientRepository(db));
+        public IRepository<Client,string> Clients => clientRepository ?? (clientRepository = new ClientRepository(db));
 
-        public IRepository<ServiceProvider> ServiceProviders
+        public IRepository<ServiceProvider,string> ServiceProviders
             => providerRepository ?? (providerRepository = new ServiceProviderRepository(db));
 
-        public IRepository<Photo> Photos => photoRepository ?? (photoRepository = new PhotoRepository(db));
+        public IRepository<Photo,int> Photos => photoRepository ?? (photoRepository = new PhotoRepository(db));
 
-        public IRepository<Region> Regions => regionRepository ?? (regionRepository = new RegionRepository(db));
+        public IRepository<Region, int> Regions => regionRepository ?? (regionRepository = new RegionRepository(db));
 
-        public IRepository<Order> Orders => orderRepository ?? (orderRepository = new OrderRepository(db));
+        public IRepository<Order, int> Orders => orderRepository ?? (orderRepository = new OrderRepository(db));
 
-        public IRepository<ServiceCategory> ServiceCategories
+        public IRepository<ServiceCategory, int> ServiceCategories
             => categoryRepository ?? (categoryRepository = new ServiceCategoryRepository(db));
 
-        public IRepository<ServiceType> ServiceTypes
+        public IRepository<ServiceType, int> ServiceTypes
             => serviceTypeRepository ?? (serviceTypeRepository = new ServiceTypeRepository(db));
 
         public void Save()

@@ -8,7 +8,7 @@ using ServiceOrder.DataProvider.Interfaces;
 
 namespace ServiceOrder.DataProvider.Repositories
 {
-    public class ClientRepository : IRepository<Client>
+    public class ClientRepository : IRepository<Client,string>
     {
         private ServiceOrderContext db;
 
@@ -22,7 +22,7 @@ namespace ServiceOrder.DataProvider.Repositories
             return db.Clients.Include(o => o.ClientUser);
         }
 
-        public Client Get(int id)
+        public Client Get(string id)
         {
             return db.Clients.Find(id);
         }
@@ -42,7 +42,7 @@ namespace ServiceOrder.DataProvider.Repositories
            db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             Client client = db.Clients.Find(id);
             if (client != null)

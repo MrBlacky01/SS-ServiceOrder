@@ -10,7 +10,7 @@ using ServiceOrder.DataProvider.Interfaces;
 
 namespace ServiceOrder.DataProvider.Repositories
 {
-    public class ServiceProviderRepository: IRepository<ServiceProvider>
+    public class ServiceProviderRepository: IRepository<ServiceProvider,string>
     {
         private ServiceOrderContext db;
 
@@ -24,10 +24,11 @@ namespace ServiceOrder.DataProvider.Repositories
             return db.ServiceProviders
                 .Include(o => o.ProviderPhotos)
                 .Include(o => o.ProviderRegions)
-                .Include(o => o.ProviderServiceTypes);
+                .Include(o => o.ProviderServiceTypes)
+                .Include(o => o.ProviderUser);
         }
 
-        public ServiceProvider Get(int id)
+        public ServiceProvider Get(string id)
         {
             return db.ServiceProviders.Find(id);
         }
@@ -38,6 +39,7 @@ namespace ServiceOrder.DataProvider.Repositories
                 .Include(o => o.ProviderPhotos)
                 .Include(o => o.ProviderRegions)
                 .Include(o => o.ProviderServiceTypes)
+                .Include(o => o.ProviderUser)
                 .Where(predicate).ToList();
         }
 
@@ -51,7 +53,7 @@ namespace ServiceOrder.DataProvider.Repositories
             db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             ServiceProvider provider = db.ServiceProviders.Find(id);
             if (provider != null)

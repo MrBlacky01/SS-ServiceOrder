@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web;
+using AutoMapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Host.SystemWeb;
 using ServiceOrder.DataProvider.Entities;
+using ServiceOrder.DataProvider.Identity;
 using ServiceOrder.DataProvider.Interfaces;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
 
@@ -48,20 +50,22 @@ namespace ServiceOrder.Logic.Services.Implementations
             return await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
         }
 
-        public async Task<IdentityResult> Register(RegisterViewModel model)
+        public async Task<IdentityResult> Register(RegisterViewModel registerModel)
         {
-            var user = new User { UserName = model.Name, Email = model.Email };
-            var result = await UserManager.CreateAsync(user, model.Password);
+            var user = new User { UserName = registerModel.Name, Email = registerModel.Email };
+            var result = await UserManager.CreateAsync(user, registerModel.Password);
             if (!result.Succeeded) return result;
-            if (model.IsServiceProvider)
+            if (registerModel.IsServiceProvider)
             {
                 UserManager.AddToRole(user.Id, "service provider");
-                DataBase.ServiceProviders.Create(new ServiceProvider() {ProviderUser = user});
+                DataBase.ServiceProviders.Create(new ServiceProvider() {UserId = user.Id});
+                DataBase.Save();            
             }
             else
             {
                 UserManager.AddToRole(user.Id, "client");
-                DataBase.Clients.Create(new Client() {ClientUser = user});
+                DataBase.Clients.Create(new Client() {UserId = user.Id});
+                DataBase.Save();
             }
             await SignIn(user);
             return result;

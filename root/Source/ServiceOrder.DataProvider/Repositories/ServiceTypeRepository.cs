@@ -8,7 +8,7 @@ using ServiceOrder.DataProvider.Interfaces;
 
 namespace ServiceOrder.DataProvider.Repositories
 {
-    public class ServiceTypeRepository : IRepository<ServiceType>
+    public class ServiceTypeRepository : IRepository<ServiceType,int>
     {
         private ServiceOrderContext db;
 

@@ -6,18 +6,17 @@ using Microsoft.Owin;
 using ServiceOrder.DataProvider.DataBase;
 using ServiceOrder.DataProvider.Entities;
 
-namespace ServiceOrder.Logic.Services.Implementations
+namespace ServiceOrder.DataProvider.Identity
 {
     public class ServiceOrderUserManager : UserManager<User>
-    { 
+    {
+         
     public ServiceOrderUserManager(IUserStore<User> store)
-            : base(store)
-        {
-    }
+            : base(store){}
 
     public static ServiceOrderUserManager Create(IdentityFactoryOptions<ServiceOrderUserManager> options, IOwinContext context)
     {
-        var manager = new ServiceOrderUserManager(new UserStore<User>(context.Get<ServiceOrderContext>()));
+        var manager = new ServiceOrderUserManager(new UserStore<User>(OwinContextExtensions.Get<ServiceOrderContext>(context)));
         // Configure validation logic for usernames
         manager.UserValidator = new UserValidator<User>(manager)
         {

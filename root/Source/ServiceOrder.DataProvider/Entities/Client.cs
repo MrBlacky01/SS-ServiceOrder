@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceOrder.DataProvider.Entities
 {
-    public class Client : Entity
+    public class Client 
     {
-        [Required]
-        public int UserId { get; set; }
+        [Key]
+        [ForeignKey("ClientUser")]
+        public string UserId { get; set; }
 
         public User ClientUser { get; set; }
     }

@@ -10,6 +10,7 @@ using Microsoft.Owin.Security.Cookies;
 using Owin;
 using ServiceOrder.DataProvider.DataBase;
 using ServiceOrder.DataProvider.Entities;
+using ServiceOrder.DataProvider.Identity;
 using ServiceOrder.Logic.Services.Implementations;
 
 namespace ServiceOrder.Logic

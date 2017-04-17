@@ -110,6 +110,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBase\ApplicationDbInitializer.cs" />
+    <Compile Include="Identity\ServiceOrderSignInManager.cs" />
+    <Compile Include="Identity\ServiceOrderUserManager.cs" />
     <Compile Include="Repositories\PhotoRepository.cs" />
     <Compile Include="Entities\ServiceCategory.cs" />
     <Compile Include="Entities\Client.cs" />

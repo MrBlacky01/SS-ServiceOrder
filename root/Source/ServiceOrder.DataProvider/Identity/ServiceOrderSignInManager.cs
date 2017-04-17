@@ -5,7 +5,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using ServiceOrder.DataProvider.Entities;
 
-namespace ServiceOrder.Logic.Services.Implementations
+namespace ServiceOrder.DataProvider.Identity
 {
     public class ServiceOrderSignInManager : SignInManager<User, string>
     {
@@ -21,7 +21,7 @@ namespace ServiceOrder.Logic.Services.Implementations
 
         public static ServiceOrderSignInManager Create(IdentityFactoryOptions<ServiceOrderSignInManager> options, IOwinContext context)
         {
-            return new ServiceOrderSignInManager(context.GetUserManager<ServiceOrderUserManager>(), context.Authentication);
+            return new ServiceOrderSignInManager(OwinContextExtensions.GetUserManager<ServiceOrderUserManager>(context), context.Authentication);
         }
     }
 }

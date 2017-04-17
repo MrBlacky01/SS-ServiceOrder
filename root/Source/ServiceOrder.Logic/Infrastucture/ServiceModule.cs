@@ -1,4 +1,8 @@
-﻿using Ninject.Modules;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Ninject.Modules;
+using ServiceOrder.DataProvider.Entities;
+using ServiceOrder.DataProvider.Identity;
 using ServiceOrder.DataProvider.Interfaces;
 using ServiceOrder.DataProvider.Repositories;
 

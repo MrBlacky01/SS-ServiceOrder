@@ -105,12 +105,12 @@
     <Compile Include="Services\Implementations\AccountService.cs" />
     <Compile Include="Services\Implementations\CategoryService.cs" />
     <Compile Include="Services\Implementations\RegionService.cs" />
-    <Compile Include="Services\Implementations\ServiceOrderSignInManager.cs" />
+    <Compile Include="Services\Implementations\ServiceProviderService.cs" />
     <Compile Include="Services\Implementations\ServiceTypeService.cs" />
     <Compile Include="Services\IRegionService.cs" />
     <Compile Include="Services\IService.cs" />
+    <Compile Include="Services\IServiceProviderService.cs" />
     <Compile Include="Services\IServiceTypeService.cs" />
-    <Compile Include="Services\Implementations\ServiceOrderUserManager.cs" />
     <Compile Include="Services\IAccountService.cs" />
     <Compile Include="StartupConfigurations.cs" />
   </ItemGroup>
