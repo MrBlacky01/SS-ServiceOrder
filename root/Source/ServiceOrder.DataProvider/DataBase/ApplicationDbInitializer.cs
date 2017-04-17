@@ -7,7 +7,7 @@ using ServiceOrder.DataProvider.Identity;
 
 namespace ServiceOrder.DataProvider.DataBase
 {
-    public class ApplicationDbInitializer : DropCreateDatabaseAlways<ServiceOrderContext>
+    public class ApplicationDbInitializer : CreateDatabaseIfNotExists<ServiceOrderContext>
     {
         protected override void Seed(ServiceOrderContext context)
         {
@@ -40,7 +40,7 @@ namespace ServiceOrder.DataProvider.DataBase
             result = userManager.Create(client, password);
             if (result.Succeeded)
             {
-                userManager.AddToRole(admin.Id, role3.Name);
+                userManager.AddToRole(client.Id, role3.Name);
                 context.Clients.Add(new Client() {UserId = client.Id});
             }
 
@@ -98,7 +98,7 @@ namespace ServiceOrder.DataProvider.DataBase
             result = userManager.Create(serviceProvider, password);
             if (result.Succeeded)
             {
-                userManager.AddToRole(admin.Id, role2.Name);
+                userManager.AddToRole(serviceProvider.Id, role2.Name);
                 context.ServiceProviders.Add(new ServiceProvider() { UserId = serviceProvider.Id, Description = "This is provider 0" 
                     ,ProviderServiceTypes = new List<ServiceType> {service0,service1,service2} });
             }
@@ -107,7 +107,7 @@ namespace ServiceOrder.DataProvider.DataBase
             result = userManager.Create(serviceProvider1, password);
             if (result.Succeeded)
             {
-                userManager.AddToRole(admin.Id, role2.Name);
+                userManager.AddToRole(serviceProvider1.Id, role2.Name);
                 context.ServiceProviders.Add(new ServiceProvider() { UserId = serviceProvider1.Id, Description = "This is provider 1",
                     ProviderServiceTypes = new List<ServiceType> { service3, service4, service5 } });
             }

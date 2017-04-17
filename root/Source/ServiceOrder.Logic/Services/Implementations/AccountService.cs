@@ -47,7 +47,15 @@ namespace ServiceOrder.Logic.Services.Implementations
 
         public async Task<SignInStatus> Login(LoginViewModel model)
         {
-            return await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            User user = UserManager.FindByEmail(model.Email);
+            if (user == null)
+            {
+                return SignInStatus.Failure;
+            }
+            else
+            {
+                return await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            }           
         }
 
         public async Task<IdentityResult> Register(RegisterViewModel registerModel)
