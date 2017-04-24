@@ -11,16 +11,17 @@ namespace ServiceOrder.Logic.Services.Implementations
     public class RegionService : IRegionService
     {
         private IUnitOfWork DataBase { get; set; }
+        private IMapper _mapper;
 
-        public RegionService(IUnitOfWork dataBase)
+        public RegionService(IUnitOfWork dataBase,IMapper mapper)
         {
             DataBase = dataBase;
+            _mapper = mapper;
         }
 
         public void Add(RegionEntityViewModel item)
         {
-            Mapper.Initialize(config => config.CreateMap<RegionEntityViewModel,Region>());
-            DataBase.Regions.Create(Mapper.Map<RegionEntityViewModel,Region>(item));
+            DataBase.Regions.Create(_mapper.Map<RegionEntityViewModel,Region>(item));
             DataBase.Save();
         }
 
@@ -33,9 +34,8 @@ namespace ServiceOrder.Logic.Services.Implementations
         }
 
         public void Update(RegionEntityViewModel item)
-        {
-            Mapper.Initialize(config => config.CreateMap<RegionEntityViewModel, Region>());
-            DataBase.Regions.Update(Mapper.Map<RegionEntityViewModel, Region>(item));
+        {            
+            DataBase.Regions.Update(_mapper.Map<RegionEntityViewModel, Region>(item));
             DataBase.Save();
         }
 
@@ -49,14 +49,13 @@ namespace ServiceOrder.Logic.Services.Implementations
             {
                 throw new Exception("No region with this Id");
             }
-            Mapper.Initialize(config => config.CreateMap<Region,RegionEntityViewModel>());
-            return Mapper.Map<Region, RegionEntityViewModel>(region);
+           
+            return _mapper.Map<Region, RegionEntityViewModel>(region);
         }
 
         public IEnumerable<RegionEntityViewModel> GetAll()
         {
-            Mapper.Initialize(config => config.CreateMap<Region, RegionEntityViewModel>());
-            return Mapper.Map<IEnumerable<Region>, IEnumerable<RegionEntityViewModel>>(DataBase.Regions.GetAll());
+            return _mapper.Map<IEnumerable<Region>, IEnumerable<RegionEntityViewModel>>(DataBase.Regions.GetAll());
         }
 
         public void Dispose()

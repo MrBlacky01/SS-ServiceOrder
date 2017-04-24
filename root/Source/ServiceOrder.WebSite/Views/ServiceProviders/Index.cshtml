@@ -13,7 +13,7 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ServicesString);
+            @Html.DisplayNameFor(model => model.Services);
         </th>
         <th></th>
     </tr>
@@ -24,10 +24,14 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ServicesString)
+            @for (int i = 0; i < item.Services.Count-1; i++)
+            {
+                <text>@item.Services[i].Title,</text>
+            }
+            <text>@item.Services[item.Services.Count-1].Title</text>          
         </td>
         <td>
-            @Html.ActionLink("Заказать","Index","ServiceProviders")
+            @Html.ActionLink("Make order","Index","Order",new {providerId = item.Id},null)
         </td>
         <td></td>
     </tr>

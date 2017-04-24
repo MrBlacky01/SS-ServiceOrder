@@ -1,0 +1,100 @@
+﻿@model   ServiceOrder.ViewModel.ViewModels.Implementation.Order.OrderViewModel 
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<text>You want to make order of @Model.ProviderName provider. Please fill order data</text>
+@using (Html.BeginForm())
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.BeginTime, new {@class = "col-md-2 control-label"})
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.BeginTime)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.EndTime, new { @class = "col-md-2 control-label " })
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.EndTime)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Regions, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.RegionId, // 1. Store selected value in Model.State;
+                // when page is rendered after postback,
+                // take selected value from Model.State.
+
+                // 2. Take list of values from Model.States
+                new List<SelectListItem>(),
+
+                // 3. Text for the first 'default' option
+                "- Please select a region -",
+
+                //4. A class name to assign to <select> tag
+                new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Services, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.ServiceTypeId, // 1. Store selected value in Model.State;
+                // when page is rendered after postback,
+                // take selected value from Model.State.
+
+                // 2. Take list of values from Model.States
+                new List<SelectListItem>(),
+
+                // 3. Text for the first 'default' option
+                "- Please select a service -",
+
+                //4. A class name to assign to <select> tag
+                new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<script>
+
+    $(document).ready(function () {
+        var start = $("#BeginTime").kendoTimePicker({
+            format: "HH:mm",
+            change: startChange,
+
+        }).data("kendoTimePicker");
+        var floorplanSettings = @Html.Raw(Json.Encode(Model.EndTime));
+        var end = $('#EndTime').kendoTimePicker({
+            format: "HH:mm"
+        }).data("kendoTimePicker");
+
+        end.enable(false);
+
+        function startChange() {
+            var startTime = start.value();
+
+            if (startTime) {
+                startTime = new Date(startTime);
+                end.enable();
+
+                //end.max(startTime);
+                startTime.setMinutes(startTime.getMinutes() + this.options.interval);
+                end.min(startTime);
+                end.value(startTime);
+            }
+        }
+    });
+
+
+</script>
+

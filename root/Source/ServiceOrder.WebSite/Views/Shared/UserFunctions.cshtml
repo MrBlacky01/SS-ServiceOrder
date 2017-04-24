@@ -5,4 +5,12 @@
     {
         <li>@Html.ActionLink("Services", "Index", "ServiceProviders")</li>
     }
+    else
+    {
+        if (User.IsInRole("service provider"))
+        {
+            <li>@Html.ActionLink("Manage", "Manage", "ServiceProviders")</li>
+        }
+    }
+
 }

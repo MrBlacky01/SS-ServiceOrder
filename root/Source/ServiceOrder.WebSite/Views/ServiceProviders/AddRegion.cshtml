@@ -1,0 +1,58 @@
+﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels.ServiceProviderRegionsViewModel
+
+@{
+    ViewBag.Title = "AddRegion";
+}
+
+<h2>AddRegionForProvider</h2>
+
+@using (Html.BeginForm("AddRegion","ServiceProviders",FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Products</h4>
+    <select id="products"></select>
+</div>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</div>
+}
+
+<script>
+    $(document).ready(function () {
+        var allRegions = @(Html.Raw(Json.Encode(Model.allRegions)));
+        var providerRegions =@(Html.Raw(Json.Encode(Model.providerRegions)));
+        $("#products").kendoMultiSelect({
+            placeholder: "Select products...",
+            dataTextField: "Title",
+            dataValueField: "Id",
+            dataSource: allRegions,
+            value: providerRegions
+        });
+
+        var multiselect = $("#products").data("kendoMultiSelect");
+
+        $("input:submit").click(function (event) {
+            
+            $.ajax({
+                url: '/ServiceProviders/AddRegion',
+                type: 'POST',
+                data: {s:multiselect.dataItems()},
+                success: function () {
+                    alert('suc');
+                },
+                error: function (error) {
+                    alert('error');
+                }
+            });
+        });
+
+
+
+    });
+</script>
+

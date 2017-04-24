@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using ServiceOrder.DataProvider.DataBase;
@@ -30,7 +31,12 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public ServiceProvider Get(string id)
         {
-            return db.ServiceProviders.Find(id);
+            return db.ServiceProviders
+                .Include(o => o.ProviderPhotos)
+                .Include(o => o.ProviderRegions)
+                .Include(o => o.ProviderServiceTypes)
+                .Include(o=>o.ProviderUser)
+                .First(e => e.UserId==id);
         }
 
         public IEnumerable<ServiceProvider> Find(Func<ServiceProvider, bool> predicate)

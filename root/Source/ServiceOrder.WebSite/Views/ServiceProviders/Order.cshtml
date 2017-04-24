@@ -1,0 +1,45 @@
+﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels.ServiceProviderViewModel
+
+@{
+    ViewBag.Title = "Order";
+}
+
+<h2>Order</h2>
+
+<div>
+    <h4>ServiceProviderViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Services);
+        </dt>
+
+        <dd>
+            @for (int i = 0; i < Model.Services.Count - 1; i++)
+            {
+                <text>@Model.Services[i].Title,</text>
+            }
+            <text>@Model.Services.ElementAt(Model.Services.Count - 1).Title</text>
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

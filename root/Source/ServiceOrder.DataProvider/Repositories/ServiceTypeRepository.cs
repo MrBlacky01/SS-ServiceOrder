@@ -24,7 +24,9 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public ServiceType Get(int id)
         {
-            return db.ServiceTypes.Find(id);
+            return db.ServiceTypes
+                .Include(o => o.Category)
+                .First(p => p.Id == id);
         }
 
         public IEnumerable<ServiceType> Find(Func<ServiceType, bool> predicate)

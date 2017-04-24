@@ -27,7 +27,12 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public Order Get(int id)
         {
-            return db.Orders.Find(id);
+            return db.Orders.
+                Include(c => c.OrderClient)
+                .Include(p => p.OrderProvider)
+                .Include(r => r.OrderRegion)
+                .Include(st => st.OrderType)
+                .First(e => e.Id == id);
         }
 
         public IEnumerable<Order> Find(Func<Order, bool> predicate)

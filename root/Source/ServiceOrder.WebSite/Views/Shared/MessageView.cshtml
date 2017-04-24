@@ -6,5 +6,5 @@
 
 <h2>@Model.Message</h2>
 
-@Html.ActionLink("Back", "Category") |
+@Html.ActionLink("Back", null, null, null, new { href = Request.UrlReferrer }) |
 

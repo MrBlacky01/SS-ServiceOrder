@@ -9,5 +9,6 @@ namespace ServiceOrder.Logic.Services
 {
     public interface IServiceProviderService : IService<ServiceProviderViewModel,string>
     {
+        
     }
 }

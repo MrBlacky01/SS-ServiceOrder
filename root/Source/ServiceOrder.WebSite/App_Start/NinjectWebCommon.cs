@@ -1,4 +1,5 @@
 using Ninject.Modules;
+using ServiceOrder.Logic.Automapper;
 using ServiceOrder.Logic.Infrastucture;
 using ServiceOrder.WebSite.Utils;
 
@@ -49,7 +50,7 @@ namespace ServiceOrder.WebSite.App_Start
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
-
+                new AutoMapperBind().Register(kernel);
                 RegisterServices(kernel);
                 return kernel;
             }

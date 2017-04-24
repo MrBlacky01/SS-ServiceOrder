@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels;
-using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
 namespace ServiceOrder.Logic.Services.Implementations
 {
     public class ServiceProviderService : IServiceProviderService
     {
         private IUnitOfWork DataBase { get; set; }
+        private IMapper _mapper;
 
-        public ServiceProviderService(IUnitOfWork dataBase)
+        public ServiceProviderService(IUnitOfWork dataBase,IMapper mapper)
         {
             DataBase = dataBase;
+            _mapper = mapper;
         }
 
         public void Add(ServiceProviderViewModel item)
@@ -31,9 +29,8 @@ namespace ServiceOrder.Logic.Services.Implementations
         }
 
         public void Update(ServiceProviderViewModel item)
-        {
-            Mapper.Initialize(config => config.CreateMap<ServiceProviderViewModel, ServiceProvider>());             
-            var model = Mapper.Map<ServiceProviderViewModel, ServiceProvider>(item);
+        {     
+            var model = _mapper.Map<ServiceProviderViewModel, ServiceProvider>(item);
             DataBase.ServiceProviders.Update(model);
             DataBase.Save();
         }
@@ -41,31 +38,22 @@ namespace ServiceOrder.Logic.Services.Implementations
         public ServiceProviderViewModel Get(string id)
         {
             if (string.IsNullOrEmpty(id))
-                throw new Exception("Не установлено id категории");
+                throw new Exception("Wrong id parametr");
             var item = DataBase.ServiceProviders.Get(id);
 
-            Mapper.Initialize(config => config.CreateMap<ServiceProvider, ServiceProviderViewModel>());
+            if (item == null)
+            {
+                throw new Exception("No such user");
+            }
                 
-            return Mapper.Map<ServiceProvider, ServiceProviderViewModel>(item);
+            return _mapper.Map<ServiceProvider, ServiceProviderViewModel>(item);
         }
 
         public IEnumerable<ServiceProviderViewModel> GetAll()
         {
-
-            Mapper.Initialize(config => config.CreateMap<ServiceProvider, ServiceProviderViewModel>()
-            .ForMember(dest => dest.Name, opt=> opt.MapFrom(src => src.ProviderUser.UserName)));
-            var providers = DataBase.ServiceProviders.GetAll();
-            var serviceProviders = providers as IList<ServiceProvider> ?? providers.ToList();
-            var viewModel = Mapper.Map<IEnumerable<ServiceProvider>, List<ServiceProviderViewModel>>(serviceProviders);
-
-            Mapper.Initialize(config => config.CreateMap<ServiceType, Service>());
-            for (int i = 0; i < viewModel.Count; i++)
-            {
-                viewModel[i].Services = Mapper.Map<List<ServiceType>, List<Service>>(serviceProviders.ElementAt(i).ProviderServiceTypes);
-            }
-               
-            
-            return viewModel;
+            return
+                _mapper.Map<IEnumerable<ServiceProvider>, IEnumerable<ServiceProviderViewModel>>(
+                    DataBase.ServiceProviders.GetAll());
         }
 
         public void Dispose()

@@ -21,7 +21,6 @@ namespace ServiceOrder.WebSite.Controllers
         public ActionResult Index()
         {
             IEnumerable<ServiceCategoryEntityViewModel> categories = _categoryService.GetAll();
-
             return View(categories);
         }
 

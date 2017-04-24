@@ -34,6 +34,7 @@ namespace ServiceOrder.WebSite.Utils
             kernel.Bind<IRegionService>().To<RegionService>();
             kernel.Bind<IAccountService>().To<AccountService>();
             kernel.Bind<IServiceProviderService>().To<ServiceProviderService>();
+            kernel.Bind<IOrderService>().To<OrderService>();
 
         }
     }
