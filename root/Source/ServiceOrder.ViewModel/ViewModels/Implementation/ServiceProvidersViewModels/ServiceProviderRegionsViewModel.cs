@@ -9,7 +9,7 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewM
 {
     public class ServiceProviderRegionsViewModel
     {
-        public List<ProviderRegion> providerRegions;
+        public List<RegionEntityViewModel> providerRegions;
         public List<RegionEntityViewModel> allRegions;
     }
 }

@@ -74,6 +74,7 @@
     <Compile Include="ViewModels\Implementation\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\Implementation\Order\OrderViewModel.cs" />
+    <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderCategoryViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderManageViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderRegionsViewModel.cs" />

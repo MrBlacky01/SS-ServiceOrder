@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels;
 
 namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels
 {
@@ -12,12 +13,7 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels
         [Display(Name = "Service Type")]
         public string Title { get; set; }
 
-        [Required]
-        [Display(Name = "CategoryId")]
-        public int CategoryId { get; set; }
-
-        [Display(Name = "Category")]
-        public string CategoryTitle { get; set; }
+        public ServiceCategoryEntityViewModel Category { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; }
     }

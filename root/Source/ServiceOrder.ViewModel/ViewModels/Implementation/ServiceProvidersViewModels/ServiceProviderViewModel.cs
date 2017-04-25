@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
+using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
 namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels
 {
@@ -14,10 +16,10 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewM
         public string Description { get; set; }
 
         [Display(Name = "Services")]
-        public List<Service> Services { get; set; }
+        public List<ServiceTypeViewModel> Services { get; set; }
         
         [Display(Name = "Services")]       
-        public List<ProviderRegion> Regions { get; set; }
+        public List<RegionEntityViewModel> Regions { get; set; }
     }
 
     public class ProviderRegion
@@ -28,11 +30,10 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewM
         public string Title { get; set; }
     }
 
-    public class Service
+    public class ServiceShortViewModel
     {
         public int Id { get; set; }
-        [Display(Name = "Service")]
         public string Title { get; set; }
-        public int ServiceCategoryId { get; set; }
+        
     }
 }

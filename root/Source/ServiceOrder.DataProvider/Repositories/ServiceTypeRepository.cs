@@ -38,12 +38,22 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public void Create(ServiceType item)
         {
+            item.Category = db.ServiceCategories.First(c => c.Id == item.Category.Id);
             db.ServiceTypes.Add(item);
         }
 
         public void Update(ServiceType item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            var entity = db.ServiceTypes.Where(c => c.Id == item.Id).AsQueryable().FirstOrDefault();
+            if (entity == null)
+            {
+                db.ServiceTypes.Add(item);
+            }
+            else
+            {
+                entity.Title = item.Title;
+                entity.Category = db.ServiceCategories.First(c => c.Id == item.Category.Id);
+            }
         }
 
         public void Delete(int id)

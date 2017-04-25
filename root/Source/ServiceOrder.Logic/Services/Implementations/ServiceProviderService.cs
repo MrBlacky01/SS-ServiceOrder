@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
+using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
+using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels;
+using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
 namespace ServiceOrder.Logic.Services.Implementations
 {
@@ -59,6 +63,30 @@ namespace ServiceOrder.Logic.Services.Implementations
         public void Dispose()
         {
             DataBase.Dispose();
+        }
+
+        public void UpdateServices(List<ServiceTypeViewModel> services, ServiceProviderViewModel provider,ServiceCategoryEntityViewModel category)
+        {
+            var providerServicesFromAnotherCategory = provider.Services.Where(item => item.Category.Id != category.Id).ToList();
+            providerServicesFromAnotherCategory.AddRange(services);
+            provider.Services = providerServicesFromAnotherCategory;
+            Update(provider);
+        }
+
+        public void DeleteRegion(RegionEntityViewModel region, ServiceProviderViewModel provider)
+        {
+            int index = provider.Regions.FindIndex(item => item.Id == region.Id);
+            if (index == -1) return;
+            provider.Regions.RemoveAt(index);
+            Update(provider);
+        }
+
+        public void DeleteService(ServiceTypeViewModel service, ServiceProviderViewModel provider)
+        {
+            int index = provider.Services.FindIndex(item => item.Id == service.Id);
+            if (index == -1) return;
+            provider.Services.RemoveAt(index);
+            Update(provider);
         }
     }
 }

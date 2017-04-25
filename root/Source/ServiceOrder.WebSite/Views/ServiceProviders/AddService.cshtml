@@ -1,0 +1,107 @@
+﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels.ServiceProviderCategoryViewModel
+
+@{
+    ViewBag.Title = "AddCategory";
+}
+
+<h2>AddCategory</h2>
+
+@using (Html.BeginForm("AddRegion", "ServiceProviders", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Categories</h4>
+        <input id="category" value="1" style="width: 100%;" />
+    </div>
+
+    <div class="form-horizontal">
+        <h4>Services</h4>
+        <select id="services"></select>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Manage", "Manage")
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        var allCategories = @(Html.Raw(Json.Encode(Model.Categories)));
+
+        $("#category").kendoDropDownList({
+            dataTextField: "Title",
+            dataValueField: "Id",
+            dataSource: allCategories,
+            index: 0,
+            change: onChange
+        });
+
+        $("#services").kendoMultiSelect({
+            placeholder: "Select service",
+            dataTextField: "Title",
+            dataValueField: "Id",
+            noDataTemplate: 'No Data in this category'
+        });
+        
+
+        var multiselect = $("#services").data("kendoMultiSelect");
+        var dropdownlist = $("#category").data("kendoDropDownList");
+
+        firstLoad();
+
+        $('input:submit').click(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/ServiceProviders/AddServices',
+                type: 'POST',
+                data: {services : JSON.stringify( multiselect.dataItems()),category:JSON.stringify(dropdownlist.dataItem())},
+                success: function () {
+                    alert('success');
+                },
+                error: function (error) {
+                    alert(error.toString());
+                }
+            });
+        });
+
+        function onChange() {
+            sendServicesLoadAjax(dropdownlist.dataItem());
+        };
+
+        function firstLoad() {
+            sendServicesLoadAjax(dropdownlist.dataItem(0));
+        }
+
+        function sendServicesLoadAjax(category) {
+            $.ajax({
+                url: '/ServiceProviders/GetCategoryServices',
+                type: 'POST',
+                data: {category : JSON.stringify(category)},
+                success: function (data) {
+                    multiselect.setDataSource([]);
+                    var obj = JSON.parse(data.dataAll);
+                    obj.forEach(function(item, i, arr) {
+                        multiselect.dataSource.add({Title : item.Title, Id : item.Id});
+                    });
+                    var e = new Array();
+                    var chooseIndex = JSON.parse(data.chooseData);
+                    chooseIndex.forEach(function(item, i, arr) {
+                        e.push(obj[item]);
+                    });
+                    multiselect.value( e);
+                },
+                error: function (error) {
+                    alert('error');
+                }
+            });
+        }
+    });
+</script>

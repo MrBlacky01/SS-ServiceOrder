@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
-using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
 
 namespace ServiceOrder.Logic.Services.Implementations

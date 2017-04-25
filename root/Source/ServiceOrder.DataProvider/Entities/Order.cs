@@ -5,12 +5,6 @@ namespace ServiceOrder.DataProvider.Entities
 {
     public class Order : Entity
     {
-
-        public string ClientId { get; set; }
-        public int RegionId { get; set; }
-        public int ServiceTypeId { get; set; }
-        public string ServiceProviderId { get; set; }
-
         [Column(TypeName = "datetime2")]
         public DateTime BeginTime { get; set; }
 

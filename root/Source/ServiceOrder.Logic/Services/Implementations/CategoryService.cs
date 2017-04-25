@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
-using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels;
 
 namespace ServiceOrder.Logic.Services.Implementations
@@ -11,53 +10,46 @@ namespace ServiceOrder.Logic.Services.Implementations
     public class CategoryService : ICategoryService
     {
         private IUnitOfWork DataBase { get; set; }
+        private IMapper _mapper;
 
-        public CategoryService(IUnitOfWork dataBase)
+        public CategoryService(IUnitOfWork dataBase, IMapper mapper)
         {
             DataBase = dataBase;
+            _mapper = mapper;
         }
 
         public void Add(ServiceCategoryEntityViewModel categoryEntity)
         {
-
-            Mapper.Initialize(cfg => cfg.CreateMap<ServiceCategoryEntityViewModel, ServiceCategory>());
-            var model = Mapper.Map<ServiceCategoryEntityViewModel, ServiceCategory>(categoryEntity);
-            DataBase.ServiceCategories.Create(model);
+            DataBase.ServiceCategories.Create(_mapper.Map<ServiceCategoryEntityViewModel, ServiceCategory>(categoryEntity));
             DataBase.Save();
         }
 
         public void Delete(int? id)
         {
             if (id == null)
-                throw new Exception("Не установлено id категории");
+                throw new Exception("Wrong category Id");
             DataBase.ServiceCategories.Delete((int)id);
             DataBase.Save();
         }
 
         public void Update(ServiceCategoryEntityViewModel categoryEntity)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<ServiceCategoryEntityViewModel, ServiceCategory>());
-            var model = Mapper.Map<ServiceCategoryEntityViewModel, ServiceCategory>(categoryEntity);
-            DataBase.ServiceCategories.Update(model);
+            DataBase.ServiceCategories.Update(_mapper.Map<ServiceCategoryEntityViewModel, ServiceCategory>(categoryEntity));
             DataBase.Save();
         }
 
         public ServiceCategoryEntityViewModel Get(int? id)
         {
             if (id == null)
-                throw new Exception("Не установлено id категории");
+                throw new Exception("Wrong category Id");
             var category = DataBase.ServiceCategories.Get((int)id);
            
-            
-            Mapper.Initialize(cfg => cfg.CreateMap<ServiceCategory, ServiceCategoryEntityViewModel>());
-            return Mapper.Map<ServiceCategory, ServiceCategoryEntityViewModel>(category);
+            return _mapper.Map<ServiceCategory, ServiceCategoryEntityViewModel>(category);
         }
 
         public IEnumerable<ServiceCategoryEntityViewModel> GetAll()
         {
-            Mapper.Initialize(config => config.CreateMap<ServiceCategory,ServiceCategoryEntityViewModel>());
-            return
-                Mapper.Map<IEnumerable<ServiceCategory>, List<ServiceCategoryEntityViewModel>>(
+            return _mapper.Map<IEnumerable<ServiceCategory>, List<ServiceCategoryEntityViewModel>>(
                     DataBase.ServiceCategories.GetAll());
         }
 

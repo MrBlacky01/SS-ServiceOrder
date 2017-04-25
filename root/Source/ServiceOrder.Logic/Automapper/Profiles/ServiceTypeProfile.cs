@@ -10,11 +10,11 @@ namespace ServiceOrder.Logic.Automapper.Profiles
         public ServiceTypeProfile()
         {
             CreateMap<ServiceType, ServiceTypeViewModel>()
-            .ForMember(x => x.CategoryId, opt => opt.MapFrom(c => c.ServiceCategoryId))
-            .ForMember(x => x.CategoryTitle, opt => opt.MapFrom(c => c.Category.Title))
-            .ReverseMap();
+            .ForMember(x => x.Category, opt => opt.MapFrom(c => c.Category))
+            .ReverseMap()
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src=>src.Category));
 
-            CreateMap<ServiceType, Service>().ReverseMap();
+            
         }
     }
 }

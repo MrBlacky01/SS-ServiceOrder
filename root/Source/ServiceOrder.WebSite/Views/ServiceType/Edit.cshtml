@@ -26,9 +26,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(m => m.Category.Id, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(m => m.CategoryId, // 1. Store selected value in Model.State;
+                @Html.DropDownListFor(m => m.Category.Id, // 1. Store selected value in Model.State;
                                                          // when page is rendered after postback,
                                                          // take selected value from Model.State.
                     // 2. Take list of values from Model.States

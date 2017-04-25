@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ServiceOrder.DataProvider.DataBase;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
+using ServiceOrder.DataProvider.Utils;
 
 namespace ServiceOrder.DataProvider.Repositories
 {
@@ -25,7 +26,7 @@ namespace ServiceOrder.DataProvider.Repositories
             return db.ServiceProviders
                 .Include(o => o.ProviderPhotos)
                 .Include(o => o.ProviderRegions)
-                .Include(o => o.ProviderServiceTypes)
+                .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o => o.ProviderUser);
         }
 
@@ -34,7 +35,7 @@ namespace ServiceOrder.DataProvider.Repositories
             return db.ServiceProviders
                 .Include(o => o.ProviderPhotos)
                 .Include(o => o.ProviderRegions)
-                .Include(o => o.ProviderServiceTypes)
+                .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o=>o.ProviderUser)
                 .First(e => e.UserId==id);
         }
@@ -44,7 +45,7 @@ namespace ServiceOrder.DataProvider.Repositories
             return db.ServiceProviders
                 .Include(o => o.ProviderPhotos)
                 .Include(o => o.ProviderRegions)
-                .Include(o => o.ProviderServiceTypes)
+                .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o => o.ProviderUser)
                 .Where(predicate).ToList();
         }
@@ -56,7 +57,20 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public void Update(ServiceProvider item)
         {
-            db.Entry(item).State = EntityState.Modified;
+            var entity = db.ServiceProviders.Where(c => c.UserId == item.UserId).AsQueryable().FirstOrDefault();
+            if (entity == null)
+            {
+                db.ServiceProviders.Add(item);
+            }
+            else
+            {
+                entity.Description = item.Description;
+                entity.WorkingTime = item.WorkingTime;
+                ManyToManyCopierer<Region>.CopyList(item.ProviderRegions,entity.ProviderRegions,db.Regions);
+                ManyToManyCopierer<ServiceType>.CopyList(item.ProviderServiceTypes,entity.ProviderServiceTypes,db.ServiceTypes);
+                ManyToManyCopierer<Photo>.CopyList(item.ProviderPhotos,entity.ProviderPhotos,db.Photos);
+                
+            }
         }
 
         public void Delete(string id)

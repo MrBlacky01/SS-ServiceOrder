@@ -21,7 +21,9 @@
     </div>
 </div>
 }
-
+<div>
+    @Html.ActionLink("Back to Manage", "Manage")
+</div>
 <script>
     $(document).ready(function () {
         var allRegions = @(Html.Raw(Json.Encode(Model.allRegions)));
@@ -36,12 +38,12 @@
 
         var multiselect = $("#products").data("kendoMultiSelect");
 
-        $("input:submit").click(function (event) {
-            
+        $('input:submit').click(function (event) {
+            event.preventDefault();
             $.ajax({
                 url: '/ServiceProviders/AddRegion',
                 type: 'POST',
-                data: {s:multiselect.dataItems()},
+                data: {s : JSON.stringify( multiselect.dataItems())},
                 success: function () {
                     alert('suc');
                 },
