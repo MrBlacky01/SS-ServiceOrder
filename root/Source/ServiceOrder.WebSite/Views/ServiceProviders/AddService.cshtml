@@ -84,7 +84,7 @@
             $.ajax({
                 url: '/ServiceProviders/GetCategoryServices',
                 type: 'POST',
-                data: {category : JSON.stringify(category)},
+                data: {Title: category.Title, Id: category.Id},
                 success: function (data) {
                     multiselect.setDataSource([]);
                     var obj = JSON.parse(data.dataAll);

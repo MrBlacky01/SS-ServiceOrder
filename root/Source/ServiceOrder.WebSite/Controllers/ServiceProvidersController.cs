@@ -117,15 +117,10 @@ namespace ServiceOrder.WebSite.Controllers
             return View(model);
         }
 
-        public ActionResult GetCategoryServices(string category)
+        public ActionResult GetCategoryServices(int Id)
         {
-            ServiceCategoryEntityViewModel categoryEntity = JsonConvert.DeserializeObject<ServiceCategoryEntityViewModel>(category);
-            if (categoryEntity == null)
-            {
-                return new HttpStatusCodeResult(400, "Wrong category paramentrs");
-            }
-            var servicesAll = _serviceTypeService.FindServicesInCategory(categoryEntity.Id);
-            var providerServices = _provider.Get(User.Identity.GetUserId()).Services.Where(src => src.Category.Id == categoryEntity.Id).ToList();
+            var servicesAll = _serviceTypeService.FindServicesInCategory(Id);
+            var providerServices = _provider.Get(User.Identity.GetUserId()).Services.Where(src => src.Category.Id == Id).ToList();
 
             var providerServicesIndex = new List<int>();
             var serviceTypeViewModels = servicesAll as IList<ServiceTypeViewModel> ?? servicesAll.ToList();

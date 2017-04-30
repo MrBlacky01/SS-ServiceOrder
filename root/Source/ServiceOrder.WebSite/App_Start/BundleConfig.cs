@@ -31,7 +31,7 @@ namespace ServiceOrder.WebSite
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/Site.css"));
 
             bundles.Add(new StyleBundle("~/bundles/kendocss").Include(
            "~/styles/kendo.common.min.css",

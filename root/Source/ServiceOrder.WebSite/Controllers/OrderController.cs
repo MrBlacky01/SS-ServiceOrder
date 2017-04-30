@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.Order;
@@ -14,11 +15,13 @@ namespace ServiceOrder.WebSite.Controllers
     {
         private IOrderService _orderService;
         private IServiceProviderService _serviceProviderService;
+        private ICategoryService _categoryService;
 
-        public OrderController(IOrderService orderService, IServiceProviderService serviceProviderService)
+        public OrderController(IOrderService orderService, IServiceProviderService serviceProviderService,ICategoryService categoryService)
         {
             _orderService = orderService;
             _serviceProviderService = serviceProviderService;
+            _categoryService = categoryService;
         }
 
         // GET: Order
@@ -31,28 +34,64 @@ namespace ServiceOrder.WebSite.Controllers
             }
             catch (Exception exception)
             {
-                return View("MessageView", new ResultMessageViewModel { Message = exception.Message });
-                throw;
+                return View("MessageView", new ResultMessageViewModel {Message = exception.Message});
             }
 
             if (provider == null)
             {
-                return View("MessageView",new ResultMessageViewModel {Message = "There is not such provider"});
+                return View("MessageView", new ResultMessageViewModel {Message = "There is not such provider"});
             }
-                
+
             var model = new OrderViewModel();
             foreach (var region in provider.Regions)
             {
-                model.Regions.Add(region.Id,region.Title);
+                model.Regions.Add(region);
             }
-            foreach (var service in provider.Services )
+
+            foreach (var service in provider.Services)
             {
-                model.Services.Add(service.Id,service.Title);
+                if (model.Categories.Count(category => category.Id == service.Category.Id) == 0x0)
+                {
+                    model.Categories.Add(service.Category);
+                }
             }
+
+            model.Regions.Sort((firstRegion, secondRegion) => firstRegion.Id.CompareTo(secondRegion.Id));
+            model.Categories.Sort((firstCategory, secondCategory) => firstCategory.Id.CompareTo(secondCategory.Id));
             model.ServiceProviderId = provider.Id;
             model.ProviderName = provider.Name;
 
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult GetProviderServicesByCategory(int categoryId, string providerId)
+        {
+            ServiceProviderViewModel provider;
+            try
+            {
+                provider = _serviceProviderService.Get(providerId);
+                if (_categoryService.Get(categoryId) == null)
+                {
+                    throw new Exception("Wrong category");
+                }
+                
+            }
+            catch (Exception exception)
+            {
+
+                return new HttpStatusCodeResult(400, exception.Message);
+            }
+
+            if (provider.Services.Count(service => service.Category.Id == categoryId) == 0x0)
+            {
+                return new HttpStatusCodeResult(400,"This provider doesn't has services in this category");
+            }
+            var shortServices =
+                provider.Services.Where(item => item.Category.Id == categoryId)
+                    .Select(item => new ServiceShortViewModel {Id = item.Id, Title = item.Title});
+            return Json(new {services = JsonConvert.SerializeObject(shortServices)}, JsonRequestBehavior.AllowGet);
+
         }
     }
 }
