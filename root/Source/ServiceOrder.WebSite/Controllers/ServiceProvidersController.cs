@@ -9,6 +9,7 @@ using System.Web.Razor.Generator;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using Ninject.Infrastructure.Language;
+using PagedList;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
@@ -36,10 +37,11 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         // GET: ServiceProviders
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var elements = _provider.GetAll();
-            return View(elements);
+            var pageSize = 1;
+            var pageNumber = (page ?? 1);
+            return View(_provider.GetAll().ToPagedList(pageNumber,pageSize));
         }
 
         public ActionResult Manage()

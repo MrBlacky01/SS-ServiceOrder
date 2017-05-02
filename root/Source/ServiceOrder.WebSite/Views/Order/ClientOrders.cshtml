@@ -1,0 +1,56 @@
+﻿@model IEnumerable<ServiceOrder.ViewModel.ViewModels.Implementation.Order.OrderViewModel>
+
+@{
+    ViewBag.Title = "My Orders";
+}
+
+<h2>My Orders  </h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BeginTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Region)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProviderName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date.Date.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BeginTime.TimeOfDay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndTime.TimeOfDay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Region.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServiceType.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProviderName)
+        </td>
+
+    </tr>
+}
+
+</table>

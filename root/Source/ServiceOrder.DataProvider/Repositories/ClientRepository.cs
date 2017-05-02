@@ -19,17 +19,22 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public IEnumerable<Client> GetAll()
         {
-            return db.Clients.Include(o => o.ClientUser);
+            return db.Clients
+                .Include(o => o.ClientUser);
         }
 
         public Client Get(string id)
         {
-            return db.Clients.Find(id);
+            return db.Clients
+                .Include(user => user.ClientUser)
+                .First(client => client.UserId == id );
         }
 
         public IEnumerable<Client> Find(Func<Client, bool> predicate)
         {
-            return db.Clients.Include(o => o.ClientUser).Where(predicate).ToList();
+            return db.Clients
+                .Include(o => o.ClientUser)
+                .Where(predicate).ToList();
         }
 
         public void Create(Client item)

@@ -1,6 +1,6 @@
 ﻿@model   ServiceOrder.ViewModel.ViewModels.Implementation.Order.OrderViewModel 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Make Order";
 }
 
 
@@ -56,10 +56,15 @@
             </div>            
         </div>        
     </div>
+    
+    <br />
 
-    <div class="col-md-offset-2 col-md-10" style="margin-top: 10px">
-        <input type="submit" value="Create" class="btn btn-default" />
+    <div class="row top-buffer">
+        <div class="col-md-offset-4 col-md-4 col-sm-offset-4 col-sm-6 col-xs-10 top-buffer">
+            <input type="submit" value="Make Order" class="btn btn-default make-order-button" style="width:100%" />
+        </div>
     </div>
+    
 </form>
 
 <script>
@@ -83,15 +88,16 @@
                 max: new Date(2000, 0, 1, 21, 0, 0),
                 value: new Date(2011, 0, 1, 8, 0),
                 interval: 60,
-                change: startChange
-            }).data("kendoDatePicker");
+                change:startChange
+            }).data("kendoTimePicker");
 
-        var endTimePicker = $('#EndTime').kendoTimePicker({
-            format: "HH:mm",
-            min: new Date(2000, 0, 1, 9, 0, 0),
-            max: new Date(2000, 0, 1, 22, 0, 0),
-            value: new Date(2011, 0, 1, 9, 0),
-            interval: 60
+        var endTimePicker = $('#EndTime')
+            .kendoTimePicker({
+                format: "HH:mm",
+                min: new Date(2000, 0, 1, 9, 0, 0),
+                max: new Date(2000, 0, 1, 22, 0, 0),
+                value: new Date(2011, 0, 1, 9, 0),
+                interval: 60
         }).data("kendoTimePicker");
 
         var providerRegions = @(Html.Raw(Json.Encode(Model.Regions)));
@@ -127,7 +133,19 @@
             .data("kendoDropDownList");
 
         function startChange() {
+            var startTime = startTimePicker.value();
 
+            if (startTime) {
+                startTime = new Date(startTime);
+                endTimePicker.enable();
+                startTime.setHours(startTime.getHours()+1);
+
+                endTimePicker.min(startTime);
+                endTimePicker.value(startTime);
+                if (startTime.getHours() == 22) {
+                    endTimePicker.enable(false);
+                }
+            }
         }
 
         function onChange() {
@@ -156,6 +174,30 @@
                 }
             });
         }
+
+        $('input:submit').click(function (event) {
+            event.preventDefault();
+            var orderDate = datePicker.value();
+            var beginTime = startTimePicker.value();
+            var endTime = endTimePicker.value();
+            orderDate.toUTCString();
+            $.ajax({
+                url: '/Order/MakeOrder',
+                type: 'POST',
+                data: {ServiceProviderId:"@Model.ServiceProviderId",
+                    Date:orderDate.toUTCString(),
+                    BeginTime: beginTime.toUTCString(),
+                    EndTime:endTime.toUTCString(),
+                    RegionId:regionDropDownList.dataItem().Id,
+                    ServiceTypeId: serviceDropDownList.dataItem().Id},
+                success: function () {
+                    alert('success');
+                },
+                error: function(error) { 
+                    alert(error.statusText);
+                }
+            });
+        });
     });
 
 

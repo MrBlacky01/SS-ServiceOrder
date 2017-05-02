@@ -3,13 +3,14 @@
 {
     if (User.IsInRole("client"))
     {
-        <li>@Html.ActionLink("Services", "Index", "ServiceProviders")</li>
+        <li>@Html.ActionLink("Order service", "Index", "ServiceProviders")</li>
+        <li>@Html.ActionLink("My orders","ClientOrders","Order")</li>
     }
     else
     {
         if (User.IsInRole("service provider"))
         {
-            <li>@Html.ActionLink("Manage", "Manage", "ServiceProviders")</li>
+            <li>@Html.ActionLink("My orders", "ProviderOrders", "Order")</li>
         }
     }
 

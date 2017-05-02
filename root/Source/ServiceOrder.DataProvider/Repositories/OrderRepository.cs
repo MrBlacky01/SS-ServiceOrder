@@ -37,7 +37,8 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public IEnumerable<Order> Find(Func<Order, bool> predicate)
         {
-            return db.Orders.Include(c => c.OrderClient)
+            return db.Orders
+                .Include(c => c.OrderClient)
                 .Include(p => p.OrderProvider)
                 .Include(r => r.OrderRegion)
                 .Include(st => st.OrderType)
@@ -46,6 +47,10 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public void Create(Order item)
         {
+            item.OrderClient = db.Clients.FirstOrDefault(c => c.UserId == item.OrderClient.UserId);
+            item.OrderProvider = db.ServiceProviders.FirstOrDefault(c => c.UserId == item.OrderProvider.UserId);
+            item.OrderRegion = db.Regions.FirstOrDefault(c => c.Id == item.OrderRegion.Id);
+            item.OrderType = db.ServiceTypes.FirstOrDefault(c => c.Id == item.OrderType.Id);
             db.Orders.Add(item);
         }
 

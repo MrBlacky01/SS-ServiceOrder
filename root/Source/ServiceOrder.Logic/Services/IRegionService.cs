@@ -1,5 +1,4 @@
-﻿using ServiceOrder.ViewModel.ViewModels.Implementation;
-using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
+﻿using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
 
 namespace ServiceOrder.Logic.Services
 {

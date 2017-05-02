@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ServiceOrder.DataProvider.Entities;
+﻿using System.Collections.Generic;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
 namespace ServiceOrder.Logic.Services
