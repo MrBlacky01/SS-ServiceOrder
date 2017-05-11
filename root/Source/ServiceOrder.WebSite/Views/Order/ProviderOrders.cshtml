@@ -1,5 +1,5 @@
-﻿@model IEnumerable<ServiceOrder.ViewModel.ViewModels.Implementation.Order.OrderViewModel>
-
+﻿@model PagedList.IPagedList<ServiceOrder.ViewModel.ViewModels.Implementation.Order.OrderViewModel>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "My Orders";
 }
@@ -7,26 +7,25 @@
 <h2>Provider Orders</h2>
 
 <table class="table">
-    <tr>
+    <tr class="table-header-tr">
         <th>
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.ActionLink("Order Date", "ProviderOrders", new { sortOrder = ViewBag.DateSort }) 
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ClientName)
+            @Html.ActionLink("Client Name", "ProviderOrders", new { sortOrder = ViewBag.ClientNameSort }) 
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BeginTime)
+            BeginTime
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndTime)
+            EndTime
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Region)
+            @Html.ActionLink("Region", "ProviderOrders", new { sortOrder = ViewBag.RegionSort }) 
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ServiceType)
+            @Html.ActionLink("Service Type", "ProviderOrders", new { sortOrder = ViewBag.ServiceTypeSort }) 
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -53,3 +52,7 @@
 }
 
 </table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ProviderOrders", new { page, sortOrder = ViewBag.CurrentSort}))

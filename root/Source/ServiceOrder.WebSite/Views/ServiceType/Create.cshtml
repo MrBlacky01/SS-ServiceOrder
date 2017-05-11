@@ -4,54 +4,48 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create new Service Type</h2>
 
+<div class="row">
+    @using (Html.BeginForm("Create", "ServiceType", FormMethod.Post, new { @class = "create-service-type-form col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-12" }))
+    {
+        @Html.AntiForgeryToken()
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>ServiceTypeViewModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+        <div class="row">
+           
+            <div >
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Service Type Title" } })
                 @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
             </div>
         </div>
-        
-        @* State selection dropdown *@
-        <div class="form-group">
-            @Html.LabelFor(m => m.Category.Id, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+
+        <div class="row">
+            <div >
                 @Html.DropDownListFor(m => m.Category.Id, // 1. Store selected value in Model.State;
-                    // when page is rendered after postback,
-                    // take selected value from Model.State.
+                                                      // when page is rendered after postback,
+                                                      // take selected value from Model.State.
 
                     // 2. Take list of values from Model.States
                     Model.Categories,
 
                     // 3. Text for the first 'default' option
-                    "- Please select a state -",
+                    " Please select a category ",
 
                     //4. A class name to assign to <select> tag
                     new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.Category.Id, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
+        <input type="submit" value="Create" class="btn btn-default" />
+
+    }
+</div>
+
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index",null,new {@class="btn btn-default"})
 </div>
 
 @section Scripts {

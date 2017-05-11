@@ -20,11 +20,17 @@ body {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+
+.nav-bar-color {
+    background-color: #9932CC;    
+}
+
+.nav-bar-color .navbar-brand {
+    color: #f5f1f1;
+}
+
+.nav-bar-color .navbar-nav > li > a {
+    color: #f5f1f1;
 }
 
 .center-align { 
@@ -55,8 +61,181 @@ textarea {
     margin-left: 30px;
 }
 
-.img-responsive {
+.image-responsive {
   display: block;
   height: auto;
   max-width: 100%;
+}
+
+
+
+.navbar-wrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 20;
+}
+
+/* Flip around the padding for proper display in narrow viewports */
+.navbar-wrapper .container {
+  padding-right: 0;
+  padding-left: 0;
+}
+.navbar-wrapper .navbar {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@media (min-width: 768px) {
+
+  /* Navbar positioning foo */
+  .navbar-wrapper {
+    margin-top: 20px;
+  }
+  .navbar-wrapper .container {
+    padding-right: 15px;
+    padding-left:  15px;
+  }
+  .navbar-wrapper .navbar {
+    padding-right: 0;
+    padding-left:  0;
+  }
+
+  /* The navbar becomes detached from the top, so we round the corners */
+  .navbar-wrapper .navbar {
+    border-radius: 4px;
+  }
+}
+
+@media (min-width: 200px) {
+.category-create-form {
+    margin: 50px 50px 100px 50px;
+    width: 75%;
+}
+}
+.category-table-row {
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.create-category-button {
+    padding: 10px 20px 10px 20px;
+    max-width: 200px;
+    width: auto;
+}
+
+.category-create-form {
+    background-color: #d68fd6;
+    min-height: 200px;
+    margin-top: 50px;
+    margin-bottom: 100px
+}
+
+.category-create-form input.form-control {
+    width: 75%;
+    margin: 50px auto;
+}
+
+.category-create-form select.form-control {
+    width: 75%;
+    margin: 0 auto 50px auto;
+}
+.edit-input-with-label {
+}
+.edit-title {
+    margin: 10px 0 0 0;
+    color: #8211af;
+}
+
+.category-create-form input.edit-input-with-label {
+    margin: 5px auto 50px auto;
+}
+.category-create-form input[type="submit"] {
+    width: 50%;
+    margin: 10px auto 10px auto;
+    display: block;
+}
+
+.create-service-type-form {
+    background-color: #d68fd6;
+    min-height: 200px;
+    margin-top: 50px;
+    margin-bottom: 100px
+}
+
+.create-service-type-form input[type="text"] {
+    width: 75%;
+    margin: 40px auto 10px auto;
+}
+
+.create-service-type-form select {
+    width: 75%;
+    margin: 50px auto 10px auto;
+}
+
+.create-service-type-form input[type="submit"] {
+    width: 50%;
+    margin: 50px auto 20px auto;
+    display: block;
+}
+
+.back-to-list-button {
+    padding: 10px 20px 10px 20px;
+}
+
+.table-header-tr {
+    background-color: #DA70D6;
+    color: white;
+}
+
+.add-region-form {
+    background-color: #d68fd6;
+    min-height: 200px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+    padding: 20px 20px 0 20px;
+}
+
+.add-region-form .product-dropdownlist {
+    width: 75%;
+    margin: 10px auto 40px auto;
+}
+
+.add-region-form input[type="submit"] {
+    width: 50%;
+    margin: 70px auto 0 auto;
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.center-text-in-table-td {
+    text-align: center;
+}
+
+.filter-area {
+    margin: 40px 10px 40px 10px;
+    padding: 10px 0 10px 0;
+}
+
+.filter-width {
+    width: 90%;
+    min-width: 70px;
+    margin: 10px auto;
+}
+.filter-btn {
+    padding: 6px 20px 6px 20px;
+    width: 60%;
+    margin: 10px auto;
+    display: block;
+}
+
+.service-provider-input {
+    width: 60%;
+    margin-right: 20px;
+}
+
+.service-provider-manage-change-description-button {
+    margin: 20px 0 20px 0;
 }

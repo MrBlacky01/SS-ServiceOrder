@@ -3,8 +3,8 @@
     ViewBag.Title = "Make Order";
 }
 
-
-<text>You want to make order of @Model.ProviderName provider. Please fill order data</text>
+<h3 class="text-center">You want to make order of @Model.ProviderName provider. Please fill order data:</h3>
+<br/>
 <br/>
 
 <form class="form-horizontal">
@@ -78,6 +78,7 @@
                 max: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                 disableDates: ["sa", "su"],
                 format: "dd/MM/yyyy",
+                change : dateChange
             })
             .data("kendoDatePicker");
 
@@ -123,6 +124,8 @@
             })
             .data("kendoDropDownList");
 
+        var avaliableTimeArray = new Array();
+
         firstLoad();
 
         var serviceDropDownList = $('#service')
@@ -132,20 +135,13 @@
             })
             .data("kendoDropDownList");
 
+
+        function  dateChange() {
+            sendAjaxLoadTime();
+        }
         function startChange() {
-            var startTime = startTimePicker.value();
-
-            if (startTime) {
-                startTime = new Date(startTime);
-                endTimePicker.enable();
-                startTime.setHours(startTime.getHours()+1);
-
-                endTimePicker.min(startTime);
-                endTimePicker.value(startTime);
-                if (startTime.getHours() == 22) {
-                    endTimePicker.enable(false);
-                }
-            }
+            var startTime = startTimePicker.value();           
+            rebuildEndTimePicker(avaliableTimeArray, startTime);
         }
 
         function onChange() {
@@ -154,6 +150,76 @@
 
         function firstLoad() {
             sendAjaxLoadServices(categoryDropDownList.dataItem(0));
+            sendAjaxLoadTime();
+        }
+
+        function sendAjaxLoadTime() {
+            var orderDate = datePicker.value();
+            $.ajax({
+                url: '/Order/GetFreeTime',
+                type: 'GET',
+                data: {date: orderDate.toUTCString(), providerId : "@Model.ServiceProviderId"},
+                success: function (data) {
+                    var times = JSON.parse(data.freeHours);
+                    var timeArray = new Array();
+                    var startTime = startTimePicker.value();
+                    var isStartTime = false;
+
+                    times.forEach(function(item, i, arr) {
+                        timeArray.push(new Date(2000, 0, 1, item, 0, 0));
+                        if (startTime.getHours() == item) {
+                            isStartTime = true;
+                        }
+                    });
+                    avaliableTimeArray = timeArray;
+                    startTimePicker.setOptions({
+                        dates: timeArray
+                    });
+                    if (isStartTime == false) {
+                        startTimePicker.value(timeArray[0]);
+                        startTime = timeArray[0];
+                    }
+                    rebuildEndTimePicker(timeArray,startTime);
+
+                },
+                error: function (error) {
+                    alert('error');
+                }
+            });
+        }
+
+        function rebuildEndTimePicker(timeArray,startTime) {
+            var endTimeArray = new Array();
+            var endTime = endTimePicker.value();
+            var isEndTime = false;
+            if (timeArray[0].getHours() == startTime.getHours()) {
+                endTimeArray.push(new Date(2000, 0, 1, timeArray[0].getHours() + 1, 0, 0));
+            }
+            for (var i = 1; i < timeArray.length; i++) {
+                if (timeArray[i].getHours() == startTime.getHours()) {
+                    endTimeArray.push(new Date(2000, 0, 1, timeArray[i].getHours() + 1, 0, 0));
+                }
+                if (timeArray[i].getHours() > startTime.getHours()) {
+                    if (timeArray[i].getHours() - timeArray[i - 1].getHours() == 1) {
+                        endTimeArray.push(new Date(2000, 0, 1, timeArray[i].getHours() + 1, 0, 0));
+                    } else {
+                        break;
+                    }
+                }
+            }
+     
+            endTimeArray.forEach(function(item, i, arr) {
+                if (endTime.getHours() == item.getHours()) {
+                    isEndTime = true;
+                }
+            });
+
+            endTimePicker.setOptions({
+                dates: endTimeArray
+            });
+            if (isEndTime == false) {
+                endTimePicker.value(endTimeArray[0]);
+            }
         }
 
         function sendAjaxLoadServices(category) {
@@ -175,25 +241,25 @@
             });
         }
 
-        $('input:submit').click(function (event) {
+        $('input:submit').click(function (event) { 
             event.preventDefault();
             var orderDate = datePicker.value();
             var beginTime = startTimePicker.value();
             var endTime = endTimePicker.value();
-            orderDate.toUTCString();
             $.ajax({
                 url: '/Order/MakeOrder',
                 type: 'POST',
                 data: {ServiceProviderId:"@Model.ServiceProviderId",
                     Date:orderDate.toUTCString(),
-                    BeginTime: beginTime.toUTCString(),
-                    EndTime:endTime.toUTCString(),
+                    BeginTime: beginTime.toLocaleTimeString(),
+                    EndTime:endTime.toLocaleTimeString(),
                     RegionId:regionDropDownList.dataItem().Id,
                     ServiceTypeId: serviceDropDownList.dataItem().Id},
                 success: function () {
                     alert('success');
+                    sendAjaxLoadTime();
                 },
-                error: function(error) { 
+                error: function(error) {
                     alert(error.statusText);
                 }
             });

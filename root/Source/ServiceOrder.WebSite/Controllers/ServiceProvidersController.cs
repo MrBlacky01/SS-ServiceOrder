@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Web;
-using System.Web.Helpers;
+using System.Net;
 using System.Web.Mvc;
-using System.Web.Razor.Generator;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
-using Ninject.Infrastructure.Language;
 using PagedList;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
@@ -37,20 +33,47 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         // GET: ServiceProviders
-        public ActionResult Index(int? page)
+        [Authorize(Roles = "client")]
+        public ActionResult Index()
         {
-            var pageSize = 1;
-            var pageNumber = (page ?? 1);
-            return View(_provider.GetAll().ToPagedList(pageNumber,pageSize));
+            var model = new ServiceProviderPaginationFiltrationList();
+            var pageSize = 5;
+            model.Page = 1;
+            model.ProviderList = _provider.GetAllWithServiceAndRegion().ToPagedList(model.Page.Value, pageSize);
+            
+            return View(model);
         }
 
+        [Authorize(Roles = "client")]
+        public ActionResult Filter(ServiceProviderPaginationFiltrationList model)
+        {
+            var pageSize = 5;
+            var pageNumber = (model.Page ?? 1);
+            model.ProviderList =
+                _provider.FilterGetProviders(model.RegionId, model.CategoryId, model.ServiceId)
+                    .ToPagedList(pageNumber, pageSize);
+            return View("Index",model);
+        }
+
+        [Authorize(Roles = "service provider")]
         public ActionResult Manage()
         {
             var provider = _provider.Get(User.Identity.GetUserId());
             return View(provider);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "service provider")]
+        public ActionResult EditDescription(ServiceProviderViewModel providerModel)
+        {
+            var provider =_provider.Get(User.Identity.GetUserId());
+            provider.Description = providerModel.Description;
+            _provider.Update(provider);
+            return RedirectToAction("Manage");
+        }
+
         [HttpGet]
+        [Authorize(Roles = "service provider")]
         public ActionResult AddRegion()
         {
             var regionViewModel = new ServiceProviderRegionsViewModel();
@@ -70,6 +93,7 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "service provider")]
         public ActionResult AddRegion(string s)
         {
             try
@@ -92,7 +116,7 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
 
-
+        [Authorize(Roles = "service provider")]
         public ActionResult DeleteRegion(int regionId)
         {
             var provider = _provider.Get(User.Identity.GetUserId());
@@ -113,12 +137,60 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "service provider")]
         public ActionResult AddService()
         {
             var model = new ServiceProviderCategoryViewModel {Categories = _categoryService.GetAll().ToList()};
             return View(model);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "client")]
+        public ActionResult GetRegions()
+        {
+            try
+            {
+                var regions = _regionService.GetAll();
+                return Json(new {regions = JsonConvert.SerializeObject(regions)}, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest,exception.Message);
+            }
+
+        }
+
+        [HttpGet]
+        public ActionResult GetCategories()
+        {
+            try
+            {
+                var categories = _categoryService.GetAll();
+                return Json(new { categories = JsonConvert.SerializeObject(categories) }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, exception.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetCategoryServicesAll(int Id)
+        {
+            try
+            {
+                var servicesAll = _serviceTypeService.FindServicesInCategory(Id);
+                var serviceTypeViewModels = servicesAll as IList<ServiceTypeViewModel> ?? servicesAll.ToList();
+                var allServices = serviceTypeViewModels.Select(item => new ServiceShortViewModel { Id = item.Id, Title = item.Title }).ToList();
+                return Json(new { services = JsonConvert.SerializeObject(allServices) }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, exception.Message);
+            }
+        }
+
+        [HttpGet]
         public ActionResult GetCategoryServices(int Id)
         {
             var servicesAll = _serviceTypeService.FindServicesInCategory(Id);
@@ -136,7 +208,7 @@ namespace ServiceOrder.WebSite.Controllers
                     providerServicesIndex.Add(i);
                 }
             }
-            return this.Json(new {dataAll = JsonConvert.SerializeObject(allServices), chooseData = JsonConvert.SerializeObject(providerServicesIndex) }) ;
+            return Json(new {dataAll = JsonConvert.SerializeObject(allServices), chooseData = JsonConvert.SerializeObject(providerServicesIndex) }, JsonRequestBehavior.AllowGet) ;
         }
 
         [HttpPost]
@@ -162,6 +234,7 @@ namespace ServiceOrder.WebSite.Controllers
             return  new HttpStatusCodeResult(200, "OK");
         }
 
+        [Authorize(Roles = "service provider")]
         public ActionResult DeleteService(int serviceId)
         {
             var provider = _provider.Get(User.Identity.GetUserId());

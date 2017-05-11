@@ -6,36 +6,35 @@
 
 <h2>Manage</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("EditDescription","ServiceProviders",FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>ServiceProviderViewModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            <div class="col-md-10 control-label" style="text-align: left">
+                @Html.DisplayFor(model => model.Name)
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control service-provider-input " } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+                <input type="submit" value="Change Description" class="btn btn-default service-provider-manage-change-description-button" />
             </div>
         </div>
       
         <div class="form-group">
-            @Html.ActionLink("Add Region", "AddRegion")
-            <table class="table">
-                <tr>
+            @Html.ActionLink("Manage Regions", "AddRegion")
+            <table class="table ">
+                <tr class="table-header-tr">
                     <th>
                         @Html.DisplayNameFor(model => model.Regions)
                     </th>
@@ -48,7 +47,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Title)
                         </td>
-                        <td>
+                        <td class="center-text-in-table-td">
                             @Html.ActionLink("Delete", "DeleteRegion", new { regionId = item.Id })
                         </td>
                     </tr>
@@ -57,9 +56,9 @@
         </div>
         
         <div class="form-group">
-            @Html.ActionLink("Add Service", "AddService")
-            <table class="table">
-                <tr>
+            @Html.ActionLink("Manage Services", "AddService")
+            <table class="table ">
+                <tr class="table-header-tr">
                     <th>
                         @Html.DisplayNameFor(model => model.Services)
                     </th>
@@ -76,22 +75,13 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Category.Title)
                         </td>
-                        <td>
+                        <td class="center-text-in-table-td">
                             @Html.ActionLink("Delete", "DeleteService", new { serviceId = item.Id })
                         </td>
                     </tr>
                 }
             </table>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back ", "Index")
-</div>

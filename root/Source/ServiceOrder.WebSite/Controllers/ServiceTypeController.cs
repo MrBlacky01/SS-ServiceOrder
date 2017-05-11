@@ -11,6 +11,7 @@ using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
 namespace ServiceOrder.WebSite.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class ServiceTypeController : Controller
     {
         private IServiceTypeService _serviceTypeService;

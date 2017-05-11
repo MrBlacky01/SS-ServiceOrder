@@ -12,12 +12,6 @@
         {
             <li>@Html.ActionLink("My orders", "ProviderOrders", "Order")</li>
         }
-        if (User.IsInRole("admin"))
-        {
-            <li>@Html.ActionLink("Categories","Index","Category")</li>
-            <li>@Html.ActionLink("Regions","Index","Region")</li>
-            <li>@Html.ActionLink("Services","Index","ServiceType")</li>
-        }
     }
 
 }

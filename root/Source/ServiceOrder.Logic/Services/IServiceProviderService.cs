@@ -11,6 +11,8 @@ namespace ServiceOrder.Logic.Services
         void UpdateServices(List<ServiceTypeViewModel> services,ServiceProviderViewModel provider,ServiceCategoryEntityViewModel category);
         void DeleteRegion(RegionEntityViewModel region, ServiceProviderViewModel provider);
         void DeleteService(ServiceTypeViewModel service, ServiceProviderViewModel provider);
+        IEnumerable<ServiceProviderViewModel> FilterGetProviders (int? regionId, int? categoryId,int? serviceId);
+        IEnumerable<ServiceProviderViewModel> GetAllWithServiceAndRegion();
 
     }
 }

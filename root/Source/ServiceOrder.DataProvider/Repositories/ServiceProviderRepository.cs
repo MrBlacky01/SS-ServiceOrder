@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using ServiceOrder.DataProvider.DataBase;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
@@ -37,7 +34,7 @@ namespace ServiceOrder.DataProvider.Repositories
                 .Include(o => o.ProviderRegions)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o=>o.ProviderUser)
-                .First(e => e.UserId==id);
+                .FirstOrDefault(e => e.UserId==id);
         }
 
         public IEnumerable<ServiceProvider> Find(Func<ServiceProvider, bool> predicate)

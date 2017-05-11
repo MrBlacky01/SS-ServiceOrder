@@ -34,6 +34,10 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -76,6 +80,7 @@
     <Compile Include="ViewModels\Implementation\Order\OrderViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderCategoryViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderManageViewModel.cs" />
+    <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderPaginationFiltrationList.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderRegionsViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceTypeViewModels\ServiceTypeViewModel.cs" />

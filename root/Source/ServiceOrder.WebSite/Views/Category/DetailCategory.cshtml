@@ -7,7 +7,6 @@
 <h2>DetailCategory</h2>
 
 <div>
-    <h4>ServiceCategoryEntityViewModel</h4>
     <hr />
 
     <dl class="dl-horizontal">
@@ -29,9 +28,8 @@
         </dd>
 
     </dl>
-    
 </div>
-<p>
-    @Html.ActionLink("Edit", "EditCategory", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Category")
+
+<p>   
+    @Html.ActionLink("Back to List", "Index",null, new { @class = "btn btn-default" })
 </p>

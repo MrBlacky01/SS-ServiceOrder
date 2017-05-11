@@ -60,6 +60,14 @@ namespace ServiceOrder.Logic.Services.Implementations
                     DataBase.ServiceProviders.GetAll());
         }
 
+        public IEnumerable<ServiceProviderViewModel> GetAllWithServiceAndRegion()
+        {
+
+            return
+                _mapper.Map<IEnumerable<ServiceProvider>, IEnumerable<ServiceProviderViewModel>>(
+                    DataBase.ServiceProviders.Find(provider => provider.ProviderServiceTypes.Any() && provider.ProviderRegions.Any()));
+        }
+
         public void Dispose()
         {
             DataBase.Dispose();
@@ -87,6 +95,85 @@ namespace ServiceOrder.Logic.Services.Implementations
             if (index == -1) return;
             provider.Services.RemoveAt(index);
             Update(provider);
+        }
+
+        public IEnumerable<ServiceProviderViewModel> FilterGetProviders(int? regionId, int? categoryId, int? serviceId)
+        {
+            IEnumerable<ServiceProvider> providerList = new List<ServiceProvider>();
+            if (regionId != null && !CheckRegion(regionId.Value))
+            {
+                regionId = null;
+            }
+            if (serviceId != null && !CheckServiceType(serviceId.Value))
+            {
+                serviceId = null;
+            }
+            if (categoryId != null && !CheckCategory(categoryId.Value))
+            {
+                categoryId = null;
+            }
+            if (regionId == null && categoryId == null && serviceId == null)
+            {
+                return GetAllWithServiceAndRegion();
+            }
+
+            
+
+            if (regionId != null && categoryId != null &&serviceId != null)
+            {
+                providerList = DataBase.ServiceProviders.Find(provider => provider.ProviderServiceTypes.Any(src => src.Id == serviceId.Value)
+                                                                        && provider.ProviderRegions.Any(src => src.Id == regionId.Value) );
+            }
+            else
+            {
+                if (regionId != null && categoryId != null)
+                {
+                    providerList = DataBase.ServiceProviders.Find(provider =>provider.ProviderRegions.Any(src => src.Id == regionId.Value)
+                                                                           && provider.ProviderServiceTypes.Any(src => src.Category.Id == categoryId.Value));
+                }
+                else
+                {
+                    if (regionId != null)
+                    {
+                        providerList =
+                            DataBase.ServiceProviders.Find(
+                                provider => provider.ProviderRegions.Any(src => src.Id == regionId.Value));
+
+                    }
+                    else
+                    {
+                        if (categoryId != null && serviceId != null)
+                        {
+                            providerList =
+                                DataBase.ServiceProviders.Find(
+                                    provider => provider.ProviderServiceTypes.Any(src => src.Id == serviceId.Value));
+                        }
+                        else
+                        {
+                            if (categoryId != null)
+                            {
+                                providerList = DataBase.ServiceProviders.Find(provider => provider.ProviderServiceTypes.Any(src => src.Category.Id == categoryId.Value));
+                            }
+                        }
+                    }
+                }
+            }
+            return _mapper.Map<IEnumerable<ServiceProvider>, IEnumerable<ServiceProviderViewModel>>(providerList);
+        }
+
+        private bool CheckRegion(int regionId)
+        {
+            return DataBase.Regions.Get(regionId) != null;
+        }
+
+        private bool CheckCategory(int categoryId)
+        {
+            return DataBase.ServiceCategories.Get(categoryId) != null;
+        }
+
+        private bool CheckServiceType(int serviceId)
+        {
+            return DataBase.ServiceTypes.Get(serviceId) != null;
         }
     }
 }

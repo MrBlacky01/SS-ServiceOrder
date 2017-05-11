@@ -4,25 +4,21 @@
     ViewBag.Title = "AddRegion";
 }
 
-<h2>AddRegionForProvider</h2>
+<h2>Choose your regions:</h2>
 
-@using (Html.BeginForm("AddRegion","ServiceProviders",FormMethod.Post))
+@using (Html.BeginForm("AddRegion","ServiceProviders",FormMethod.Post, new {@class= "add-region-form" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>Products</h4>
-    <select id="products"></select>
+<div class="product-dropdownlist">
+    <select id="products" ></select>
 </div>
 
-<div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" value="Save" class="btn btn-default" />
-    </div>
-</div>
+<input type="submit" value="Save" class="btn btn-default" />
+ 
 }
 <div>
-    @Html.ActionLink("Back to Manage", "Manage")
+    @Html.ActionLink("Back to Manage", "Manage",null,new {@class="btn btn-default"})
 </div>
 <script>
     $(document).ready(function () {

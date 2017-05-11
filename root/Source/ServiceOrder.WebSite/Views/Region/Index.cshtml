@@ -4,25 +4,26 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
+<h2>Regions</h2>
+<br />
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create",null,new {@class="btn btn-default"})
 </p>
-<table class="table">
-    <tr>
-        <th>
+<br />
+<table class="table table-striped ">
+    <tr class="row">
+        <th class="col-md-10 col-lg-10 col-xs-8 col-sm-8">
             @Html.DisplayNameFor(model => model.Title)
         </th>
-        <th></th>
+        <th class="col-md-10 col-lg-10 col-xs-8 col-sm-8"></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
+    <tr class="row">
+        <td class="col-md-10 col-lg-10 col-xs-8 col-sm-8">
             @Html.DisplayFor(modelItem => item.Title)
         </td>
-        <td>
+        <td class="col-md-10 col-lg-10 col-xs-8 col-sm-8">
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>

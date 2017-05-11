@@ -1,5 +1,5 @@
 ﻿@using Microsoft.Owin.Security.DataHandler
-@model PagedList.IPagedList<ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels.ServiceProviderViewModel>
+@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels.ServiceProviderPaginationFiltrationList
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -9,39 +9,195 @@
 
 <h2>Providers of Services</h2>
 
+@using(Html.BeginForm("Filter", "ServiceProviders",FormMethod.Get)){
+    <div class="filter-area">
+        <div class="row">
+            @Html.HiddenFor(model => model.Page)
+
+            <div class="col-md-3 col-xs-6 col-sm-4">
+                <input id="filter-region" name="RegionId" value="1" style="width: 90%; min-width: 70px; margin: 10px auto;" />
+            </div>
+            <div class="col-md-3 col-xs-6 col-sm-4">
+                <input id="filter-category" name="CategoryId" value="1" style="width: 90%; min-width: 70px; margin: 10px auto;" />
+            </div>
+            <div class="col-md-3 col-xs-6 col-sm-4">
+                <input id="filter-service" name="ServiceId" value="1" style="width: 90%; min-width: 70px; margin: 10px auto;" />
+            </div>
+            <div class="col-md-3 col-xs-6 col-sm-4">
+                <input type="submit" value="Filter" class="btn btn-default filter-btn" />
+            </div>
+        </div>
+
+    </div>
+}
+
+
 <table class="table">
-    <tr>
+    <tr class="table-header-tr">
         <th>
             Provider Name
         </th>
         <th>
-            Services
+            Description
         </th>
         <th></th>
     </tr>
 
-    @foreach (var item in Model) {
+    @foreach (var item in Model.ProviderList) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @for (int i = 0; i < item.Services.Count-1; i++)
+                @*@for (int i = 0; i < item.Services.Count-1; i++)
                 {
                     <text>@item.Services[i].Title,</text>
                 }
-                <text>@item.Services[item.Services.Count-1].Title</text>          
+                <text>@item.Services[item.Services.Count-1].Title</text>    *@   
+                @Html.DisplayFor(moderlItem => item.Description)   
             </td>
             <td>
                 @Html.ActionLink("Make order","Index","Order",new {providerId = item.Id},null)
             </td>
-            <td></td>
         </tr>
     }
-
 </table>
 
 <br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+Page @(Model.ProviderList.PageCount < Model.ProviderList.PageNumber ? 0 : Model.ProviderList.PageNumber) of @Model.ProviderList.PageCount
 
-@Html.PagedListPager(Model, page => Url.Action("Index",new { page }))
+@Html.PagedListPager(Model.ProviderList, page => Url.Action("Filter",new {page, Model.RegionId,Model.CategoryId,Model.ServiceId}))
+
+<script>
+    $(document).ready(function () {
+
+        var modelServiceId =@(Html.Raw(Json.Encode(Model.ServiceId)));
+        var modelCategoryId = @(Html.Raw(Json.Encode(Model.CategoryId)));
+        var modelRegionId = @(Html.Raw(Json.Encode(Model.RegionId)));
+
+        var regionDropDownList = $("#filter-region").kendoDropDownList({
+            optionLabel: {
+                Title: "Select region",
+                Id: 0
+            },
+            dataTextField: "Title",
+            dataValueField: "Id"
+        }).data("kendoDropDownList");
+
+        var categoryDropDownList = $("#filter-category").kendoDropDownList({
+            optionLabel: {
+                Title: "Select category",
+                Id: 0
+            },
+            dataTextField: "Title",
+            dataValueField: "Id",
+            change: onChangeCategory
+        }).data("kendoDropDownList");
+
+        var serviceDropDownList = $("#filter-service").kendoDropDownList({
+            optionLabel: {
+                Title: "Select service type",
+                Id:0
+            } ,
+            dataTextField: "Title",
+            dataValueField: "Id"
+        }).data("kendoDropDownList");
+
+        serviceDropDownList.enable(false);
+
+        firstLoad();
+
+        function firstLoad() {
+            loadAjaxCategory();
+            loadAjaxRegion();
+        }
+
+        function loadAjaxRegion() {
+            $.ajax({
+                url: '/ServiceProviders/GetRegions',
+                type: 'GET',
+                success: function (data) {
+                    regionDropDownList.setDataSource([]);
+                    var obj = JSON.parse(data.regions);
+                    obj.forEach(function (item, i, arr) {
+                        regionDropDownList.dataSource.add({ Title: item.Title, Id: item.Id });
+                    });
+                    if (modelRegionId != null && modelRegionId > 0) {
+                        regionDropDownList.select(modelRegionId);
+                    } else {
+                        regionDropDownList.select(0);
+                    }
+                    
+                },
+                error: function (error) {
+                    alert('error');
+                }
+            });
+        }
+
+        function loadAjaxCategory() {
+            $.ajax({
+                url: '/ServiceProviders/GetCategories',
+                type: 'GET',
+                success: function (data) {
+                    categoryDropDownList.setDataSource([]);
+                    var obj = JSON.parse(data.categories);
+                    obj.forEach(function (item, i, arr) {
+                        categoryDropDownList.dataSource.add({ Title: item.Title, Id: item.Id });
+                    });
+                    if (modelCategoryId != null && modelCategoryId > 0) {
+                        categoryDropDownList.select(modelCategoryId);
+                        onChangeCategory();
+                    } else {
+                        categoryDropDownList.select(0);
+                    }
+                    
+                },
+                error: function (error) {
+                    alert('error');
+                }
+            });
+        }
+
+        function loadAjaxServiceType(category) {
+            $.ajax({
+                url: '/ServiceProviders/GetCategoryServicesAll',
+                type: 'GET',
+                data: { Id: category.Id },
+                success: function (data) {
+                    serviceDropDownList.enable();
+                    serviceDropDownList.setDataSource([]);
+                    var obj = JSON.parse(data.services);
+                    obj.forEach(function (item, i, arr) {
+                        serviceDropDownList.dataSource.add({ Title: item.Title, Id: item.Id });
+                    });
+                    if (modelServiceId != null && modelServiceId > 0) {
+                        obj.forEach(function(item, i, arr) {
+                            if (item.Id == modelServiceId)
+                            {
+                                serviceDropDownList.select(i+1);
+                            }
+                        });
+                    } else {
+                        serviceDropDownList.select(0);
+                    }
+                    
+                },
+                error: function (error) {
+                    alert('error');
+                }
+            });
+        }
+
+        function onChangeCategory() {
+            var category = categoryDropDownList.dataItem();
+            if (category.Id == 0) {
+                serviceDropDownList.enable(false);
+            } else {
+                loadAjaxServiceType(category);
+            }
+
+        }
+    });
+
+</script>

@@ -31,14 +31,16 @@ namespace ServiceOrder.WebSite
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/Site.css"));
+                      "~/Content/Site.css",
+                      "~/Content/LogIn.css"));
 
             bundles.Add(new StyleBundle("~/Content/404css").Include(
-                      "~/Content/404Style.css"));
+                      "~/Content/404Style.css", new CssRewriteUrlTransform()));
 
-            bundles.Add(new StyleBundle("~/bundles/kendocss").Include(
-           "~/styles/kendo.common.min.css",
-           "~/styles/kendo.default.min.css"));
+            bundles.Add(new StyleBundle("~/bundles/kendoCommonCss").Include(
+                "~/styles/kendo.common.min.css", new CssRewriteUrlTransform()));
+            bundles.Add(new StyleBundle("~/bundles/kendoDefaultCss").Include(
+                "~/styles/kendo.default.min.css", new CssRewriteUrlTransform()));
         }
     }
 }

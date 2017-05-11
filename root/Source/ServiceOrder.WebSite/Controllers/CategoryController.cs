@@ -9,6 +9,7 @@ using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels
 
 namespace ServiceOrder.WebSite.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class CategoryController : Controller
     {
         private ICategoryService _categoryService;
@@ -32,14 +33,23 @@ namespace ServiceOrder.WebSite.Controllers
         [HttpPost]
         public ActionResult CreateCategory(ServiceCategoryEntityViewModel categoryEntity)
         {
-            _categoryService.Add(categoryEntity);
-            return View("MessageView", new ResultMessageViewModel() { Message = "Категория успешно добавлена" });
+            try
+            {
+                _categoryService.Add(categoryEntity);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("", "Can't add category.");
+                return View(categoryEntity);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult DeleteCategory(int? id)
         {
             _categoryService.Delete(id);
-            return View("MessageView", new ResultMessageViewModel() { Message = "Категория успешно удалена" });
+            return RedirectToAction("Index");
         }
 
         public ActionResult EditCategory(int? id)
@@ -51,7 +61,7 @@ namespace ServiceOrder.WebSite.Controllers
         public ActionResult EditCategory(ServiceCategoryEntityViewModel categoryEntity)
         {
             _categoryService.Update(categoryEntity);
-            return View("MessageView", new ResultMessageViewModel() { Message = "Категория успешно изменена" });
+            return RedirectToAction("Index");
         }
 
         public ActionResult DetailCategory(int? id)

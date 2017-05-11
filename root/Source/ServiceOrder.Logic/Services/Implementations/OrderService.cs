@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
+using System.Web.UI.WebControls;
 using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
@@ -84,7 +85,9 @@ namespace ServiceOrder.Logic.Services.Implementations
             {
                 exceptions.Add(new Exception("End time can't be less than start time"));
             }
-            
+            item.BeginTime = item.BeginTime.ToUniversalTime();
+            item.EndTime = item.EndTime.ToUniversalTime();
+
             var orders = DataBase.Orders.Find(order => (order.OrderProvider.UserId == item.ServiceProviderId)
                                                        && (order.BeginTime.Date == item.Date.Date)
                                                        &&
@@ -104,6 +107,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             {
                 throw new AggregateException(exceptions);
             }
+            
             item.BeginTime = new DateTime(item.Date.Year,item.Date.Month,item.Date.Day,item.BeginTime.Hour,item.BeginTime.Minute,item.BeginTime.Second,DateTimeKind.Utc);
             item.EndTime = new DateTime(item.Date.Year,item.Date.Month,item.Date.Day,item.EndTime.Hour,item.EndTime.Minute,item.EndTime.Second,DateTimeKind.Utc);
             DataBase.Orders.Create(_mapper.Map<OrderViewModel, Order>(item));
@@ -159,7 +163,7 @@ namespace ServiceOrder.Logic.Services.Implementations
                 throw new ObjectNotFoundException("No such client in database");
             }
             var model = _mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(
-                DataBase.Orders.Find(order => order.OrderClient.UserId == clientId));
+                DataBase.Orders.Find(order => order.OrderClient.UserId == clientId).OrderByDescending(key => key.BeginTime));
             var findClientOrders = model as IList<OrderViewModel> ?? model.ToList();
 
             foreach (var item in findClientOrders)
@@ -167,6 +171,8 @@ namespace ServiceOrder.Logic.Services.Implementations
                 item.ServiceType = _mapper.Map<ServiceType,ServiceTypeViewModel>( DataBase.ServiceTypes.Get(item.ServiceTypeId));
                 item.Region = _mapper.Map<Region,RegionEntityViewModel>(DataBase.Regions.Get(item.RegionId));
                 item.ProviderName = DataBase.ServiceProviders.Get(item.ServiceProviderId).ProviderUser.UserName;
+                item.BeginTime = item.BeginTime.ToLocalTime();
+                item.EndTime = item.EndTime.ToLocalTime();
                 //item.BeginTime = TimeZoneInfo.ConvertTimeFromUtc(item.BeginTime, TimeZoneInfo.Local);
                 //item.EndTime = TimeZoneInfo.ConvertTimeFromUtc(item.EndTime, TimeZoneInfo.Local);
             }
@@ -184,17 +190,56 @@ namespace ServiceOrder.Logic.Services.Implementations
                 throw new ObjectNotFoundException("No such client in database");
             }
             var model = _mapper.Map<IEnumerable<Order>, IEnumerable<OrderViewModel>>(
-                    DataBase.Orders.Find(order => order.OrderProvider.UserId == providerId));
+                    DataBase.Orders.Find(order => order.OrderProvider.UserId == providerId).OrderByDescending(key => key.BeginTime));
             var findProviderOrders = model as IList<OrderViewModel> ?? model.ToList();
             foreach (var item in findProviderOrders)
             {
                 item.ServiceType = _mapper.Map<ServiceType, ServiceTypeViewModel>(DataBase.ServiceTypes.Get(item.ServiceTypeId));
                 item.Region = _mapper.Map<Region, RegionEntityViewModel>(DataBase.Regions.Get(item.RegionId));
                 item.ClientName = DataBase.Clients.Get(item.ClientId).ClientUser.UserName;
+                item.BeginTime = item.BeginTime.ToLocalTime();
+                item.EndTime = item.EndTime.ToLocalTime();
                 //item.BeginTime = TimeZoneInfo.ConvertTimeFromUtc(item.BeginTime, TimeZoneInfo.Local);
                 //item.EndTime = TimeZoneInfo.ConvertTimeFromUtc(item.EndTime, TimeZoneInfo.Local);
             }
             return findProviderOrders;
+        }
+
+        public int[] GetProviderFreeTime(DateTime date, string providerId)
+        {
+            if (DataBase.ServiceProviders.Get(providerId) == null)
+            {
+                throw new Exception("No such service provider");
+            }
+            var providerOrders = DataBase.Orders.Find(order => order.OrderProvider.UserId == providerId
+                                                               && order.BeginTime.Date == date.Date);
+            int[] allTimeArray =  {8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
+            bool[] needDelete = new bool[15];
+            var deleteCount = 0;
+            foreach (var order in providerOrders)
+            {
+                for (var i = 0; i < allTimeArray.Length; i++)
+                {
+                    if (needDelete[i] == false)
+                    {
+                        if (allTimeArray[i] >= order.BeginTime.ToLocalTime().Hour && allTimeArray[i] <  order.EndTime.ToLocalTime().Hour)
+                        {
+                            needDelete[i] = true;
+                            deleteCount++;
+                        }
+                    }
+                }
+            }
+
+            var resultArray = new int[allTimeArray.Length - deleteCount];
+            var index = 0;
+            for (var i = 0; i < needDelete.Length; i++)
+            {
+                if (needDelete[i]) continue;
+                resultArray[index] = allTimeArray[i];
+                index++;
+            }
+            return resultArray;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels.RegisterViewModel
+﻿@using System.Web.UI.WebControls
+@model ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels.RegisterViewModel
 
 @{
     ViewBag.Title = "Register";
@@ -6,13 +7,47 @@
 
 <h2>Register</h2>
 
+<h3 class="form-signin-heading">Please input register information</h3>
 
-@using (Html.BeginForm()) 
+<div class="container">
+    @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-register", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        
+        <br />
+        
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control ", placeholder="Name" } })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    
+        
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control " ,placeholder = "Email"} })
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        
+        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
+        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+       
+        
+        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", placeholder = "Confirm Password" } })
+        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+
+        <div class="checkbox">
+            @Html.CheckBoxFor(model => model.IsServiceProvider)
+            @Html.LabelFor(model => model.IsServiceProvider)
+        </div>
+            
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        <br/>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+    }
+        </div>
+
+
+
+@*using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>RegisterViewModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -63,7 +98,7 @@
             </div>
         </div>
     </div>
-}
+}*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

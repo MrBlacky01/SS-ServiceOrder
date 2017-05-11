@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
@@ -16,6 +16,7 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.Order
         }
 
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Date { get; set; }
         public string ClientId { get; set; }
         [DataType(DataType.Time)]

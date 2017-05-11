@@ -26,7 +26,7 @@ namespace ServiceOrder.DataProvider.Repositories
         {
             return db.ServiceTypes
                 .Include(o => o.Category)
-                .First(p => p.Id == id);
+                .FirstOrDefault(p => p.Id == id);
         }
 
         public IEnumerable<ServiceType> Find(Func<ServiceType, bool> predicate)

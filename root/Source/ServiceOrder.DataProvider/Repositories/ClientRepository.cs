@@ -27,7 +27,7 @@ namespace ServiceOrder.DataProvider.Repositories
         {
             return db.Clients
                 .Include(user => user.ClientUser)
-                .First(client => client.UserId == id );
+                .FirstOrDefault(client => client.UserId == id );
         }
 
         public IEnumerable<Client> Find(Func<Client, bool> predicate)

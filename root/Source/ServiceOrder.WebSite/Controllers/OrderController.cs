@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
+using PagedList;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.Order;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels;
+using static System.String;
 
 namespace ServiceOrder.WebSite.Controllers
 {
@@ -19,7 +22,8 @@ namespace ServiceOrder.WebSite.Controllers
         private IServiceProviderService _serviceProviderService;
         private ICategoryService _categoryService;
 
-        public OrderController(IOrderService orderService, IServiceProviderService serviceProviderService,ICategoryService categoryService)
+        public OrderController(IOrderService orderService, IServiceProviderService serviceProviderService,
+            ICategoryService categoryService)
         {
             _orderService = orderService;
             _serviceProviderService = serviceProviderService;
@@ -27,6 +31,7 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         // GET: Order
+        [Authorize(Roles = "client")]
         public ActionResult Index(string providerId)
         {
             var provider = new ServiceProviderViewModel();
@@ -66,7 +71,9 @@ namespace ServiceOrder.WebSite.Controllers
             return View(model);
         }
 
+
         [HttpGet]
+        [Authorize(Roles = "client")]
         public ActionResult GetProviderServicesByCategory(int categoryId, string providerId)
         {
             ServiceProviderViewModel provider;
@@ -77,7 +84,7 @@ namespace ServiceOrder.WebSite.Controllers
                 {
                     throw new Exception("Wrong category");
                 }
-                
+
             }
             catch (Exception exception)
             {
@@ -87,7 +94,7 @@ namespace ServiceOrder.WebSite.Controllers
 
             if (provider.Services.Count(service => service.Category.Id == categoryId) == 0x0)
             {
-                return new HttpStatusCodeResult(400,"This provider doesn't has services in this category");
+                return new HttpStatusCodeResult(400, "This provider doesn't has services in this category");
             }
             var shortServices =
                 provider.Services.Where(item => item.Category.Id == categoryId)
@@ -97,6 +104,7 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "client")]
         public ActionResult MakeOrder(OrderViewModel order)
         {
             if (order == null)
@@ -125,15 +133,104 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [HttpGet]
-        public ActionResult ClientOrders()
+        [Authorize(Roles = "client")]
+        public ActionResult ClientOrders(int? page,string sortOrder)
         {
-            return View(_orderService.FindClientOrders(User.Identity.GetUserId()));
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.DateSort = sortOrder == "Date" ? "Date_desc" : "Date";
+            ViewBag.RegionSort = sortOrder == "Region" ? "Region_desc" : "Region";
+            ViewBag.ServiceTypeSort = sortOrder == "ServiceType" ? "ServiceType_desc" : "ServiceType";
+            ViewBag.ProviderNameSort = sortOrder == "ProviderName" ? "ProviderName_desc" : "ProviderName";
+
+            var clientOrders = _orderService.FindClientOrders(User.Identity.GetUserId());
+            switch (sortOrder)
+            {
+                case "Date":
+                    clientOrders = clientOrders.OrderBy(key => key.Date);
+                    break;
+                case "Date_desc":
+                    clientOrders = clientOrders.OrderByDescending(key => key.Date);
+                    break;
+                case "Region":
+                    clientOrders = clientOrders.OrderBy(key => key.Region.Title);
+                    break;
+                case "Region_desc":
+                    clientOrders = clientOrders.OrderByDescending(key => key.Region.Title);
+                    break;
+                case "ServiceType":
+                    clientOrders = clientOrders.OrderBy(key => key.ServiceType.Title);
+                    break;
+                case "ServiceType_desc":
+                    clientOrders = clientOrders.OrderByDescending(key => key.ServiceType.Title);
+                    break;
+                case "ProviderName":
+                    clientOrders = clientOrders.OrderBy(key => key.ProviderName);
+                    break;
+                case "ProviderName_desc":
+                    clientOrders = clientOrders.OrderByDescending(key => key.ProviderName);
+                    break;
+            }
+            var pageSize = 5;
+            var pageNumber = (page ?? 1);
+            return View(clientOrders.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]
-        public ActionResult ProviderOrders()
+        [Authorize(Roles = "service provider")]
+        public ActionResult ProviderOrders(int? page, string sortOrder)
         {
-            return View(_orderService.FindProviderOrders(User.Identity.GetUserId()));
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.DateSort = sortOrder == "Date" ? "Date_desc" : "Date";
+            ViewBag.RegionSort = sortOrder == "Region" ? "Region_desc" : "Region";
+            ViewBag.ServiceTypeSort = sortOrder == "ServiceType" ? "ServiceType_desc" : "ServiceType";
+            ViewBag.ClientNameSort = sortOrder == "ClientName" ? "ClientName_desc" : "ClientName";
+
+            var providerOrders = _orderService.FindProviderOrders(User.Identity.GetUserId());
+            switch (sortOrder)
+            {
+                case "Date":
+                    providerOrders = providerOrders.OrderBy(key => key.Date);
+                    break;
+                case "Date_desc":
+                    providerOrders = providerOrders.OrderByDescending(key => key.Date);
+                    break;
+                case "Region":
+                    providerOrders = providerOrders.OrderBy(key => key.Region.Title);
+                    break;
+                case "Region_desc":
+                    providerOrders = providerOrders.OrderByDescending(key => key.Region.Title);
+                    break;
+                case "ServiceType":
+                    providerOrders = providerOrders.OrderBy(key => key.ServiceType.Title);
+                    break;
+                case "ServiceType_desc":
+                    providerOrders = providerOrders.OrderByDescending(key => key.ServiceType.Title);
+                    break;
+                case "ClientName":
+                    providerOrders = providerOrders.OrderBy(key => key.ClientName);
+                    break;
+                case "ClientName_desc":
+                    providerOrders = providerOrders.OrderByDescending(key => key.ClientName);
+                    break;
+            }
+            var pageSize = 5;
+            var pageNumber = (page ?? 1);
+            return View(providerOrders.ToPagedList(pageNumber, pageSize));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "client")]
+        public ActionResult GetFreeTime(DateTime date, string providerId)
+        {
+            try
+            {
+                return Json(new { freeHours = JsonConvert.SerializeObject(_orderService.GetProviderFreeTime(date, providerId)) }, JsonRequestBehavior.AllowGet); 
+            }
+            catch (Exception exception)
+            {
+
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, exception.Message);
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
 
 namespace ServiceOrder.WebSite.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class RegionController : Controller
     {
         private IRegionService _regionService;

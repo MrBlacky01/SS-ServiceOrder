@@ -1,5 +1,5 @@
-﻿@model IEnumerable<ServiceOrder.ViewModel.ViewModels.Implementation.Order.OrderViewModel>
-
+﻿@model PagedList.IPagedList < ServiceOrder.ViewModel.ViewModels.Implementation.Order.OrderViewModel >
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "My Orders";
 }
@@ -7,38 +7,37 @@
 <h2>My Orders  </h2>
 
 <table class="table">
-    <tr>
+    <tr class="table-header-tr">
         <th>
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.ActionLink("Order Date", "ClientOrders", new { sortOrder = ViewBag.DateSort })          
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BeginTime)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().BeginTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndTime)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().EndTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Region)
+            @Html.ActionLink("Region", "ClientOrders", new { sortOrder = ViewBag.RegionSort }) 
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ServiceType)
+            @Html.ActionLink("Service Type", "ClientOrders", new { sortOrder = ViewBag.ServiceTypeSort }) 
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ProviderName)
+            @Html.ActionLink("Provider Name", "ClientOrders", new { sortOrder = ViewBag.ProviderNameSort }) 
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Date.Date.Date)
+            @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BeginTime.TimeOfDay)
+            @Html.DisplayFor(modelItem => item.BeginTime.ToLocalTime().TimeOfDay)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EndTime.TimeOfDay)
+            @Html.DisplayFor(modelItem => item.EndTime.ToLocalTime().TimeOfDay)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Region.Title)
@@ -52,5 +51,8 @@
 
     </tr>
 }
-
 </table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ClientOrders", new { page, sortOrder = ViewBag.CurrentSort }))

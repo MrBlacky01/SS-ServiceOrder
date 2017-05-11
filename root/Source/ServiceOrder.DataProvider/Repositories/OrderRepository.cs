@@ -32,7 +32,7 @@ namespace ServiceOrder.DataProvider.Repositories
                 .Include(p => p.OrderProvider)
                 .Include(r => r.OrderRegion)
                 .Include(st => st.OrderType)
-                .First(e => e.Id == id);
+                .FirstOrDefault(e => e.Id == id);
         }
 
         public IEnumerable<Order> Find(Func<Order, bool> predicate)

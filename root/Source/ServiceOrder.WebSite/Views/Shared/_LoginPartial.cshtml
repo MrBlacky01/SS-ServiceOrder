@@ -8,7 +8,9 @@
         <ul class="nav navbar-nav navbar-right">
             @if (User.IsInRole("client"))
             {
-                <li></li>
+                <li>
+                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index","ServiceProviders", routeValues: null, htmlAttributes: new { title = "Manage" })
+                </li>
             }
             else
             {
@@ -17,6 +19,13 @@
                     <li>
                         @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "ServiceProviders", routeValues: null, htmlAttributes: new { title = "Manage" })
                     </li>
+                }
+                else
+                {
+                    if (User.IsInRole("admin"))
+                    {
+                        <li>@Html.ActionLink("This is Boss","Index","Home")</li>
+                    }
                 }
             }
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>

@@ -83,7 +83,7 @@
         function sendServicesLoadAjax(category) {
             $.ajax({
                 url: '/ServiceProviders/GetCategoryServices',
-                type: 'POST',
+                type: 'GET',
                 data: {Title: category.Title, Id: category.Id},
                 success: function (data) {
                     multiselect.setDataSource([]);
