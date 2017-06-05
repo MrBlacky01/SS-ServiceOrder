@@ -21,7 +21,7 @@ namespace ServiceOrder.DataProvider.Repositories
         public IEnumerable<ServiceProvider> GetAll()
         {
             return db.ServiceProviders
-                .Include(o => o.ProviderPhotos)
+                .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderRegions)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o => o.ProviderUser);
@@ -30,7 +30,7 @@ namespace ServiceOrder.DataProvider.Repositories
         public ServiceProvider Get(string id)
         {
             return db.ServiceProviders
-                .Include(o => o.ProviderPhotos)
+                .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderRegions)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o=>o.ProviderUser)
@@ -40,7 +40,7 @@ namespace ServiceOrder.DataProvider.Repositories
         public IEnumerable<ServiceProvider> Find(Func<ServiceProvider, bool> predicate)
         {
             return db.ServiceProviders
-                .Include(o => o.ProviderPhotos)
+                .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderRegions)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o => o.ProviderUser)
@@ -65,7 +65,7 @@ namespace ServiceOrder.DataProvider.Repositories
                 entity.WorkingTime = item.WorkingTime;
                 ManyToManyCopierer<Region>.CopyList(item.ProviderRegions,entity.ProviderRegions,db.Regions);
                 ManyToManyCopierer<ServiceType>.CopyList(item.ProviderServiceTypes,entity.ProviderServiceTypes,db.ServiceTypes);
-                ManyToManyCopierer<Photo>.CopyList(item.ProviderPhotos,entity.ProviderPhotos,db.Photos);
+                ManyToManyCopierer<Album>.CopyList(item.ProviderAlbums,entity.ProviderAlbums,db.Albums);
                 
             }
         }

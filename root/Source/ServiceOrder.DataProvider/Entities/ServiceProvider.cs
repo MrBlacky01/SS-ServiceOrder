@@ -17,6 +17,6 @@ namespace ServiceOrder.DataProvider.Entities
 
         public List<Region> ProviderRegions { get; set; }
         public List<ServiceType> ProviderServiceTypes { get; set; }
-        public List<Photo> ProviderPhotos { get; set; }
+        public List<Album> ProviderAlbums { get; set; } 
     }
 }

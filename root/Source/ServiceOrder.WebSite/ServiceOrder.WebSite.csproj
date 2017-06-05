@@ -259,25 +259,27 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
+    <Content Include="Scripts\autosize.js" />
+    <Content Include="Scripts\autosize.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Colors.less" />
-    <Content Include="Content\Colors.css" >
-		<DependentUpon>Colors.less</DependentUpon>
-	</Content>
-    <Content Include="Content\Colors.min.css" >
-		<DependentUpon>Colors.less</DependentUpon>
-	</Content>
+    <Content Include="Content\Colors.css">
+      <DependentUpon>Colors.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Colors.min.css">
+      <DependentUpon>Colors.less</DependentUpon>
+    </Content>
     <Content Include="Content\Site.less" />
-    <Content Include="Content\Site.css" >
-		<DependentUpon>Site.less</DependentUpon>
-	</Content>
-    <Content Include="Content\Site.min.css" >
-		<DependentUpon>Site.less</DependentUpon>
-	</Content>
+    <Content Include="Content\Site.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.min.css">
+      <DependentUpon>Site.less</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\123.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\cultures\kendo.culture.zh-CN.min.js" />
@@ -1192,7 +1194,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54041</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
@@ -1219,11 +1221,11 @@
   </Target>
   <Target Name="AfterBuild">
   </Target> -->
-	<Target Name="CompileDotlessCss" AfterTargets="AfterBuild">
-		<ItemGroup>
-			<__LessFiles Include="**\*.less"/>
-		</ItemGroup>
-		<Exec Command="&quot;..\packages\dotless.1.5.2\tool\dotless.compiler.exe&quot; -m -a &quot;%(__LessFiles.FullPath)&quot; &quot;$([System.String]::Copy('%(__LessFiles.FullPath)').Replace('.less','.min.css'))&quot;" />
-		<Exec Command="&quot;..\packages\dotless.1.5.2\tool\dotless.compiler.exe&quot; -a &quot;%(__LessFiles.FullPath)&quot; &quot;$([System.String]::Copy('%(__LessFiles.FullPath)').Replace('.less','.css'))&quot;" />
-	</Target>
+  <Target Name="CompileDotlessCss" AfterTargets="AfterBuild">
+    <ItemGroup>
+      <__LessFiles Include="**\*.less" />
+    </ItemGroup>
+    <Exec Command="&quot;..\packages\dotless.1.5.2\tool\dotless.compiler.exe&quot; -m -a &quot;%(__LessFiles.FullPath)&quot; &quot;$([System.String]::Copy('%(__LessFiles.FullPath)').Replace('.less','.min.css'))&quot;" />
+    <Exec Command="&quot;..\packages\dotless.1.5.2\tool\dotless.compiler.exe&quot; -a &quot;%(__LessFiles.FullPath)&quot; &quot;$([System.String]::Copy('%(__LessFiles.FullPath)').Replace('.less','.css'))&quot;" />
+  </Target>
 </Project>

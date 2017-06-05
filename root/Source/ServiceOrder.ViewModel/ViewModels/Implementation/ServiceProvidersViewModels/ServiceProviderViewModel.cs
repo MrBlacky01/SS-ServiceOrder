@@ -17,6 +17,7 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewM
 
         [AllowHtml]
         [DataType(DataType.Text)]
+        [StringLength(2000, ErrorMessage = "The {0} must be at least {2} characters long.")]
         [Display(Name = "Description")]
         public string Description { get; set; }
 

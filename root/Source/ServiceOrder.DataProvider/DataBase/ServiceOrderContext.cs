@@ -30,6 +30,7 @@ namespace ServiceOrder.DataProvider.DataBase
         public DbSet<Order> Orders { get; set; }
         public DbSet<ServiceCategory> ServiceCategories { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
+        public DbSet<Album> Albums { get; set; } 
 
     }
 }

@@ -6,9 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 namespace ServiceOrder.DataProvider.Entities
 {
     public class User : IdentityUser
-    {
-        public int? PhotoId { get; set; }
-
+    { 
         public Photo UserPhoto { get; set; }    
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)

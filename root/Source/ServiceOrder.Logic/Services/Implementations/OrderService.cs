@@ -68,7 +68,7 @@ namespace ServiceOrder.Logic.Services.Implementations
                     exceptions.Add(new NullReferenceException("This provider doesn't have such services "));
                 }
             }
-            if (item.Date < DateTime.UtcNow)
+            if (item.Date.ToUniversalTime() < DateTime.UtcNow)
             {
                 exceptions.Add(new Exception("Wrong Date parameter"));
             }
@@ -79,10 +79,14 @@ namespace ServiceOrder.Logic.Services.Implementations
                     exceptions.Add(new Exception("Date can't be on saturday or sunday"));
                 }
             }
+
+            item.Date = item.Date.ToUniversalTime();
+
             if (item.BeginTime.Hour > item.EndTime.Hour)
             {
                 exceptions.Add(new Exception("End time can't be less than start time"));
             }
+
             item.BeginTime = item.BeginTime.ToUniversalTime();
             item.EndTime = item.EndTime.ToUniversalTime();
 
@@ -171,6 +175,7 @@ namespace ServiceOrder.Logic.Services.Implementations
                 item.ProviderName = DataBase.ServiceProviders.Get(item.ServiceProviderId).ProviderUser.UserName;
                 item.BeginTime = item.BeginTime.ToLocalTime();
                 item.EndTime = item.EndTime.ToLocalTime();
+                item.Date = item.Date.ToLocalTime();
                 //item.BeginTime = TimeZoneInfo.ConvertTimeFromUtc(item.BeginTime, TimeZoneInfo.Local);
                 //item.EndTime = TimeZoneInfo.ConvertTimeFromUtc(item.EndTime, TimeZoneInfo.Local);
             }

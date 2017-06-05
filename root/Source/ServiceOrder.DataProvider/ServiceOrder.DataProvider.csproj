@@ -110,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBase\ApplicationDbInitializer.cs" />
+    <Compile Include="Entities\Album.cs" />
     <Compile Include="Identity\ServiceOrderSignInManager.cs" />
     <Compile Include="Identity\ServiceOrderUserManager.cs" />
     <Compile Include="Migrations\201704170236491_InitialCreate.cs" />
@@ -132,7 +133,12 @@
     <Compile Include="Migrations\201704242225483_DeleteInServiceType.Designer.cs">
       <DependentUpon>201704242225483_DeleteInServiceType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706051558452_AddAlbum.cs" />
+    <Compile Include="Migrations\201706051558452_AddAlbum.Designer.cs">
+      <DependentUpon>201706051558452_AddAlbum.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Repositories\AlbumRepository.cs" />
     <Compile Include="Repositories\PhotoRepository.cs" />
     <Compile Include="Entities\ServiceCategory.cs" />
     <Compile Include="Entities\Client.cs" />
@@ -175,6 +181,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704242225483_DeleteInServiceType.resx">
       <DependentUpon>201704242225483_DeleteInServiceType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706051558452_AddAlbum.resx">
+      <DependentUpon>201706051558452_AddAlbum.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
