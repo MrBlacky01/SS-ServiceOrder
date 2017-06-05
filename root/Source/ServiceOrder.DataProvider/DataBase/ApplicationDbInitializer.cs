@@ -47,12 +47,12 @@ namespace ServiceOrder.DataProvider.DataBase
             
 
 
-            ServiceCategory category = new ServiceCategory {Title = "Перевозки"};
-            ServiceCategory category1 = new ServiceCategory {Title = "Ремонт техники"};
-            ServiceCategory category2 = new ServiceCategory {Title = "Уборка"};
-            ServiceCategory category3 = new ServiceCategory {Title = "Компьютерная помощь"};
-            ServiceCategory category4 = new ServiceCategory {Title = "Образование"};
-            ServiceCategory category5 = new ServiceCategory {Title = "Фото- и видеоуслуги"};
+            ServiceCategory category = new ServiceCategory {Title = "Transportation"};
+            ServiceCategory category1 = new ServiceCategory {Title = "Repair of machinery" };
+            ServiceCategory category2 = new ServiceCategory {Title = "Cleaning"};
+            ServiceCategory category3 = new ServiceCategory {Title = "Computer help"};
+            ServiceCategory category4 = new ServiceCategory {Title = "Education" };
+            ServiceCategory category5 = new ServiceCategory {Title = "Photo and video" };
             context.ServiceCategories.Add(category);
             context.ServiceCategories.Add(category1);
             context.ServiceCategories.Add(category2);
@@ -60,12 +60,12 @@ namespace ServiceOrder.DataProvider.DataBase
             context.ServiceCategories.Add(category4);
             context.ServiceCategories.Add(category5);
 
-            var region0 = new Region {Title = "Брест"};
-            var region1 = new Region {Title = "Витебск"};
-            var region2= new Region {Title = "Гомель"};
-            var region3 = new Region {Title = "Гродно"};
-            var region4 = new Region {Title = "Минск"};
-            var region5 = new Region {Title = "Могилёв"};
+            var region0 = new Region {Title = "Brest"};
+            var region1 = new Region {Title = "Vitebsk"};
+            var region2= new Region {Title = "Gomel"};
+            var region3 = new Region {Title = "Grodno"};
+            var region4 = new Region {Title = "Minsk"};
+            var region5 = new Region {Title = "Mogilev"};
             context.Regions.Add(region0);
             context.Regions.Add(region1);
             context.Regions.Add(region2);
@@ -74,15 +74,15 @@ namespace ServiceOrder.DataProvider.DataBase
             context.Regions.Add(region5);
             context.SaveChanges();
 
-            var service0 = new ServiceType {Title = "Ремонт бытовой техники", Category = category1};
-            var service1 = new ServiceType {Title = "Ремонт мобильных телефонов", Category = category1};
-            var service2 = new ServiceType {Title = "Ремонт аудиотехники", Category = category1};
-            var service3 = new ServiceType {Title = "Грузоперевозки", Category = category};
-            var service4 = new ServiceType {Title = "Пассажирские перевозки", Category = category};
-            var service5 = new ServiceType {Title = "Курьерские услуги", Category = category};
-            var service6 = new ServiceType {Title = "Генеральная уборка", Category = category2};
-            var service7 = new ServiceType {Title = "Поддерживающая уборка", Category = category2};
-            var service8 = new ServiceType {Title = "Уборка после ремонта", Category = category2};
+            var service0 = new ServiceType {Title = "Repair of household appliances", Category = category1};
+            var service1 = new ServiceType {Title = "Repair of mobile phones", Category = category1};
+            var service2 = new ServiceType {Title = "Repair of audio equipment", Category = category1};
+            var service3 = new ServiceType {Title = "Cargo transportation", Category = category};
+            var service4 = new ServiceType {Title = "Passenger Transportation", Category = category};
+            var service5 = new ServiceType {Title = "Courier", Category = category};
+            var service6 = new ServiceType {Title = "Spring-cleaning", Category = category2};
+            var service7 = new ServiceType {Title = "Maintenance cleaning", Category = category2};
+            var service8 = new ServiceType {Title = "Cleaning after repair", Category = category2};
 
             context.ServiceTypes.Add(service0);
             context.ServiceTypes.Add(service1);
