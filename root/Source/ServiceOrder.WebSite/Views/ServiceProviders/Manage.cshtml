@@ -47,7 +47,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Title)
                         </td>
-                        <td class="center-text-in-table-td">
+                        <td class="table-td-textCenter">
                             @Html.ActionLink("Delete", "DeleteRegion", new { regionId = item.Id })
                         </td>
                     </tr>
@@ -75,7 +75,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Category.Title)
                         </td>
-                        <td class="center-text-in-table-td">
+                        <td class="table-td-textCenter">
                             @Html.ActionLink("Delete", "DeleteService", new { serviceId = item.Id })
                         </td>
                     </tr>

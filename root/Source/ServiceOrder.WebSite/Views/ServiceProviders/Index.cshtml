@@ -1,5 +1,4 @@
-﻿@using Microsoft.Owin.Security.DataHandler
-@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels.ServiceProviderPaginationFiltrationList
+﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels.ServiceProviderPaginationFiltrationList
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -33,31 +32,26 @@
 
 
 <table class="table">
-    <tr class="table-header-tr">
-        <th>
+    <tr class="table-header-tr table-td-textCenter">
+        <th class="col-md-3 col-sm-4 col-xs-4  table-td-textCenter" >
             Provider Name
         </th>
-        <th>
+        <th class="col-md-6 col-sm-6 col-xs-6  table-td-textCenter">
             Description
         </th>
-        <th></th>
+        <th class="col-md-2 col-sm-2 col-xs-2 "></th>
     </tr>
 
     @foreach (var item in Model.ProviderList) {
-        <tr>
-            <td>
+        <tr >
+            <td class="col-md-3 col-sm-4 col-xs-4 serviceProviderIndex-tableTd-vertAligment">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
-                @*@for (int i = 0; i < item.Services.Count-1; i++)
-                {
-                    <text>@item.Services[i].Title,</text>
-                }
-                <text>@item.Services[item.Services.Count-1].Title</text>    *@   
-                @Html.DisplayFor(moderlItem => item.Description)   
+            <td class="col-md-6 col-sm-6 col-xs-6">
+                @Html.DisplayFor(moderItem => item.ShortDescription)
             </td>
-            <td>
-                @Html.ActionLink("Make order","Index","Order",new {providerId = item.Id},null)
+            <td class="col-md-2 col-sm-2 col-xs-2 serviceProviderIndex-tableTd-vertAligment serviceProviderIndex-lastTableTd-center">
+                @Html.ActionLink("Make order","Index","Order",new {providerId = item.Id}, new { @class = "btn btn-default" })
             </td>
         </tr>
     }

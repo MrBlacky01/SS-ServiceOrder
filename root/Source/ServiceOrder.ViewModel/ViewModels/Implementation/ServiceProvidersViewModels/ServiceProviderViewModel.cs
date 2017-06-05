@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
@@ -16,7 +17,7 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewM
 
         [AllowHtml]
         [DataType(DataType.Text)]
-        [Display(Name = "Discription")]
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
         [Display(Name = "Services")]
@@ -24,14 +25,24 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewM
         
         [Display(Name = "Regions")]       
         public List<RegionEntityViewModel> Regions { get; set; }
-    }
 
-    public class ProviderRegion
-    {
-        public int Id { get; set; }
-        
-        [Display(Name = "Region")]
-        public string Title { get; set; }
+        [AllowHtml]
+        [DataType(DataType.Text)]
+        [Display(Name = "Short Description")]
+        public string ShortDescription {
+            get
+            {
+                if (Description.Length < 200)
+                    return Description;
+                var i = 200;
+                Regex regex = new Regex("[\\. \n,!?);]");
+                while (i < Description.Length && !regex.IsMatch(Description[i].ToString()))
+                {
+                    i++;
+                }
+                return Description.Substring(0, i) + "...";
+            } 
+        }
     }
 
     public class ServiceShortViewModel
