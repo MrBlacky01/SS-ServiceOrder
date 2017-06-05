@@ -24,7 +24,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control service-provider-input " } })
+                @Html.TextAreaFor(model => model.Description,  new { @class = "form-control",@style= "resize: none; box-sizing: border-box;",@rows="2", @maxlength="2000" })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
 
                 <input type="submit" value="Change Description" class="btn btn-default service-provider-manage-change-description-button" />
@@ -84,4 +84,8 @@
         </div>
     </div>
 }
+
+<script>
+    autosize($('textarea'));
+</script>
 

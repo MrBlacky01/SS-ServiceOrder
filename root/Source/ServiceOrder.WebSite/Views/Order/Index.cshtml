@@ -250,9 +250,9 @@
                 url: '/Order/MakeOrder',
                 type: 'POST',
                 data: {ServiceProviderId:"@Model.ServiceProviderId",
-                    Date:orderDate.toUTCString(),
-                    BeginTime: beginTime.toLocaleTimeString(),
-                    EndTime:endTime.toLocaleTimeString(),
+                    Date:orderDate.toDateString(),
+                    BeginTime: beginTime.toTimeString().split(" ")[0],
+                    EndTime:endTime.toTimeString().split(" ")[0],
                     RegionId:regionDropDownList.dataItem().Id,
                     ServiceTypeId: serviceDropDownList.dataItem().Id},
                 success: function () {
