@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
-using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels;
 
 namespace ServiceOrder.Logic.Automapper.Profiles
 {
@@ -10,7 +9,6 @@ namespace ServiceOrder.Logic.Automapper.Profiles
         public RegionProfile()
         {
             CreateMap<RegionEntityViewModel, Region>().ReverseMap();
-            CreateMap<ProviderRegion, Region>().ReverseMap();
         }
        
     }

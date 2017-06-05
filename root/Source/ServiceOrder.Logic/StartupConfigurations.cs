@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -11,7 +7,6 @@ using Owin;
 using ServiceOrder.DataProvider.DataBase;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Identity;
-using ServiceOrder.Logic.Services.Implementations;
 
 namespace ServiceOrder.Logic
 {

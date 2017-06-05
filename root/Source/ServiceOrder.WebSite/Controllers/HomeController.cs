@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using ServiceOrder.Logic.Services;
-using ServiceOrder.ViewModel.ViewModels.Implementation;
-using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels;
+﻿using System.Web.Mvc;
 
 namespace ServiceOrder.WebSite.Controllers
 {

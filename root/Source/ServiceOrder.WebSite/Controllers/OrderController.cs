@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
@@ -12,7 +10,6 @@ using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.Order;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels;
-using static System.String;
 
 namespace ServiceOrder.WebSite.Controllers
 {

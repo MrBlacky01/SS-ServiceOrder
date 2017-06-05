@@ -6,9 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ServiceOrder.Logic.Services;
-using ServiceOrder.Logic.Services.Implementations;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
-using ServiceOrder.WebSite.Models;
 
 namespace ServiceOrder.WebSite.Controllers
 {

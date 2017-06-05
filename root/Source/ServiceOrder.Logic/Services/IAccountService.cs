@@ -4,7 +4,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Identity;
-using ServiceOrder.Logic.Services.Implementations;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
 
 namespace ServiceOrder.Logic.Services

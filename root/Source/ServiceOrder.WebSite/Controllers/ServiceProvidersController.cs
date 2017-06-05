@@ -260,5 +260,10 @@ namespace ServiceOrder.WebSite.Controllers
             var a = _provider.Get(id);
             return View(a);
         }
+
+        public ActionResult ShowServiceProvider(string providerId)
+        {
+            return View();
+        }
     }
 }

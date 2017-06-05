@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
-using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
 namespace ServiceOrder.Logic.Automapper.Profiles

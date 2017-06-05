@@ -2,9 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web;
-using AutoMapper;
 using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Host.SystemWeb;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Identity;
 using ServiceOrder.DataProvider.Interfaces;

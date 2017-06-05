@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace ServiceOrder.WebSite.Models
+﻿namespace ServiceOrder.WebSite.Models
 {
     /*public class ExternalLoginConfirmationViewModel
     {
