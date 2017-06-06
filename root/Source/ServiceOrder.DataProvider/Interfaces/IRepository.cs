@@ -10,6 +10,6 @@ namespace ServiceOrder.DataProvider.Interfaces
         IEnumerable<T> Find(Func<T, Boolean> predicate);
         void Create(T item);
         void Update(T item);
-        void Delete(W id);
+        void Delete(int? id);
     }
 }

@@ -56,7 +56,7 @@ namespace ServiceOrder.DataProvider.Repositories
             }
         }
 
-        public void Delete(int id)
+        public void Delete(int? id)
         {
             var service = db.ServiceTypes.Find(id);
             if (service != null)

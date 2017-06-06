@@ -15,6 +15,7 @@ namespace ServiceOrder.DataProvider.Repositories
         private ServiceCategoryRepository categoryRepository;
         private ServiceTypeRepository serviceTypeRepository;
         private ServiceProviderRepository providerRepository;
+        private AlbumRepository albumRepository;
 
         public UnitOfWork(string connectionString)
         {
@@ -39,6 +40,8 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public IRepository<ServiceType, int> ServiceTypes
             => serviceTypeRepository ?? (serviceTypeRepository = new ServiceTypeRepository(db));
+
+        public IRepository<Album, int> Albums => albumRepository ?? (albumRepository = new AlbumRepository(db));
 
         public void Save()
         {

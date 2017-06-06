@@ -24,6 +24,7 @@ namespace ServiceOrder.DataProvider.Repositories
                 .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderRegions)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
+                .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderUser);
         }
 
@@ -32,6 +33,7 @@ namespace ServiceOrder.DataProvider.Repositories
             return db.ServiceProviders
                 .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderRegions)
+                .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o=>o.ProviderUser)
                 .FirstOrDefault(e => e.UserId==id);
@@ -42,6 +44,7 @@ namespace ServiceOrder.DataProvider.Repositories
             return db.ServiceProviders
                 .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderRegions)
+                .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o => o.ProviderUser)
                 .Where(predicate).ToList();
@@ -70,7 +73,7 @@ namespace ServiceOrder.DataProvider.Repositories
             }
         }
 
-        public void Delete(string id)
+        public void Delete(int? id)
         {
             ServiceProvider provider = db.ServiceProviders.Find(id);
             if (provider != null)

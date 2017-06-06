@@ -59,7 +59,7 @@ namespace ServiceOrder.DataProvider.Repositories
             db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(int? id)
         {
             Order order = db.Orders.Find(id);
             if (order != null)

@@ -47,7 +47,7 @@ namespace ServiceOrder.DataProvider.Repositories
            db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(string id)
+        public void Delete(int? id)
         {
             Client client = db.Clients.Find(id);
             if (client != null)

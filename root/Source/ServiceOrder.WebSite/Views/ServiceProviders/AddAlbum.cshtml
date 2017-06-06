@@ -1,0 +1,31 @@
+﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels.ShortAlbumViewModel
+
+@{
+    ViewBag.Title = "Add Album";
+}
+
+<h2>Add Album</h2>
+
+
+<div class="row">
+    @using (Html.BeginForm("AddAlbum", "ServiceProviders", FormMethod.Post, new { @class = "category-create-form col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-10" }))
+    {
+    @Html.AntiForgeryToken()
+
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Album Title" } })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <input type="submit" value="Create" class="btn btn-default" />
+
+    }
+</div>
+
+<div>
+    @Html.ActionLink("Back to Managment", "Manage", null, new { @class = "btn btn-default" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

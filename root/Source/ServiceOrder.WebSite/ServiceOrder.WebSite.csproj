@@ -114,6 +114,10 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Optimization.Less, Version=1.3.0.0, Culture=neutral, PublicKeyToken=9b7581e0240fe480, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Web.Optimization.Less.1.3.4\lib\net40\System.Web.Optimization.Less.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -267,19 +271,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Colors.less" />
-    <Content Include="Content\Colors.css">
-      <DependentUpon>Colors.less</DependentUpon>
-    </Content>
-    <Content Include="Content\Colors.min.css">
-      <DependentUpon>Colors.less</DependentUpon>
-    </Content>
     <Content Include="Content\Site.less" />
-    <Content Include="Content\Site.css">
-      <DependentUpon>Site.less</DependentUpon>
-    </Content>
-    <Content Include="Content\Site.min.css">
-      <DependentUpon>Site.less</DependentUpon>
-    </Content>
     <None Include="Properties\PublishProfiles\123.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\cultures\kendo.culture.zh-CN.min.js" />
@@ -1158,6 +1150,8 @@
     <Content Include="Views\Order\ProviderOrders.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\ServiceProviders\ShowServiceProvider.cshtml" />
+    <Content Include="Views\ServiceProviders\AddAlbum.cshtml" />
+    <Content Include="Views\ServiceProviders\ManageAlbum.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1221,11 +1215,4 @@
   </Target>
   <Target Name="AfterBuild">
   </Target> -->
-  <Target Name="CompileDotlessCss" AfterTargets="AfterBuild">
-    <ItemGroup>
-      <__LessFiles Include="**\*.less" />
-    </ItemGroup>
-    <Exec Command="&quot;..\packages\dotless.1.5.2\tool\dotless.compiler.exe&quot; -m -a &quot;%(__LessFiles.FullPath)&quot; &quot;$([System.String]::Copy('%(__LessFiles.FullPath)').Replace('.less','.min.css'))&quot;" />
-    <Exec Command="&quot;..\packages\dotless.1.5.2\tool\dotless.compiler.exe&quot; -a &quot;%(__LessFiles.FullPath)&quot; &quot;$([System.String]::Copy('%(__LessFiles.FullPath)').Replace('.less','.css'))&quot;" />
-  </Target>
 </Project>

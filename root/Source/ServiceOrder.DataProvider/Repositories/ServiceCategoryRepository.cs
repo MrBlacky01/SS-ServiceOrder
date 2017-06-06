@@ -45,7 +45,7 @@ namespace ServiceOrder.DataProvider.Repositories
             db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(int? id)
         {
             var category = db.ServiceCategories.Find(id);
             if (category != null)

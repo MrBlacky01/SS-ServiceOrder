@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using PagedList;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
+using ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels;
@@ -21,15 +22,17 @@ namespace ServiceOrder.WebSite.Controllers
         private IRegionService _regionService;
         private ICategoryService _categoryService;
         private IServiceTypeService _serviceTypeService;
+        private IAlbumService _albumService;
         
 
         public ServiceProvidersController(IServiceProviderService provider, IRegionService regionService,
-            ICategoryService categoryService,IServiceTypeService serviceTypeService)
+            ICategoryService categoryService,IServiceTypeService serviceTypeService, IAlbumService albumService)
         {
             _provider = provider;
             _regionService = regionService;
             _categoryService = categoryService;
             _serviceTypeService = serviceTypeService;
+            _albumService = albumService;
         }
 
         // GET: ServiceProviders
@@ -264,6 +267,51 @@ namespace ServiceOrder.WebSite.Controllers
         public ActionResult ShowServiceProvider(string providerId)
         {
             return View();
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "service provider")]
+        public ActionResult AddAlbum()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "service provider")]
+        public ActionResult AddAlbum(ShortAlbumViewModel album)
+        {
+            album.Title = album.Title.Trim();
+            if (ModelState.IsValid)
+            {
+                album.ServiceProviderId = User.Identity.GetUserId();
+                try
+                {
+                    _albumService.Add(album);
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError("",exception.Message);
+                    return View(album);
+                }
+                
+                return RedirectToAction("Manage");
+            }
+            return View(album);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "service provider")]
+        public ActionResult ManageAlbum(int albumId)
+        {
+            try
+            {
+                var album = _albumService.Get(albumId);
+                return View(album);
+            }
+            catch (Exception exception)
+            {
+                return View("MessageView", new ResultMessageViewModel() {Message = "No such album"});
+            }
         }
     }
 }

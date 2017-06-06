@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ServiceOrder.DataProvider.DataBase;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
@@ -47,6 +45,7 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public void Create(Album item)
         {
+            item.Provider = db.ServiceProviders.First(opt => opt.UserId == item.Provider.UserId);
             db.Albums.Add(item);
         }
 
@@ -64,11 +63,12 @@ namespace ServiceOrder.DataProvider.Repositories
             }
         }
 
-        public void Delete(int id)
+        public void Delete(int? id)
         {
             Album album = db.Albums.FirstOrDefault(src => src.Id == id);
             if (album != null)
             {
+                db.Photos.RemoveRange(album.AlbumPhotos);
                 db.Albums.Remove(album);
             }
         }

@@ -42,7 +42,7 @@ namespace ServiceOrder.DataProvider.Repositories
             db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(int? id)
         {
             Region region = db.Regions.Find(id);
             if (region != null)

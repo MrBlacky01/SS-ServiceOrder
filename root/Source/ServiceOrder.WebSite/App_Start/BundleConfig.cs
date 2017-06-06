@@ -31,8 +31,9 @@ namespace ServiceOrder.WebSite
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/Site.min.css",
                       "~/Content/LogIn.css"));
+
+            bundles.Add(new LessBundle("~/Content/less").Include("~/Content/*.less"));
 
             bundles.Add(new StyleBundle("~/Content/404css").Include(
                       "~/Content/404Style.css", new CssRewriteUrlTransform()));

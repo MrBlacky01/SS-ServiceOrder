@@ -99,16 +99,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Automapper\AutomapperBind.cs" />
+    <Compile Include="Automapper\Profiles\AlbumProfile.cs" />
     <Compile Include="Automapper\Profiles\CategoryProfile.cs" />
     <Compile Include="Automapper\Profiles\OrderProfile.cs" />
+    <Compile Include="Automapper\Profiles\PhotoProfile.cs" />
     <Compile Include="Automapper\Profiles\RegionProfile.cs" />
     <Compile Include="Automapper\Profiles\ServiceProviderProfile.cs" />
     <Compile Include="Automapper\Profiles\ServiceTypeProfile.cs" />
     <Compile Include="IdentityConfig.cs" />
     <Compile Include="Infrastucture\ServiceModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IAlbumService.cs" />
     <Compile Include="Services\ICategoryService.cs" />
     <Compile Include="Services\Implementations\AccountService.cs" />
+    <Compile Include="Services\Implementations\AlbumService.cs" />
     <Compile Include="Services\Implementations\CategoryService.cs" />
     <Compile Include="Services\Implementations\OrderService.cs" />
     <Compile Include="Services\Implementations\RegionService.cs" />

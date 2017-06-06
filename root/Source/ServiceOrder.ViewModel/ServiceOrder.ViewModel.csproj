@@ -77,9 +77,11 @@
     <Compile Include="ViewModels\Implementation\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AccountViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\Implementation\AlbumViewModels\AlbumViewModel.cs" />
+    <Compile Include="ViewModels\Implementation\AlbumViewModels\ShortAlbumViewModel.cs" />
     <Compile Include="ViewModels\Implementation\Order\OrderViewModel.cs" />
+    <Compile Include="ViewModels\Implementation\PhotoViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderCategoryViewModel.cs" />
-    <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderInfoViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderPaginationFiltrationList.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderRegionsViewModel.cs" />

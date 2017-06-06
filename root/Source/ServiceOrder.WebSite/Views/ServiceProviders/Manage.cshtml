@@ -54,7 +54,7 @@
                 }
             </table>
         </div>
-        
+
         <div class="form-group">
             @Html.ActionLink("Manage Services", "AddService")
             <table class="table ">
@@ -76,9 +76,34 @@
                             @Html.DisplayFor(modelItem => item.Category.Title)
                         </td>
                         <td class="table-td-textCenter">
-                            @Html.ActionLink("Delete", "DeleteService", new { serviceId = item.Id })
+                            @Html.ActionLink("Delete", "DeleteService", new {serviceId = item.Id})
                         </td>
                     </tr>
+                }
+            </table>
+        </div>
+
+        <div class="form-group">
+            @Html.ActionLink("+ Add Album", "AddAlbum")
+            <table class="table ">
+                <tr class="table-header-tr">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Albums)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model.Albums)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    
+                    <td class="table-td-textCenter">
+                        @Html.ActionLink("Manage Album", "ManageAlbum", new { albumId = item.Id }, new {@class="btn btn-default"})
+                    </td>
+                </tr>
                 }
             </table>
         </div>

@@ -13,6 +13,7 @@ namespace ServiceOrder.DataProvider.Interfaces
         IRepository<Order, int> Orders { get; }
         IRepository<ServiceCategory, int> ServiceCategories { get; }
         IRepository<ServiceType, int> ServiceTypes { get; }
+        IRepository<Album,int> Albums { get; } 
         void Save();
     }
 }
