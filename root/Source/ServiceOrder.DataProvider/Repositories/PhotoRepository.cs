@@ -42,7 +42,7 @@ namespace ServiceOrder.DataProvider.Repositories
             db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(int? id)
         {
             Photo photo = db.Photos.Find(id);
             if (photo != null)
