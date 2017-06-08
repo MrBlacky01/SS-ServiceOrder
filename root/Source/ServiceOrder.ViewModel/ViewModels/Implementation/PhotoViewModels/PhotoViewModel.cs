@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServiceOrder.ViewModel.ViewModels.Implementation.PhotoViewModels
 {
     public class PhotoViewModel
     {
+        private string _photoImage; 
         public int Id { get; set; }
 
         [StringLength(255,ErrorMessage = "File name must has at least 1 symbol and length less than 255",MinimumLength = 1)]
@@ -14,6 +16,17 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.PhotoViewModels
         public string ContentType { get; set; }
 
         [Required]
-        public byte[] PhotoImage { get; set; }
+        public string PhotoImage {
+            get
+            {
+                if (ImageBytes?.Length == 0)
+                {
+                    return _photoImage;
+                }
+                return Convert.ToBase64String(ImageBytes);
+            }
+            set { _photoImage = value; } }
+
+        public byte[] ImageBytes { get; set; }
     }
 }

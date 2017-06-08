@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
@@ -313,5 +314,13 @@ namespace ServiceOrder.WebSite.Controllers
                 return View("MessageView", new ResultMessageViewModel() {Message = "No such album"});
             }
         }
+
+        [HttpPost]
+        [Authorize(Roles = "service provider")]
+        public ActionResult AddPhotosToAlbum (int Id,IEnumerable<HttpPostedFileBase> files)
+        {
+            return new HttpStatusCodeResult(200, "OK");
+        }
+
     }
 }
