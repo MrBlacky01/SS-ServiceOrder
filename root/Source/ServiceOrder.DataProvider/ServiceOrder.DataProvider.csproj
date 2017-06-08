@@ -137,6 +137,10 @@
     <Compile Include="Migrations\201706051558452_AddAlbum.Designer.cs">
       <DependentUpon>201706051558452_AddAlbum.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706080632171_SaveFileInBase64.cs" />
+    <Compile Include="Migrations\201706080632171_SaveFileInBase64.Designer.cs">
+      <DependentUpon>201706080632171_SaveFileInBase64.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repositories\AlbumRepository.cs" />
     <Compile Include="Repositories\PhotoRepository.cs" />
@@ -184,6 +188,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706051558452_AddAlbum.resx">
       <DependentUpon>201706051558452_AddAlbum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706080632171_SaveFileInBase64.resx">
+      <DependentUpon>201706080632171_SaveFileInBase64.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
