@@ -32,6 +32,7 @@ namespace ServiceOrder.WebSite.Utils
             kernel.Bind<IServiceProviderService>().To<ServiceProviderService>();
             kernel.Bind<IOrderService>().To<OrderService>();
             kernel.Bind<IAlbumService>().To<AlbumService>();
+            kernel.Bind<IPhotoService>().To<PhotoService>();
 
         }
     }

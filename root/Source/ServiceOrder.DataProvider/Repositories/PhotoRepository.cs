@@ -19,17 +19,25 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public IEnumerable<Photo> GetAll()
         {
-            return db.Photos;
+            return db.Photos
+                .Include(o => o.PhotoAlbum)
+                .Include(o => o.PhotoAlbum.Provider);
         }
 
         public Photo Get(int id)
         {
-            return db.Photos.Find(id);
+            return db.Photos
+                    .Include(o => o.PhotoAlbum)
+                    .Include(o => o.PhotoAlbum.Provider)
+                    .FirstOrDefault(src => src.Id == id);
         }
 
         public IEnumerable<Photo> Find(Func<Photo, bool> predicate)
         {
-            return db.Photos.Where(predicate).ToList();
+            return db.Photos
+                    .Include(o => o.PhotoAlbum)
+                    .Include(o => o.PhotoAlbum.Provider)
+                    .Where(predicate).ToList();
         }
 
         public void Create(Photo item)

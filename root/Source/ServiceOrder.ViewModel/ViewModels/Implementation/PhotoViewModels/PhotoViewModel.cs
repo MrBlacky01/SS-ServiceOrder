@@ -19,7 +19,7 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.PhotoViewModels
         public string PhotoImage {
             get
             {
-                if (ImageBytes?.Length == 0)
+                if (ImageBytes == null || ImageBytes.Length == 0)
                 {
                     return _photoImage;
                 }

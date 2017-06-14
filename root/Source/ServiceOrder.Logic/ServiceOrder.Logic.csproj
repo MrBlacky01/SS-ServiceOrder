@@ -115,10 +115,12 @@
     <Compile Include="Services\Implementations\AlbumService.cs" />
     <Compile Include="Services\Implementations\CategoryService.cs" />
     <Compile Include="Services\Implementations\OrderService.cs" />
+    <Compile Include="Services\Implementations\PhotoService.cs" />
     <Compile Include="Services\Implementations\RegionService.cs" />
     <Compile Include="Services\Implementations\ServiceProviderService.cs" />
     <Compile Include="Services\Implementations\ServiceTypeService.cs" />
     <Compile Include="Services\IOrderService.cs" />
+    <Compile Include="Services\IPhotoService.cs" />
     <Compile Include="Services\IRegionService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\IServiceProviderService.cs" />

@@ -1,0 +1,4 @@
+﻿Ansver.MVC.BlueimpGallery
+https://github.com/blueimp/Gallery
+Gallery-2.25.0
+2017-004-18

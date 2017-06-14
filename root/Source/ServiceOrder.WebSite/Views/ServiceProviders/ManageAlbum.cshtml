@@ -8,22 +8,18 @@
 <h2>Manage @Model.Title Album</h2>
 
 
+<div>
+    @Html.ActionLink("Back to List","Index","Album", new { albumId = Model.Id }, new { @class = "btn btn-default" })
+</div>
 
-@using (Html.BeginForm("AddPhotosToAlbum","ServiceProviders",FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.HiddenFor(model => model.Id);
+<div>
+    @Html.ActionLink("Back to List", "Add", "Album",new {albumId = Model.Id}, new {@class = "btn btn-default"})
+</div>
 
-    <input name="files" type="file" multiple/>
-    <input type="submit" value= "Upload" />
-}
-
-
+<div>
+    @Html.ActionLink("Back to List", "Edit", "Album", new { albumId = Model.Id }, new { @class = "btn btn-default" })
+</div>
 <script>
-    $(document).ready(function() {
-        $("input:submit").click(function(event) {
-            event.preventDefault();
-
-        });
-    });
+    
 
 </script>

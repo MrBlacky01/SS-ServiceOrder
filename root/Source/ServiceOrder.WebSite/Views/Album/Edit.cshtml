@@ -1,0 +1,44 @@
+﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels.AlbumViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@Styles.Render("~/Content/jQuery-File-Upload")
+
+<script>
+    var $form = null;
+    $(function() {
+
+        $form = $('#fileupload').fileupload({
+            dataType: 'json'
+        });
+
+    });
+    $('#fileupload').addClass('fileupload-processing');
+
+
+    
+</script>
+
+@Html.Partial("_Photo")
+@Scripts.Render("~/bundles/jQuery-File-Upload")
+
+<script>
+    $.ajax({
+        type: 'GET',
+        contentType: "application/json; charset=utf-8",
+        url: '/Album/GetFileList',
+        data: { albumId:@Model.Id},
+        success: function(data) {
+
+
+            $('#fileupload').fileupload('option', 'done').call($('#fileupload'), $.Event('done'), { result: { files: data.files } })
+            $('#fileupload').removeClass('fileupload-processing');
+        }
+
+    }
+    );
+</script>
