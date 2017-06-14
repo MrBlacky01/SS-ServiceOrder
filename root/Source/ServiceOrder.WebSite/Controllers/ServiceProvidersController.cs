@@ -304,15 +304,12 @@ namespace ServiceOrder.WebSite.Controllers
         [Authorize(Roles = "service provider")]
         public ActionResult ManageAlbum(int albumId)
         {
-            try
+            var album = _albumService.Get(albumId);
+            if (album == null)
             {
-                var album = _albumService.Get(albumId);
-                return View(album);
+                return View("MessageView", new ResultMessageViewModel() { Message = "There's no such album" });
             }
-            catch (Exception exception)
-            {
-                return View("MessageView", new ResultMessageViewModel() {Message = "No such album"});
-            }
+            return User.Identity.GetUserId() != album.ServiceProviderId ? View("MessageView", new ResultMessageViewModel() { Message = "You don't has access to this album" }) : View(album);
         }
 
         [HttpPost]

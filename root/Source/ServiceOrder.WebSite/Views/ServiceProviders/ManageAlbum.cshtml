@@ -5,21 +5,80 @@
 }
 
 
-<h2>Manage @Model.Title Album</h2>
+@Styles.Render("~/Content/jQuery-File-Upload")
 
+<h2>Manage <strong>@Model.Title</strong> Album</h2>
 
-<div>
-    @Html.ActionLink("Back to List","Index","Album", new { albumId = Model.Id }, new { @class = "btn btn-default" })
-</div>
+<div class="row">
+    @using (Html.BeginForm("ChangeAlbumName", "Album", FormMethod.Post,new {@class= "albumManage-changeTitleForm row"}))
+    {
+        <div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger " })
+            @Html.HiddenFor(model => model.Id)
+            <div >
+                @Html.LabelFor(model => model.Title, htmlAttributes: new {@class = "control-label col-lg-2 col-md-2 col-sm-3 col-xs-3 before-input-label" })
+                <div class="col-lg-8 col-md-8 col-sm-9 col-xs-9">                   
+                    @Html.EditorFor(model => model.Title, new {htmlAttributes = new {@class = "form-control "}})
+                    @Html.ValidationMessageFor(model => model.Title, "", new {@class = "text-danger"})
+                    
+                </div>
+                <input type="submit" value="Change Title" class="btn btn-default albumMahage-changeTitleButton col-lg-2 col-md-2 col-sm-3 col-xs-4" />
+            </div>
+            
+        </div>
+        }
 
-<div>
-    @Html.ActionLink("Back to List", "Add", "Album",new {albumId = Model.Id}, new {@class = "btn btn-default"})
-</div>
+    </div>
 
-<div>
-    @Html.ActionLink("Back to List", "Edit", "Album", new { albumId = Model.Id }, new { @class = "btn btn-default" })
-</div>
-<script>
+<div class="row">
     
+        @Html.ActionLink("Add photos", "Add", "Album", new { albumId = Model.Id }, new { @class = "btn btn-default albumButton col-lg-2 col-lg-offset-1 col-md-2 col-md-offset-1  col-sm-3 col-sm-offset-1" })
+    
+        @Html.ActionLink("Edit photos", "Edit", "Album", new { albumId = Model.Id }, new { @class = "btn btn-default albumButton col-lg-2 col-lg-offset-1 col-md-2 col-md-offset-1 col-sm-3 col-sm-offset-1 " })
+    
+</div>
 
+<div class="col-md-12  col-lg-12 col-sm-12 col-xs-12 galleryMargin">
+    <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+    <div id="links">
+        @if (@Model.AlbumPhotos != null && @Model.AlbumPhotos.Any())
+        {
+            foreach (var file in @Model.AlbumPhotos)
+            {
+            <a href="@Url.Action("Get", "Photo", new { photoId = file.Id })" title="@file.FileName"><img src="@($"data:image/gif;base64,{file.PhotoImage}")" alt="@file.FileName" class="imageThumbnailSize"></a>
+            }
+        }
+        else
+        {
+        <p>No files</p>
+        }
+        <!--Your files goes here-->
+    </div>
+</div>
+
+<div class="row">
+    @Html.ActionLink("Back to Management", "Manage", "ServiceProviders", null, new { @class = "btn btn-default backButtonMargin" })
+</div>
+
+
+<script>
+
+    document.getElementById('links').onclick = function (event) {
+        event = event || window.event;
+        var target = event.target || event.srcElement,
+            link = target.src ? target.parentNode : target,
+            options = { index: link, event: event },
+            links = this.getElementsByTagName('a');
+        blueimp.Gallery(links, options);
+    };
 </script>
+@Scripts.Render("~/bundles/Blueimp-Gallerry2")
+

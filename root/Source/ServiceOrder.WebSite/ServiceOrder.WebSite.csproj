@@ -1293,7 +1293,6 @@
     <Content Include="Views\ServiceProviders\ShowServiceProvider.cshtml" />
     <Content Include="Views\ServiceProviders\AddAlbum.cshtml" />
     <Content Include="Views\ServiceProviders\ManageAlbum.cshtml" />
-    <Content Include="Views\Album\Index.cshtml" />
     <Content Include="Views\Album\_Photo.cshtml" />
     <Content Include="Views\Album\Add.cshtml" />
     <Content Include="Scripts\blueimp-gallery2\js\jquery.blueimp-gallery.min.js.map" />

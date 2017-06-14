@@ -20,4 +20,9 @@
 </script>
 @Html.Partial("_Photo")
 
+
+<div class="row">
+    @Html.ActionLink("Back to Management", "ManageAlbum", "ServiceProviders", new { albumId = @Model.Id }, new { @class = "btn btn-default backButtonMargin" })
+</div>
+
 @Scripts.Render("~/bundles/jQuery-File-Upload")

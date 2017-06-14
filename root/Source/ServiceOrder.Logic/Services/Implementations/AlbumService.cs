@@ -224,7 +224,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             return album.AlbumPhotos.Any(src => src.FileName == fileName);
         }
 
-        public ViewDataUploadFilesResult UploadResult(string FileName, int fileSize, string FileFullPath,int id)
+        private ViewDataUploadFilesResult UploadResult(string FileName, int fileSize, string FileFullPath,int id)
         {
             string getType =MimeMapping.GetMimeMapping(FileFullPath);
             var result = new ViewDataUploadFilesResult()
@@ -240,7 +240,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             return result;
         }
 
-        public ErrorDataUploadResult UploadErrorResult(string FileName, int fileSize, string errorMessage)
+        private ErrorDataUploadResult UploadErrorResult(string FileName, int fileSize, string errorMessage)
         {
             return new ErrorDataUploadResult()
             {
