@@ -139,6 +139,35 @@ namespace ServiceOrder.Logic.Services.Implementations
             return result;
         }
 
+        public string ChangeAlbumTitle(string userId, int albumId, string newTitle)
+        {
+            var album = DataBase.Albums.Find(src => src.Provider.UserId == userId && src.Id == albumId).FirstOrDefault();
+            if (album == null)
+            {
+                return "No such album of this service provider";
+            }
+            if (!CheckTitle(newTitle))
+            {
+                return "Album title must has at least 1 symbol and max length 255";
+            }
+            album.Title = newTitle;
+            try
+            {
+                DataBase.Albums.Update(album);
+                DataBase.Save();
+            }
+            catch (Exception exception)
+            {
+                return exception.Message;
+            }
+            return String.Empty;
+        }
+
+        private bool CheckTitle(string title)
+        {
+            return title != null && title.Length <= 255 && title.Length >= 1;
+        }
+
 
         private void UploadWholeFile(HttpContextBase requestContext, List<AbstractDataUploadResult> statuses,int albumId)
         { 

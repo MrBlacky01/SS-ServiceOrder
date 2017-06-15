@@ -13,5 +13,6 @@ namespace ServiceOrder.Logic.Services
         void Add( ShortAlbumViewModel item);
         void UploadAndShowResults(HttpContextBase contentBase, List<AbstractDataUploadResult> resultList,int albumId);
         List<ViewDataUploadFilesResult> GetPhotosList(int? albumId );
+        string ChangeAlbumTitle(string userId, int albumId, string newTitle);
     }
 }

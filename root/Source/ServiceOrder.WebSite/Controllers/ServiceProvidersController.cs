@@ -60,10 +60,18 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [Authorize(Roles = "service provider")]
-        public ActionResult Manage()
+        public ActionResult Manage(ServiceProviderViewModel model)
         {
-            var provider = _provider.Get(User.Identity.GetUserId());
-            return View(provider);
+            if (ModelState.IsValid)
+            {
+                var provider = _provider.Get(User.Identity.GetUserId());
+                return View(provider);
+            }
+            else
+            {
+                return View(model);
+            }
+            
         }
 
         [HttpPost]
@@ -73,7 +81,7 @@ namespace ServiceOrder.WebSite.Controllers
             var provider =_provider.Get(User.Identity.GetUserId());
             provider.Description = providerModel.Description;
             _provider.Update(provider);
-            return RedirectToAction("Manage");
+            return RedirectToAction("Manage",provider);
         }
 
         [HttpGet]

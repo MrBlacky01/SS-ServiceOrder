@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -64,25 +65,16 @@ namespace ServiceOrder.WebSite.Controllers
             return Json(new {files = list}, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
         [Authorize(Roles = "service provider")]
-        public ActionResult ChangeAlbumName(AlbumViewModel newAlbum)
+        public ActionResult ChangeAlbumTitle(int albumId,string albumTitle)
         {
-            if (!ModelState.IsValid)
+            var result = _albumService.ChangeAlbumTitle(User.Identity.GetUserId(), albumId, albumTitle);
+            if (result.Equals(String.Empty))
             {
-                return RedirectToAction("ManageAlbum","ServiceProviders", new { albumId = newAlbum.Id });
+                return new HttpStatusCodeResult(200, "OK");
             }
-            var oldAlbum = _albumService.Get(newAlbum.Id);
-            if (oldAlbum == null)
-            {
-                return View("MessageView", new ResultMessageViewModel() {Message = "There's no such album"});
-            }
-            if (User.Identity.GetUserId() != oldAlbum.ServiceProviderId)
-            {
-                return View("MessageView", new ResultMessageViewModel() {Message = "You don't has access to this album"});
-            }
-            oldAlbum.Title = newAlbum.Title;
-            _albumService.Update(oldAlbum);
-            return RedirectToAction("ManageAlbum", "ServiceProviders", new {albumId = oldAlbum.Id});
+            return new HttpStatusCodeResult(400, result);
         }
     }
 }

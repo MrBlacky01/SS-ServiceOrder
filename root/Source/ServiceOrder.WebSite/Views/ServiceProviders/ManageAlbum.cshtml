@@ -9,27 +9,25 @@
 
 <h2>Manage <strong>@Model.Title</strong> Album</h2>
 
-<div class="row">
-    @using (Html.BeginForm("ChangeAlbumName", "Album", FormMethod.Post,new {@class= "albumManage-changeTitleForm row"}))
-    {
-        <div>
-            @Html.ValidationSummary(true, "", new { @class = "text-danger " })
-            @Html.HiddenFor(model => model.Id)
-            <div >
-                @Html.LabelFor(model => model.Title, htmlAttributes: new {@class = "control-label col-lg-2 col-md-2 col-sm-3 col-xs-3 before-input-label" })
-                <div class="col-lg-8 col-md-8 col-sm-9 col-xs-9">
-                    @Html.EditorFor(model => model.Title, new {htmlAttributes = new {@class = "form-control "}})
-                    @Html.ValidationMessageFor(model => model.Title, "", new {@class = "text-danger"})
 
-                </div>
-                <div class="col-xs-2 col-sm-4 visible-sm visible-xs"></div>
-                <input type="submit" value="Change Title" class="btn btn-default albumMahage-changeTitleButton col-lg-2 col-md-2 col-sm-3 col-xs-4" />
+<div class= "albumManage-changeTitleForm row">
+    <div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger " })
+        @Html.HiddenFor(model => model.Id)
+        <div>
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-lg-2 col-md-2 col-sm-3 col-xs-3 before-input-label" })
+            <div class="col-lg-8 col-md-8 col-sm-9 col-xs-9">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control " } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+
             </div>
-            
+            <div class="col-xs-2 col-sm-4 visible-sm visible-xs"></div>
+            <input type="submit" value="Change Title" class="btn btn-default albumMahage-changeTitleButton col-lg-2 col-md-2 col-sm-3 col-xs-4" />
         </div>
-        }
 
     </div>
+</div>               
+    
 
 <div class="row">
     <div class="col-xs-1 visible-xs"></div>
@@ -80,6 +78,32 @@
             links = this.getElementsByTagName('a');
         blueimp.Gallery(links, options);
     };
+
+    var titleInput = $("#Title");
+    var lastTitleInputValue = titleInput.val();
+    var h2TitleValue = $("h2 strong");
+
+    $('input:submit').click(function (event) {
+        event.preventDefault();
+
+        $.ajax({
+            url: '/Album/ChangeAlbumTitle',
+            type: 'POST',
+            data: {
+                albumId: @Model.Id,
+                albumTitle: titleInput.val()
+            },
+            success: function () {
+                alert('success');
+                lastTitleInputValue = titleInput.val();
+                h2TitleValue.text(lastTitleInputValue);
+            },
+            error: function (error) {
+                alert(error.statusText);
+                titleInput.val(lastTitleInputValue);
+            }
+        });
+    });
 </script>
 @Scripts.Render("~/bundles/Blueimp-Gallerry2")
 
