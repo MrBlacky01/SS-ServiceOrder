@@ -113,13 +113,16 @@
 <script>
     autosize($('textarea'));
 
+    var providerDescription = $("textarea");
+
     $('input:submit').click(function (event) {
         event.preventDefault();
-        
+
         $.ajax({
-            url: '/Order/MakeOrder',
+            url: '/ServiceProviders/EditDescription',
             type: 'POST',
-            data: {           
+            data: {
+                description: providerDescription.val()
             },
             success: function () {
                 alert('success');               

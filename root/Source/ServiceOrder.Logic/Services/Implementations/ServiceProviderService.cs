@@ -161,6 +161,31 @@ namespace ServiceOrder.Logic.Services.Implementations
             return _mapper.Map<IEnumerable<ServiceProvider>, IEnumerable<ServiceProviderViewModel>>(providerList);
         }
 
+        public string ChangeDescription(string userId, string newDescription)
+        {
+            var provider = DataBase.ServiceProviders.Get(userId);
+            if (!CheckDescription(newDescription))
+            {
+                return "Description title must has at least 1 symbol and max length 2000";
+            }
+            provider.Description = newDescription;
+            try
+            {
+                DataBase.ServiceProviders.Update(provider);
+                DataBase.Save();
+            }
+            catch (Exception exception)
+            {
+                return exception.Message;
+            }
+            return String.Empty;
+        }
+
+        private bool CheckDescription(string description)
+        {
+            return description != null && description.Length <= 2000 && description.Length >=1;
+        }
+
         private bool CheckRegion(int regionId)
         {
             return DataBase.Regions.Get(regionId) != null;

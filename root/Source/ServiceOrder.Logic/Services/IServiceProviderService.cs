@@ -13,6 +13,6 @@ namespace ServiceOrder.Logic.Services
         void DeleteService(ServiceTypeViewModel service, ServiceProviderViewModel provider);
         IEnumerable<ServiceProviderViewModel> FilterGetProviders (int? regionId, int? categoryId,int? serviceId);
         IEnumerable<ServiceProviderViewModel> GetAllWithServiceAndRegion();
-
+        string ChangeDescription(string userId, string newDescription);
     }
 }

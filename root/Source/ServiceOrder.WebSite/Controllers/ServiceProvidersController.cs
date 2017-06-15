@@ -76,12 +76,14 @@ namespace ServiceOrder.WebSite.Controllers
 
         [HttpPost]
         [Authorize(Roles = "service provider")]
-        public ActionResult EditDescription(ServiceProviderViewModel providerModel)
+        public ActionResult EditDescription(string description)
         {
-            var provider =_provider.Get(User.Identity.GetUserId());
-            provider.Description = providerModel.Description;
-            _provider.Update(provider);
-            return RedirectToAction("Manage",provider);
+            var result = _provider.ChangeDescription(User.Identity.GetUserId(), description);
+            if (result.Equals(String.Empty))
+            {
+                return new HttpStatusCodeResult(200, "OK");
+            }
+            return new HttpStatusCodeResult(400, result);
         }
 
         [HttpGet]
