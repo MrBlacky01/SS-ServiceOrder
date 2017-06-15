@@ -141,6 +141,10 @@
     <Compile Include="Migrations\201706080632171_SaveFileInBase64.Designer.cs">
       <DependentUpon>201706080632171_SaveFileInBase64.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706151825426_ReturnToPhotoByteArray.cs" />
+    <Compile Include="Migrations\201706151825426_ReturnToPhotoByteArray.Designer.cs">
+      <DependentUpon>201706151825426_ReturnToPhotoByteArray.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repositories\AlbumRepository.cs" />
     <Compile Include="Repositories\PhotoRepository.cs" />
@@ -191,6 +195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706080632171_SaveFileInBase64.resx">
       <DependentUpon>201706080632171_SaveFileInBase64.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706151825426_ReturnToPhotoByteArray.resx">
+      <DependentUpon>201706151825426_ReturnToPhotoByteArray.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

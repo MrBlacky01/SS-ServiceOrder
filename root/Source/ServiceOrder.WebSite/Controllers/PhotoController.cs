@@ -16,7 +16,7 @@ namespace ServiceOrder.WebSite.Controllers
         {
             var photo = _photoService.GetPhoto(photoId);
             if (photo == null) return null;
-            return File(Convert.FromBase64String(photo.PhotoImage),photo.ContentType,photo.FileName);
+            return File(photo.PhotoImage,photo.ContentType,photo.FileName);
         }
 
         [Authorize(Roles = "service provider")]

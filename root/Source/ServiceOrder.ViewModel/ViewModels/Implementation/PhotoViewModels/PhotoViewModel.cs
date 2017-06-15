@@ -16,17 +16,6 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.PhotoViewModels
         public string ContentType { get; set; }
 
         [Required]
-        public string PhotoImage {
-            get
-            {
-                if (ImageBytes == null || ImageBytes.Length == 0)
-                {
-                    return _photoImage;
-                }
-                return Convert.ToBase64String(ImageBytes);
-            }
-            set { _photoImage = value; } }
-
-        public byte[] ImageBytes { get; set; }
+        public byte[] PhotoImage { get; set; }
     }
 }

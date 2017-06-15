@@ -52,7 +52,7 @@
         {
             foreach (var file in @Model.AlbumPhotos)
             {
-            <a href="@Url.Action("Get", "Photo", new { photoId = file.Id })" title="@file.FileName"><img src="@($"data:image/gif;base64,{file.PhotoImage}")" alt="@file.FileName" class="imageThumbnailSize"></a>
+            <a href="@Url.Action("Get", "Photo", new { photoId = file.Id })" title="@file.FileName"><img src="@Url.Action("Get", "Photo", new { photoId = file.Id })" alt="@file.FileName" class="imageThumbnailSize"></a>
             }
         }
         else

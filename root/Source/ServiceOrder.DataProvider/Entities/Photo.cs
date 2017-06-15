@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceOrder.DataProvider.Entities
 {
@@ -13,7 +14,8 @@ namespace ServiceOrder.DataProvider.Entities
         public string ContentType { get; set; }
 
         [Required]
-        public String PhotoImage { get; set; }
+        [Column(TypeName = "image")]
+        public byte[] PhotoImage { get; set; }
 
         public Album PhotoAlbum { get; set; }
     }

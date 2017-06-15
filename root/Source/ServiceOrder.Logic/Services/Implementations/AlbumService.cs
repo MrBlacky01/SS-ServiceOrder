@@ -103,10 +103,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             {
                 throw new Exception("No such album");
             }
-            else
-            {
-                return album;
-            }
+            return album;
         }
 
         public void UploadAndShowResults(HttpContextBase contentBase, List<AbstractDataUploadResult> resultList,int albumId)
@@ -135,7 +132,7 @@ namespace ServiceOrder.Logic.Services.Implementations
             {
                 throw new Exception("No such album");
             }
-            var result = album.AlbumPhotos.Select(file => UploadResult(file.FileName, Convert.FromBase64String(file.PhotoImage).Length, file.FileName, file.Id)).ToList();
+            var result = album.AlbumPhotos.Select(file => UploadResult(file.FileName, file.PhotoImage.Length, file.FileName, file.Id)).ToList();
             return result;
         }
 
@@ -188,7 +185,7 @@ namespace ServiceOrder.Logic.Services.Implementations
                     {
                         ContentType = file.ContentType,
                         FileName = file.FileName,
-                        ImageBytes = imageBytes
+                        PhotoImage = imageBytes
 
                     });
                     var photo =
@@ -231,10 +228,10 @@ namespace ServiceOrder.Logic.Services.Implementations
                     throw new Exception("Attempt to upload missing file");
                 }
 
-                var storageImageBytes = Convert.FromBase64String(storageImage.PhotoImage);
+                var storageImageBytes = storageImage.PhotoImage;
                 Array.Resize(ref storageImageBytes, storageImageBytes.Length + (int)inputStream.Length);
                 inputStream.Read(storageImageBytes, storageImageBytes.Length, (int)inputStream.Length);
-                storageImage.PhotoImage = Convert.ToBase64String(storageImageBytes);
+                storageImage.PhotoImage = storageImageBytes;
                 DataBase.Photos.Update(storageImage);
 
                 statuses.Add(UploadResult(file.FileName, file.ContentLength, file.FileName,storageImage.Id));
