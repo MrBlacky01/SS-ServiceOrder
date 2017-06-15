@@ -67,6 +67,10 @@ namespace ServiceOrder.WebSite.Controllers
         [Authorize(Roles = "service provider")]
         public ActionResult ChangeAlbumName(AlbumViewModel newAlbum)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("ManageAlbum","ServiceProviders", new { albumId = newAlbum.Id });
+            }
             var oldAlbum = _albumService.Get(newAlbum.Id);
             if (oldAlbum == null)
             {

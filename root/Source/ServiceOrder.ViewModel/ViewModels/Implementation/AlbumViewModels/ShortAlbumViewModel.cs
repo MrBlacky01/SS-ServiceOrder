@@ -10,7 +10,7 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels
         [AllowHtml]
         [Display(Name = "Title")]
         [Required]
-        [StringLength(255,ErrorMessage = "The {0} must has maximum {1} characters ",MinimumLength = 1)]
+        [StringLength(255,ErrorMessage = "The {0} must has at least {1} characters ",MinimumLength = 1)]
         public string Title { get; set; }
 
         public string ServiceProviderId { get; set; }
