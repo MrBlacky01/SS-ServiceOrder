@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
-@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels.ServiceProviderViewModel
+﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels.ServiceProviderViewModel
 
 @{
     ViewBag.Title = "Manage";
@@ -7,30 +6,61 @@
 
 <h2>Manage</h2>
 
-@using (Html.BeginForm("EditDescription","ServiceProviders",FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
+<div>
+
+    <div class="row">
+        <form class="col-md-4 col-sm-12 col-xs-12">
+            <div class="form-group col-md-12 col-sm-8 col-xs-12 col-sm-offset-2 col-md-offset-0 manageProvider_onlyMobilePadding">
+                <img src="http://orig04.deviantart.net/f06c/f/2010/324/a/2/avatar_upd_big_size_by_merychess-d30zufu.jpg" class="manageProvider-avatarImage-center manageProvider_onlyMobilePadding  col-md-12 col-sm-12 col-xs-12"/>
+                <div class="visible-xs"></div>
+            </div>
+
+            <div class="form-group col-md-12 col-sm-8 col-xs-12 col-sm-offset-2 col-md-offset-0 manageProvider_onlyMobilePadding manageProvider-buttonArea-hide">
+                <span class="btn btn-primary start col-md-4 col-md-offset-1 col-sm-4 col-sm-offset-1 col-xs-5 manageProvider-button-margin">
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Save</span>
+                </span>
+                <button type="reset" class="btn btn-warning cancel col-md-4 col-md-offset-2 col-sm-4 col-sm-offset-2 col-xs-5 manageProvider-button-margin">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            </div>
+
+            <div class="form-group col-md-12 col-sm-6 col-sm-offset-3 col-md-offset-0 manageProvider_onlyMobilePadding">
+                <div class="input-group manageProvider-browseButton-margin">
+                    <input type="text" class="form-control" readonly="">
+                    <label class="input-group-btn">
+                        <span class="btn btn-primary">
+                            Browse <input type="file" style="display: none;"accept="image/*"/>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            
+        </form>
+
+        <div class="form-horizontal col-md-8 col-sm-12 col-xs-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6 control-label" style="text-align: left">
+                    @Html.DisplayFor(model => model.Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @style = "resize: none; box-sizing: border-box;", @rows = "2", @maxlength = "2000" })
+
+                    <input type="submit" value="Change Description" class="btn btn-default service-provider-manage-change-description-button" />
+                </div>
+            </div>
+        </div>
+    </div>
     
+    <div id="dialog"></div>
+   
     <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "control-label col-md-2"})
-            <div class="col-md-10 control-label" style="text-align: left">
-                @Html.DisplayFor(model => model.Name)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Description,  new { @class = "form-control",@style= "resize: none; box-sizing: border-box;",@rows="2", @maxlength="2000" })
-
-                <input type="submit" value="Change Description" class="btn btn-default service-provider-manage-change-description-button" />
-            </div>
-        </div>
-      
         <div class="form-group">
             @Html.ActionLink("Manage Regions", "AddRegion")
             <table class="table ">
@@ -48,13 +78,15 @@
                             @Html.DisplayFor(modelItem => item.Title)
                         </td>
                         <td class="table-td-textCenter">
-                            @Html.ActionLink("Delete", "DeleteRegion", new { regionId = item.Id })
+                            @Html.ActionLink("Delete", "DeleteRegion", new {regionId = item.Id})
                         </td>
                     </tr>
                 }
             </table>
         </div>
+    </div>
 
+    <div class="form-horizontal">
         <div class="form-group">
             @Html.ActionLink("Manage Services", "AddService")
             <table class="table ">
@@ -82,7 +114,9 @@
                 }
             </table>
         </div>
+    </div>
 
+    <div class="form-horizontal">
         <div class="form-group">
             @Html.ActionLink("+ Add Album", "AddAlbum")
             <table class="table ">
@@ -95,42 +129,101 @@
 
                 @foreach (var item in Model.Albums)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    
-                    <td class="table-td-textCenter">
-                        @Html.ActionLink("Manage Album", "ManageAlbum", new {albumId = item.Id }, new {@class="btn btn-default"})
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+
+                        <td class="table-td-textCenter">
+                            @Html.ActionLink("Manage Album", "ManageAlbum", new {albumId = item.Id}, new {@class = "btn btn-default"})
+                        </td>
+                    </tr>
                 }
             </table>
         </div>
     </div>
-}
 
+</div>
 <script>
-    autosize($('textarea'));
+    $(document).ready(function () {
+        autosize($('textarea'));
 
-    var providerDescription = $("textarea");
+        var buttonArea = $(".manageProvider-buttonArea-hide");
+        var providerDescription = $("textarea");
+        var providerAvatar = $("img");
+        var dialog = $("#dialog");
+        var isButtonAreaShow = false;
+        var realImage = providerAvatar[0].src;
 
-    $('input:submit').click(function (event) {
-        event.preventDefault();
-
-        $.ajax({
-            url: '/ServiceProviders/EditDescription',
-            type: 'POST',
-            data: {
-                description: providerDescription.val()
-            },
-            success: function () {
-                alert('success');               
-            },
-            error: function (error) {
-                alert(error.statusText);
-            }
+        dialog.kendoDialog({
+            width: "400px",
+            title: "Avatar Photo",
+            closable: true,
+            visible:false,
+            modal: false,
+            content: "<p>Do you want to change your avatar?<p>",
+            actions: [
+                { text: 'Close'},
+                { text: 'OK', primary: true, action: onOK }
+            ]
         });
+
+
+
+        $('input:submit').click(function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: '/ServiceProviders/EditDescription',
+                type: 'POST',
+                data: {
+                    description: providerDescription.val()
+                },
+                success: function () {
+                    alert('success');
+                },
+                error: function (error) {
+                    alert(error.statusText);
+                }
+            });
+        });
+
+        $('.start').click(function (event) {
+            dialog.data("kendoDialog").open();
+        });
+
+        $('button:reset').click(function (event) {
+            providerAvatar[0].src = realImage;
+            buttonArea.toggle();
+        });
+
+        $(document).on('change', ':file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $(':file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log =  label;
+
+            if (input.length) {
+                input.val(log);
+                var url = window.URL.createObjectURL(event.target.files[0]);
+                providerAvatar[0].src = url;
+                if (isButtonAreaShow == false) {
+                    buttonArea.toggle();
+                }                
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+
+        function onOK(e) {
+            alert("need to save");
+        }
     });
 </script>
 

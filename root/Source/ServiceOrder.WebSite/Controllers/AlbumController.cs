@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
-using ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.PhotoViewModels;
 
 namespace ServiceOrder.WebSite.Controllers
