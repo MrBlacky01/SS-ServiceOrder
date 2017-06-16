@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web;
 using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceCategoryViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewModels;
@@ -14,5 +15,6 @@ namespace ServiceOrder.Logic.Services
         IEnumerable<ServiceProviderViewModel> FilterGetProviders (int? regionId, int? categoryId,int? serviceId);
         IEnumerable<ServiceProviderViewModel> GetAllWithServiceAndRegion();
         string ChangeDescription(string userId, string newDescription);
+        string ChangeAvatarPhoto(string userId, HttpPostedFileBase file);
     }
 }

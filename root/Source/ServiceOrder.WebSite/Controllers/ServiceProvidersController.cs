@@ -329,5 +329,17 @@ namespace ServiceOrder.WebSite.Controllers
             return new HttpStatusCodeResult(200, "OK");
         }
 
+        [HttpPost]
+        [Authorize(Roles = "service provider")]
+        public ActionResult ChangePhoto( HttpPostedFileBase inputFile)
+        {
+            var result = _provider.ChangeAvatarPhoto(User.Identity.GetUserId(), inputFile);
+            if(result.Equals(String.Empty))
+            {
+                return new HttpStatusCodeResult(200, "OK");
+            }
+            return new HttpStatusCodeResult(400, result);
+        }
+    
     }
 }

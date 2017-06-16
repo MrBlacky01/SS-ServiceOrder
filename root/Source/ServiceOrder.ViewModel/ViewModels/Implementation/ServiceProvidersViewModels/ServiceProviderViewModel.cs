@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels;
+using ServiceOrder.ViewModel.ViewModels.Implementation.PhotoViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.RegionViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.ServiceTypeViewModels;
 
@@ -30,6 +31,8 @@ namespace ServiceOrder.ViewModel.ViewModels.Implementation.ServiceProvidersViewM
 
         [Display(Name = "Albums")]
         public List<ShortAlbumViewModel> Albums { get; set; }
+
+        public PhotoViewModel Avatar { get; set; }
 
         [AllowHtml]
         [DataType(DataType.Text)]

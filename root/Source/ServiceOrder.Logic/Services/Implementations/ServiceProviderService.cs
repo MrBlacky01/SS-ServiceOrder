@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using AutoMapper;
 using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
@@ -181,9 +182,54 @@ namespace ServiceOrder.Logic.Services.Implementations
             return String.Empty;
         }
 
+        public string ChangeAvatarPhoto(string userId,HttpPostedFileBase file)
+        {
+            if (file == null)
+            {
+                return "There is not file";
+            }
+            if (!CheckFileIsImage(file))
+            {
+                return "File must be image";
+            }
+            var provider = DataBase.ServiceProviders.Get(userId);
+            
+            
+            byte[] imageBytes = new byte[file.InputStream.Length];
+            file.InputStream.Read(imageBytes, 0, (int)file.InputStream.Length);
+
+            if (provider.ProviderUser.UserPhoto == null)
+            {
+                provider.ProviderUser.UserPhoto = new Photo();
+                
+            }
+            provider.ProviderUser.UserPhoto.FileName = file.FileName;
+            provider.ProviderUser.UserPhoto.PhotoImage = imageBytes;
+            provider.ProviderUser.UserPhoto.ContentType = file.ContentType;
+                     
+            try
+            {
+                DataBase.ServiceProviders.Update(provider);
+                DataBase.Save();
+            }
+            catch (Exception exception)
+            {
+                return exception.Message;
+            }
+            return String.Empty;
+        }
         private bool CheckDescription(string description)
         {
             return description != null && description.Length <= 2000 && description.Length >=1;
+        }
+
+        private bool CheckFileIsImage(HttpPostedFileBase file)
+        {
+            if (file.ContentType.Contains("image"))
+            {
+                return true;
+            }
+            return false;
         }
 
         private bool CheckRegion(int regionId)

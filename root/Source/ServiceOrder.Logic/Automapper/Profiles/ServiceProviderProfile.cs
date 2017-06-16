@@ -14,6 +14,7 @@ namespace ServiceOrder.Logic.Automapper.Profiles
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.Regions, opt => opt.MapFrom(src => src.ProviderRegions))
                 .ForMember(dest => dest.Albums, opt => opt.MapFrom(src => src.ProviderAlbums))
+                .ForMember(dest => dest.Avatar, opt => opt.MapFrom(src => src.ProviderUser.UserPhoto))
                 .ReverseMap()
                 .ForMember(dest => dest.ProviderServiceTypes, opt => opt.MapFrom(src => src.Services))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))

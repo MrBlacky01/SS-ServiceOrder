@@ -25,7 +25,8 @@ namespace ServiceOrder.DataProvider.Repositories
                 .Include(o => o.ProviderRegions)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o => o.ProviderAlbums)
-                .Include(o => o.ProviderUser);
+                .Include(o => o.ProviderUser)
+                .Include(o => o.ProviderUser.UserPhoto);
         }
 
         public ServiceProvider Get(string id)
@@ -36,6 +37,7 @@ namespace ServiceOrder.DataProvider.Repositories
                 .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o=>o.ProviderUser)
+                .Include(o => o.ProviderUser.UserPhoto)
                 .FirstOrDefault(e => e.UserId==id);
         }
 
@@ -47,6 +49,7 @@ namespace ServiceOrder.DataProvider.Repositories
                 .Include(o => o.ProviderAlbums)
                 .Include(o => o.ProviderServiceTypes.Select(src => src.Category))
                 .Include(o => o.ProviderUser)
+                .Include(o => o.ProviderUser.UserPhoto)
                 .Where(predicate).ToList();
         }
 
@@ -66,6 +69,7 @@ namespace ServiceOrder.DataProvider.Repositories
             {
                 entity.Description = item.Description;
                 entity.WorkingTime = item.WorkingTime;
+                entity.ProviderUser.UserPhoto = item.ProviderUser.UserPhoto;
                 ManyToManyCopierer<Region>.CopyList(item.ProviderRegions,entity.ProviderRegions,db.Regions);
                 ManyToManyCopierer<ServiceType>.CopyList(item.ProviderServiceTypes,entity.ProviderServiceTypes,db.ServiceTypes);
                 ManyToManyCopierer<Album>.CopyList(item.ProviderAlbums,entity.ProviderAlbums,db.Albums);

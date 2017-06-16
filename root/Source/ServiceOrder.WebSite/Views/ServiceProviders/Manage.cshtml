@@ -11,7 +11,15 @@
     <div class="row">
         <form class="col-md-4 col-sm-12 col-xs-12">
             <div class="form-group col-md-12 col-sm-8 col-xs-12 col-sm-offset-2 col-md-offset-0 manageProvider_onlyMobilePadding">
-                <img src="http://orig04.deviantart.net/f06c/f/2010/324/a/2/avatar_upd_big_size_by_merychess-d30zufu.jpg" class="manageProvider-avatarImage-center manageProvider_onlyMobilePadding  col-md-12 col-sm-12 col-xs-12"/>
+                @if (Model.Avatar == null)
+                {
+                    <img src="http://orig04.deviantart.net/f06c/f/2010/324/a/2/avatar_upd_big_size_by_merychess-d30zufu.jpg" class="manageProvider-avatarImage-center manageProvider_onlyMobilePadding  col-md-12 col-sm-12 col-xs-12" />
+                }
+                else
+                {
+                    <img src="@Url.Action("Get","Photo",new {photoId = Model.Avatar.Id})" class="manageProvider-avatarImage-center manageProvider_onlyMobilePadding  col-md-12 col-sm-12 col-xs-12" />
+                }
+                
                 <div class="visible-xs"></div>
             </div>
 
@@ -31,7 +39,7 @@
                     <input type="text" class="form-control" readonly="">
                     <label class="input-group-btn">
                         <span class="btn btn-primary">
-                            Browse <input type="file" style="display: none;"accept="image/*"/>
+                            Browse <input id="inputFile" type="file" style="display: none;"accept="image/*"/>
                         </span>
                     </label>
                 </div>
@@ -154,6 +162,8 @@
         var dialog = $("#dialog");
         var isButtonAreaShow = false;
         var realImage = providerAvatar[0].src;
+        var avatar = $('#inputFile')[0];
+        var resetButton = $('button:reset');
 
         dialog.kendoDialog({
             width: "400px",
@@ -192,9 +202,10 @@
             dialog.data("kendoDialog").open();
         });
 
-        $('button:reset').click(function (event) {
+        resetButton.click(function (event) {
             providerAvatar[0].src = realImage;
             buttonArea.toggle();
+            isButtonAreaShow = false;
         });
 
         $(document).on('change', ':file', function () {
@@ -214,6 +225,7 @@
                 providerAvatar[0].src = url;
                 if (isButtonAreaShow == false) {
                     buttonArea.toggle();
+                    isButtonAreaShow = true;
                 }                
             } else {
                 if (log) alert(log);
@@ -221,8 +233,25 @@
 
         });
 
-        function onOK(e) {
-            alert("need to save");
+        function onOK(event) {
+            var formData = new FormData();
+            formData.append("inputFile", avatar.files[0]);
+            var newSrc = providerAvatar[0].src;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ChangePhoto","ServiceProviders")',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    alert('success');
+                    realImage = newSrc;
+                    resetButton.click();
+                },
+                error: function (error) {
+                    alert(error.statusText);
+                }
+            });
         }
     });
 </script>
