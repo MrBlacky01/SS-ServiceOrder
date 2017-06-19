@@ -8,18 +8,20 @@
 
 <div>
 
+    <span id="notification" style="display: none;"></span>
+
     <div class="row">
         <form class="col-md-4 col-sm-12 col-xs-12">
             <div class="form-group col-md-12 col-sm-8 col-xs-12 col-sm-offset-2 col-md-offset-0 manageProvider_onlyMobilePadding">
                 @if (Model.Avatar == null)
                 {
-                    <img src="http://orig04.deviantart.net/f06c/f/2010/324/a/2/avatar_upd_big_size_by_merychess-d30zufu.jpg" class="manageProvider-avatarImage-center manageProvider_onlyMobilePadding  col-md-12 col-sm-12 col-xs-12" />
+                    <img src="http://orig04.deviantart.net/f06c/f/2010/324/a/2/avatar_upd_big_size_by_merychess-d30zufu.jpg" class="manageProvider-avatarImage-center manageProvider_onlyMobilePadding  col-md-12 col-sm-12 col-xs-12"/>
                 }
                 else
                 {
-                    <img src="@Url.Action("Get","Photo",new {photoId = Model.Avatar.Id})" class="manageProvider-avatarImage-center manageProvider_onlyMobilePadding  col-md-12 col-sm-12 col-xs-12" />
+                    <img src="@Url.Action("Get", "Photo", new {photoId = Model.Avatar.Id})" class="manageProvider-avatarImage-center manageProvider_onlyMobilePadding  col-md-12 col-sm-12 col-xs-12"/>
                 }
-                
+
                 <div class="visible-xs"></div>
             </div>
 
@@ -44,30 +46,30 @@
                     </label>
                 </div>
             </div>
-            
+
         </form>
 
         <div class="form-horizontal col-md-8 col-sm-12 col-xs-12">
             <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "control-label col-md-2"})
                 <div class="col-md-6 control-label" style="text-align: left">
                     @Html.DisplayFor(model => model.Name)
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Description, htmlAttributes: new {@class = "control-label col-md-2"})
                 <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @style = "resize: none; box-sizing: border-box;", @rows = "2", @maxlength = "2000" })
+                    @Html.TextAreaFor(model => model.Description, new {@class = "form-control", @style = "resize: none; box-sizing: border-box;", @rows = "2", @maxlength = "2000"})
 
-                    <input type="submit" value="Change Description" class="btn btn-default service-provider-manage-change-description-button" />
+                    <input type="submit" value="Change Description" class="btn btn-default service-provider-manage-change-description-button"/>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div id="dialog"></div>
-   
+
     <div class="form-horizontal">
         <div class="form-group">
             @Html.ActionLink("Manage Regions", "AddRegion")
@@ -152,6 +154,22 @@
     </div>
 
 </div>
+
+<script id="errorTemplate" type="text/x-kendo-template">
+    <div class="error-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/error-icon.png" />
+        <h3>#= title #</h3>
+        <p>#= message #</p>
+    </div>
+</script>
+
+<script id="successTemplate" type="text/x-kendo-template">
+    <div class="success-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/success-icon.png" />
+        <h3>#= message #</h3>
+    </div>
+</script>
+
 <script>
     $(document).ready(function () {
         autosize($('textarea'));
@@ -174,11 +192,26 @@
             content: "<p>Do you want to change your avatar?<p>",
             actions: [
                 { text: 'Close'},
-                { text: 'OK', primary: true, action: onOK }
+                { text: 'OK', primary: true, action: onOk }
             ]
         });
 
-
+        var notification = $("#notification").kendoNotification({
+            position: {
+                pinned: true,
+                top: 50,
+                right: 30
+            },
+            autoHideAfter: 5000,
+            stacking: "down",
+            templates: [{
+                type: "error",
+                template: $("#errorTemplate").html()
+            }, {
+                type: "success",
+                template: $("#successTemplate").html()
+            }]
+        }).data("kendoNotification");
 
         $('input:submit').click(function (event) {
             event.preventDefault();
@@ -190,10 +223,15 @@
                     description: providerDescription.val()
                 },
                 success: function () {
-                    alert('success');
+                    notification.show({
+                        message: "Successful Changing Description"
+                    }, "success");
                 },
                 error: function (error) {
-                    alert(error.statusText);
+                    notification.show({
+                        title: "Error change description",
+                        message: error.statusText
+                    }, "error");
                 }
             });
         });
@@ -228,13 +266,23 @@
                     isButtonAreaShow = true;
                 }                
             } else {
-                if (log) alert(log);
+                if (log) notification.show({
+                    title: "Bad image select",
+                    message: log
+                }, "error");;
             }
 
         });
 
-        function onOK(event) {
+        function onOk(event) {
             var formData = new FormData();
+            if (avatar.files[0].size > 10485760) {
+                notification.show({
+                    title: "So large file",
+                    message: "Please,choose file less than 10Mb."
+                }, "error");
+                return true;
+            }
             formData.append("inputFile", avatar.files[0]);
             var newSrc = providerAvatar[0].src;
             $.ajax({
@@ -244,12 +292,17 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    alert('success');
+                    notification.show({
+                        message: "Success Changing Avatar"
+                    }, "success");
                     realImage = newSrc;
                     resetButton.click();
                 },
                 error: function (error) {
-                    alert(error.statusText);
+                    notification.show({
+                        title: "Error change image",
+                        message: error.statusText
+                    }, "error");
                 }
             });
         }
