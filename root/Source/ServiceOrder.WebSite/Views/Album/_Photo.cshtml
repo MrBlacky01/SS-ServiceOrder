@@ -8,7 +8,7 @@
             <span class="btn btn-success fileinput-button">
                 <i class="glyphicon glyphicon-plus"></i>
                 <span>Add files...</span>
-                <input type="file" name="files[]" multiple>
+                <input type="file" name="files[]" multiple accept="image/*">
             </span>
             <button type="submit" class="btn btn-primary start">
                 <i class="glyphicon glyphicon-upload"></i>
@@ -61,56 +61,14 @@
     <ol class="indicator"></ol>
 </div>
 
-<!--script>
-    /*$(document).ready(function () {
-        var inputElement = $("input:file")[0];
+<script>
+    $(document).ready(function () {
+        
         $('#fileupload').fileupload({
-            dataType: 'json',
-            add: function (e, data) {
-                
-            },
-            done: function (e, data) {
-                data.context.text('Upload finished.');
-            }
+            maxFileSize: 10485760
         });
-        $("button:submit").click(function () {
-            
-        });
-        /*inputElement.onclick = function (event) {
-            this.files = null;
-        }
-        inputElement.onchange = function (event) {
-            alert(this.value);
-            var fileList = inputElement.files;
-            //TODO do something with fileList.  
-        }
-       
-        $("button:submit").click(function() {
-            var formData = new FormData();
-            var totalFiles = inputElement.files.length;
-            for (var i = 0; i < totalFiles; i++) {
-                var file = inputElement.files[i];
-                formData.append("FileUpload", file);
-            }
-            $.ajax({
-                type: "POST",
-                url: '/Album/Upload',
-                data: 
-                     formData,
-                    
-                dataType: 'json',
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    alert('succes!!');
-                },
-                error: function(error) {
-                    alert("errror");
-                }
-            });
-        });
-    });*/
-</!--script-->
+       });
+</script>
 <script id="template-upload" type="text/x-tmpl">
     {% for (var i=0, file; file=o.files[i]; i++) { %}
    

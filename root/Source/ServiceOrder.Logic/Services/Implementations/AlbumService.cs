@@ -8,6 +8,7 @@ using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Interfaces;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.PhotoViewModels;
+using ServiceOrder.Common.Utils;
 
 namespace ServiceOrder.Logic.Services.Implementations
 {
@@ -179,6 +180,10 @@ namespace ServiceOrder.Logic.Services.Implementations
                     {
                         throw new FileLoadException("Can't be the same names of photos in album");
                     }
+                    if (!ValidationUtils.CheckFileIsImage(file))
+                    {
+                        throw new FileLoadException("File must has image type");
+                    }
                     byte[] imageBytes = new byte[file.InputStream.Length];
                     file.InputStream.Read(imageBytes, 0, (int)file.InputStream.Length);
                     AddPhoto(albumId, new PhotoViewModel()
@@ -189,7 +194,7 @@ namespace ServiceOrder.Logic.Services.Implementations
 
                     });
                     var photo =
-                        DataBase.Photos.Find(src => src.PhotoAlbum.Id == albumId && src.FileName == file.FileName).FirstOrDefault();
+                        DataBase.Photos.Find(src =>  src.FileName == file.FileName).FirstOrDefault(src => src.PhotoAlbum.Id == albumId);
                     if (photo == null)
                     {
                         statuses.Add(UploadErrorResult(file.FileName, file.ContentLength, "Wrong additing to database"));

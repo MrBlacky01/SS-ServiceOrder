@@ -60,16 +60,19 @@ namespace ServiceOrder.DataProvider.Repositories
 
         public void Update(ServiceProvider item)
         {
-            var entity = db.ServiceProviders.Where(c => c.UserId == item.UserId).AsQueryable().FirstOrDefault();
+            var entity = Get(item.UserId);
             if (entity == null)
             {
-                db.ServiceProviders.Add(item);
+                throw new Exception("No such service provider");
             }
             else
             {
                 entity.Description = item.Description;
                 entity.WorkingTime = item.WorkingTime;
-                entity.ProviderUser.UserPhoto = item.ProviderUser.UserPhoto;
+                if (item.ProviderUser != null)
+                {
+                    entity.ProviderUser.UserPhoto = item.ProviderUser.UserPhoto;
+                }         
                 ManyToManyCopierer<Region>.CopyList(item.ProviderRegions,entity.ProviderRegions,db.Regions);
                 ManyToManyCopierer<ServiceType>.CopyList(item.ProviderServiceTypes,entity.ProviderServiceTypes,db.ServiceTypes);
                 ManyToManyCopierer<Album>.CopyList(item.ProviderAlbums,entity.ProviderAlbums,db.Albums);

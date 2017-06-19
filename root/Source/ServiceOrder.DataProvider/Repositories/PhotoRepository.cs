@@ -37,7 +37,7 @@ namespace ServiceOrder.DataProvider.Repositories
             return db.Photos
                     .Include(o => o.PhotoAlbum)
                     .Include(o => o.PhotoAlbum.Provider)
-                    .Where(predicate).ToList();
+                    .Where(predicate);
         }
 
         public void Create(Photo item)

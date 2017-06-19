@@ -133,6 +133,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ServiceOrder.Common\ServiceOrder.Common.csproj">
+      <Project>{88b1f069-4661-4d2d-83ee-0f30dbe80d79}</Project>
+      <Name>ServiceOrder.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceOrder.DataProvider\ServiceOrder.DataProvider.csproj">
       <Project>{4b83dab8-2a1a-452a-8e80-0bacf8cec44a}</Project>
       <Name>ServiceOrder.DataProvider</Name>
