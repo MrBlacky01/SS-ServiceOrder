@@ -46,11 +46,11 @@ namespace ServiceOrder.WebSite
 
             bundles.Add(new StyleBundle("~/Content/jQuery-File-Upload").Include(
                     "~/Content/jQuery.FileUpload/css/jquery.fileupload.css",
-                   "~/Content/jQuery.FileUpload/css/jquery.fileupload-ui.css",
-                   "~/Content/blueimp-gallery2/css/blueimp-gallery.css",
-                     "~/Content/blueimp-gallery2/css/blueimp-gallery-video.css",
-                       "~/Content/blueimp-gallery2/css/blueimp-gallery-indicator.css"
-                   ));
+                   "~/Content/jQuery.FileUpload/css/jquery.fileupload-ui.css"));
+            bundles.Add(new StyleBundle("~/Content/Blueimp-Gallery").Include(
+                    "~/Content/blueimp-gallery2/css/blueimp-gallery.css",
+                    "~/Content/blueimp-gallery2/css/blueimp-gallery-video.css",
+                    "~/Content/blueimp-gallery2/css/blueimp-gallery-indicator.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jQuery-File-Upload").Include(
                     //<!-- The Templates plugin is included to render the upload/download listings -->

@@ -4,6 +4,8 @@
     ViewBag.Title = "Service Provider Info";
 }
 
+@Styles.Render("~/Content/Blueimp-Gallery")
+
 <div class="row showServiceProvider-topMargin">
 
     <div class="col-md-4 col-sm-8 col-xs-12 col-sm-offset-2 col-md-offset-0 showServiceProvider-mobilePadding">
@@ -90,7 +92,6 @@
         <input type="checkbox" id="ch-@album.Id" class="hide"/>
         <label for="ch-@album.Id">@album.Title</label>
         <div>@album.Title+@album.Id</div>
-        <br/>
         <br/>
     }
 </div>
