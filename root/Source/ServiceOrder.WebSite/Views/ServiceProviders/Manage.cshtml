@@ -224,12 +224,12 @@
                 },
                 success: function () {
                     notification.show({
-                        message: "Successful Changing Description"
+                        message: "Success Changing"
                     }, "success");
                 },
                 error: function (error) {
                     notification.show({
-                        title: "Error change description",
+                        title: "Error",
                         message: error.statusText
                     }, "error");
                 }
@@ -293,14 +293,14 @@
                 processData: false,
                 success: function (data) {
                     notification.show({
-                        message: "Success Changing Avatar"
+                        message: "Success Changing"
                     }, "success");
                     realImage = newSrc;
                     resetButton.click();
                 },
                 error: function (error) {
                     notification.show({
-                        title: "Error change image",
+                        title: "Error",
                         message: error.statusText
                     }, "error");
                 }

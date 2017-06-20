@@ -6,6 +6,8 @@
 
 <h2>Choose your regions:</h2>
 
+<span id="notification" style="display: none;"></span>
+
 @using (Html.BeginForm("AddRegion","ServiceProviders",FormMethod.Post, new {@class= "add-region-form" }))
 {
     @Html.AntiForgeryToken()
@@ -18,8 +20,24 @@
  
 }
 <div>
-    @Html.ActionLink("Back to Manage", "Manage",null,new {@class="btn btn-default"})
+    @Html.ActionLink("Back to Manage", "Manage", null, new {@class = "btn btn-default"})
 </div>
+
+<script id="errorTemplate" type="text/x-kendo-template">
+    <div class="error-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/error-icon.png" />
+        <h3>#= title #</h3>
+        <p>#= message #</p>
+    </div>
+</script>
+
+<script id="successTemplate" type="text/x-kendo-template">
+    <div class="success-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/success-icon.png" />
+        <h3>#= message #</h3>
+    </div>
+</script>
+
 <script>
     $(document).ready(function () {
         var allRegions = @(Html.Raw(Json.Encode(Model.allRegions)));
@@ -34,6 +52,23 @@
 
         var multiselect = $("#products").data("kendoMultiSelect");
 
+        var notification = $("#notification").kendoNotification({
+            position: {
+                pinned: true,
+                top: 50,
+                right: 30
+            },
+            autoHideAfter: 5000,
+            stacking: "down",
+            templates: [{
+                type: "error",
+                template: $("#errorTemplate").html()
+            }, {
+                type: "success",
+                template: $("#successTemplate").html()
+            }]
+        }).data("kendoNotification");
+
         $('input:submit').click(function (event) {
             event.preventDefault();
             $.ajax({
@@ -41,10 +76,15 @@
                 type: 'POST',
                 data: {s : JSON.stringify( multiselect.dataItems())},
                 success: function () {
-                    alert('suc');
+                    notification.show({
+                        message: "Success"
+                    }, "success");
                 },
                 error: function (error) {
-                    alert('error');
+                    notification.show({
+                        title: "Error",
+                        message: error.statusText
+                    }, "error");
                 }
             });
         });

@@ -6,6 +6,8 @@
 
 <h2>AddCategory</h2>
 
+<span id="notification" style="display: none;"></span>
+
 @using (Html.BeginForm("AddRegion", "ServiceProviders", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -31,10 +33,42 @@
     @Html.ActionLink("Back to Manage", "Manage")
 </div>
 
+<script id="errorTemplate" type="text/x-kendo-template">
+    <div class="error-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/error-icon.png" />
+        <h3>#= title #</h3>
+        <p>#= message #</p>
+    </div>
+</script>
+
+<script id="successTemplate" type="text/x-kendo-template">
+    <div class="success-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/success-icon.png" />
+        <h3>#= message #</h3>
+    </div>
+</script>
+
 <script>
     $(document).ready(function () {
 
         var allCategories = @(Html.Raw(Json.Encode(Model.Categories)));
+
+        var notification = $("#notification").kendoNotification({
+            position: {
+                pinned: true,
+                top: 50,
+                right: 30
+            },
+            autoHideAfter: 5000,
+            stacking: "down",
+            templates: [{
+                type: "error",
+                template: $("#errorTemplate").html()
+            }, {
+                type: "success",
+                template: $("#successTemplate").html()
+            }]
+        }).data("kendoNotification");
 
         $("#category").kendoDropDownList({
             dataTextField: "Title",
@@ -64,10 +98,15 @@
                 type: 'POST',
                 data: {services : JSON.stringify( multiselect.dataItems()),category:JSON.stringify(dropdownlist.dataItem())},
                 success: function () {
-                    alert('success');
+                    notification.show({
+                        message: "Success add Service"
+                    }, "success");
                 },
                 error: function (error) {
-                    alert(error.toString());
+                    notification.show({
+                        title: "Error",
+                        message: error.statusText
+                    }, "error");
                 }
             });
         });
@@ -99,7 +138,10 @@
                     multiselect.value( e);
                 },
                 error: function (error) {
-                    alert('error');
+                    notification.show({
+                        title: "Error",
+                        message: error.statusText
+                    }, "error");
                 }
             });
         }

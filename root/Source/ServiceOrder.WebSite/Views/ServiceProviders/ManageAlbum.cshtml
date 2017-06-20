@@ -9,6 +9,7 @@
 
 <h2>Manage <strong>@Model.Title</strong> Album</h2>
 
+<span id="notification" style="display: none;"></span>
 
 <div class= "albumManage-changeTitleForm row">
     <div>
@@ -67,6 +68,20 @@
     @Html.ActionLink("Back to Management", "Manage", "ServiceProviders", null, new { @class = "btn btn-default backButtonMargin" })
 </div>
 
+<script id="errorTemplate" type="text/x-kendo-template">
+    <div class="error-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/error-icon.png" />
+        <h3>#= title #</h3>
+        <p>#= message #</p>
+    </div>
+</script>
+
+<script id="successTemplate" type="text/x-kendo-template">
+    <div class="success-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/success-icon.png" />
+        <h3>#= message #</h3>
+    </div>
+</script>
 
 <script>
 
@@ -83,6 +98,23 @@
     var lastTitleInputValue = titleInput.val();
     var h2TitleValue = $("h2 strong");
 
+    var notification = $("#notification").kendoNotification({
+        position: {
+            pinned: true,
+            top: 50,
+            right: 30
+        },
+        autoHideAfter: 5000,
+        stacking: "down",
+        templates: [{
+            type: "error",
+            template: $("#errorTemplate").html()
+        }, {
+            type: "success",
+            template: $("#successTemplate").html()
+        }]
+    }).data("kendoNotification");
+
     $('input:submit').click(function (event) {
         event.preventDefault();
 
@@ -94,12 +126,17 @@
                 albumTitle: titleInput.val()
             },
             success: function () {
-                alert('success');
+                notification.show({
+                    message: "Success Changing"
+                }, "success");
                 lastTitleInputValue = titleInput.val();
                 h2TitleValue.text(lastTitleInputValue);
             },
             error: function (error) {
-                alert(error.statusText);
+                notification.show({
+                    title: "Error ",
+                    message: error.statusText
+                }, "error");
                 titleInput.val(lastTitleInputValue);
             }
         });
