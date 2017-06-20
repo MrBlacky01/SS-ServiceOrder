@@ -1,4 +1,5 @@
 ﻿@import "Colors.less";
+@import "Fonts.less";
 
 html{
   position: relative;
@@ -298,13 +299,13 @@ body {
     margin-bottom:20px;
 }
 
-.manageProvider_onlyMobilePadding{
+.manageProvider_onlyMobilePadding .showServiceProvider-mobilePadding{
     padding-left:0;
     padding-right: 0;
 }
 
 @media (max-width:768px) { 
-    .manageProvider_onlyMobilePadding{
+    .manageProvider_onlyMobilePadding .showServiceProvider-mobilePadding{
          padding-left:15px;
         padding-right:15px;
     }
@@ -324,7 +325,7 @@ body {
     border: 0;
 }
 
-/* Error template */
+/* Error notitemplate */
 .k-notification-error.k-group {
     background:#ffcdd2;
     color: #ffffff;
@@ -363,4 +364,79 @@ body {
     float:left;
     vertical-align: middle;
     margin-right: 10px;
+}
+
+.showServiceProvider-avatarImage{
+    border-radius: 30%;
+    padding-right:0;
+    padding-left:0;
+    width:100%;
+}
+
+.showServiceProvider-topMargin{
+    margin-top: 15px;
+}
+
+.showServiceProvider-name{
+    margin-top: 0;
+    font-size: 2.5em;
+    text-align: center;
+    word-wrap:break-word;
+}
+
+.showServiceProvider-description{
+    text-indent: 1.5em; 
+    text-align: justify;
+    word-wrap:break-word;
+}
+
+.showServiceProvider-tableRow{
+    margin: 25px auto;
+}
+
+.showServiceProvider-tableCaption{
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size:1.5em;
+    text-align: center;
+    font-family:@fontTableCaption;
+    color: @colotTableCaption;
+}
+
+.showServiceProvider-serviceTable-categoryTd{
+    vertical-align: middle !important;
+    font-family:@fontTableCell;
+}
+.showServiceProvider-regionTable-cell{
+    text-align:center;
+    vertical-align: middle !important;
+    font-family:@fontTableCell;
+}
+
+
+.hide {
+    display: none; 
+}
+.hide + label ~ div{
+    display: none;
+}
+/* оформляем текст label */
+.hide + label {
+    border-bottom: 1px dotted @colorAlbumCaption;
+    padding: 0;
+    color: @colorAlbumCaption;
+    cursor: pointer;
+    display: inline-block; 
+    font-family:@fontTableCell;
+}
+/* вид текста label при активном переключателе */
+.hide:checked + label {
+    color: @colorAlbumCaptionOpen;
+    border-bottom: 0;
+}
+/* когда чекбокс активен показываем блоки с содержанием  */
+.hide:checked + label + div {
+    display: block; 
+    background: @colorAlbumBody;
+    padding: 10px; 
 }

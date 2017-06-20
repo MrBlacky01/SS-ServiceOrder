@@ -83,6 +83,7 @@
     <Compile Include="ViewModels\Implementation\PhotoViewModels\AbstractDataUploadResult.cs" />
     <Compile Include="ViewModels\Implementation\PhotoViewModels\ErrorDataUploadResult.cs" />
     <Compile Include="ViewModels\Implementation\PhotoViewModels\PhotoViewModel.cs" />
+    <Compile Include="ViewModels\Implementation\PhotoViewModels\ShortPhotoViewModel.cs" />
     <Compile Include="ViewModels\Implementation\PhotoViewModels\ViewDataUploadFilesResult.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderCategoryViewModel.cs" />
     <Compile Include="ViewModels\Implementation\ServiceProvidersViewModels\ServiceProviderPaginationFiltrationList.cs" />

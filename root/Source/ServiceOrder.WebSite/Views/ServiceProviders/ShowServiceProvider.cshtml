@@ -4,4 +4,99 @@
     ViewBag.Title = "Service Provider Info";
 }
 
+<div class="row showServiceProvider-topMargin">
 
+    <div class="col-md-4 col-sm-8 col-xs-12 col-sm-offset-2 col-md-offset-0 showServiceProvider-mobilePadding">
+        
+        @if (Model.Avatar == null)
+        {
+            <img src="http://orig04.deviantart.net/f06c/f/2010/324/a/2/avatar_upd_big_size_by_merychess-d30zufu.jpg" class="showServiceProvider-avatarImage showServiceProvider-mobilePadding "/>
+        }
+        else
+        {
+            <img src="@Url.Action("Get", "Photo", new {photoId = Model.Avatar.Id})" class="showServiceProvider-avatarImage showServiceProvider-mobilePadding "/>
+        }
+    </div>
+
+    <div class="col-md-8 col-sm-12 col-xs-12">
+
+        <h2 class="col-md-12 col-sm-12 col-xs-12 showServiceProvider-name">
+            @Model.Name
+        </h2>
+
+
+        <div class="col-md-12 col-sm-12 col-xs-12 showServiceProvider-description">
+            @Model.Description
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row showServiceProvider-tableRow">
+    <div class="col-md-5 col-sm-8 col-sm-offset-2 col-xs-12 col-md-offset-0">
+
+        <table class="table  table-bordered">
+            <caption class="showServiceProvider-tableCaption">Regions</caption>
+            @foreach (var region in Model.Regions)
+            {
+                <tr class="showServiceProvider-regionTable-cell">
+                    <td>
+                        @region.Title
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="col-md-7 col-sm-8 col-sm-offset-2 col-xs-12 col-md-offset-0">
+        <table class="table table-bordered">
+            <caption class="showServiceProvider-tableCaption">Services</caption>
+            @{
+                var temp = -1;
+                foreach (var service in Model.Services)
+                {
+                    <tr>
+                        @if (temp != service.Category.Id)
+                        {
+                            <td rowspan="@Model.Services.Count(src => src.Category.Id == service.Category.Id)" class="showServiceProvider-serviceTable-categoryTd">
+                                @service.Category.Title
+                            </td>
+                            temp = service.Category.Id;
+                        }
+                        <td class="showServiceProvider-serviceTable-categoryTd">
+                            @service.Title
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+        <div class="slides"></div>
+        <h3 class="title"></h3>
+        <a class="prev">‹</a>
+        <a class="next">›</a>
+        <a class="close">×</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+    @foreach (var album in Model.Albums)
+    {
+        <input type="checkbox" id="ch-@album.Id" class="hide"/>
+        <label for="ch-@album.Id">@album.Title</label>
+        <div>@album.Title+@album.Id</div>
+        <br/>
+        <br/>
+    }
+</div>
+<script>
+
+</script>
+
+
+@Scripts.Render("~/bundles/Blueimp-Gallerry2")

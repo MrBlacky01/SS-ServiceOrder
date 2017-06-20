@@ -277,7 +277,15 @@ namespace ServiceOrder.WebSite.Controllers
 
         public ActionResult ShowServiceProvider(string providerId)
         {
-            return View();
+            
+            var provider = _provider.Get(providerId);
+            if (provider == null)
+            {
+                return View("MessageView", new ResultMessageViewModel { Message = "There's no such service provider"});
+            }
+            return View(provider);
+            
+            
         }
 
         [HttpGet]
@@ -340,6 +348,8 @@ namespace ServiceOrder.WebSite.Controllers
             }
             return new HttpStatusCodeResult(400, result);
         }
+
+
     
     }
 }
