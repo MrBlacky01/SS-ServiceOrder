@@ -39,7 +39,7 @@ namespace ServiceOrder.WebSite.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class ChangePasswordViewModel
+    /*public class ChangePasswordViewModel
     {
         [Required]
         [DataType(DataType.Password)]
@@ -56,7 +56,7 @@ namespace ServiceOrder.WebSite.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-    }
+    }*/
 
     public class AddPhoneNumberViewModel
     {

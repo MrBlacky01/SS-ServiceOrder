@@ -15,7 +15,7 @@ namespace ServiceOrder.Logic.Services
 
         Task<SignInStatus> Login(LoginViewModel model);
         Task<IdentityResult> Register(RegisterViewModel registerModel);
-        Task<IdentityResult> ResetPassword(ResetPasswordViewModel model);
+        Task<IdentityResult> ChangePassword(ChangePasswordViewModel model);
         Task SignIn(User user);
 
     }

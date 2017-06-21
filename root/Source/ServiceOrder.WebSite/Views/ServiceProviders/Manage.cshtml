@@ -154,6 +154,8 @@
     </div>
 
     @Html.ActionLink("Preview","ShowServiceProvider","ServiceProviders",new { providerId = Model.Id}, new {@class = "btn btn-default"})
+
+    @Html.ActionLink("Change password", "ChangePassword", "Manage",null, new { @class = "btn btn-default" })
 </div>
 
 <script id="errorTemplate" type="text/x-kendo-template">

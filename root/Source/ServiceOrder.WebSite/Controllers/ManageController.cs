@@ -1,10 +1,24 @@
-﻿using System.Web.Mvc;
+﻿using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using ServiceOrder.Logic.Services;
+using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
+using ServiceOrder.WebSite.Models;
 
 namespace ServiceOrder.WebSite.Controllers
 {
     [Authorize]
     public class ManageController : Controller
     {
+        private IAccountService _accountService;
+        public ManageController(IAccountService accountService)
+        {
+            _accountService = accountService;
+        }
+
         /*private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -202,7 +216,7 @@ namespace ServiceOrder.WebSite.Controllers
             }
             return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
-
+        */
         //
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
@@ -220,20 +234,17 @@ namespace ServiceOrder.WebSite.Controllers
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            model.Id = User.Identity.GetUserId();
+            var result = await _accountService.ChangePassword(model);
             if (result.Succeeded)
             {
-                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                if (user != null)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("Index","Home");
             }
-            AddErrors(result);
+            
             return View(model);
         }
 
+        /*
         //
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()

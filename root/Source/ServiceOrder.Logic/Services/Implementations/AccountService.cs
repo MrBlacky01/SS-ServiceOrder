@@ -77,14 +77,17 @@ namespace ServiceOrder.Logic.Services.Implementations
             return result;
         }
 
-        public async Task<IdentityResult> ResetPassword(ResetPasswordViewModel model)
+        public async Task<IdentityResult> ChangePassword(ChangePasswordViewModel model)
         {
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
+            var user = await UserManager.FindByIdAsync(model.Id);
+
+            var confirmPassword = await UserManager.CheckPasswordAsync(user, model.OldPassword);
+            if (!confirmPassword)
             {
-                throw new Exception("There's no such user");
+                return new IdentityResult("Wrong password");
             }
-            return await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);          
+ 
+            return await UserManager.ChangePasswordAsync(user.Id, model.OldPassword, model.NewPassword); ;          
         }
 
         public async Task SignIn(User user)

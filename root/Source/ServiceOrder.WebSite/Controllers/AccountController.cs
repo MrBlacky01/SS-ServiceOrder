@@ -197,7 +197,7 @@ namespace ServiceOrder.WebSite.Controllers
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
-        }*/
+        }
 
         //
         // GET: /Account/ResetPassword
