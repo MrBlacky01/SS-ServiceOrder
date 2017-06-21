@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mime;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.PhotoViewModels;
@@ -58,8 +61,17 @@ namespace ServiceOrder.WebSite.Controllers
 
         public JsonResult GetFileList(int albumId)
         {
-            var list = _albumService.GetPhotosList(albumId);
-            return Json(new {files = list}, JsonRequestBehavior.AllowGet);
+            try
+            {  
+                var list = _albumService.GetPhotosList(albumId);
+                return Json(new {files = list}, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exception)
+            {
+                Response.StatusCode = (int) HttpStatusCode.BadRequest;
+                Response.StatusDescription = exception.Message;
+                return Json(new {success = false}, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]

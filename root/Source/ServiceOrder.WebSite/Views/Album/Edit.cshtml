@@ -6,6 +6,8 @@
 
 <h2>Edit</h2>
 
+<span id="notification" style="display: none;"></span>
+
 @Styles.Render("~/Content/jQuery-File-Upload")
 @Styles.Render("~/Content/Blueimp-Gallery")
 
@@ -32,19 +34,55 @@
 
 @Scripts.Render("~/bundles/jQuery-File-Upload")
 
+<script id="errorTemplate" type="text/x-kendo-template">
+    <div class="error-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/error-icon.png" />
+        <h3>#= title #</h3>
+        <p>#= message #</p>
+    </div>
+</script>
+
+<script id="successTemplate" type="text/x-kendo-template">
+    <div class="success-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/success-icon.png" />
+        <h3>#= message #</h3>
+    </div>
+</script>
+
 <script>
+    var notification = $("#notification").kendoNotification({
+        position: {
+            pinned: true,
+            top: 50,
+            right: 30
+        },
+        autoHideAfter: 5000,
+        stacking: "down",
+        templates: [{
+            type: "error",
+            template: $("#errorTemplate").html()
+        }, {
+            type: "success",
+            template: $("#successTemplate").html()
+        }]
+    }).data("kendoNotification");
+
     $.ajax({
-        type: 'GET',
-        contentType: "application/json; charset=utf-8",
-        url: '/Album/GetFileList',
-        data: { albumId:@Model.Id},
-        success: function(data) {
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            url: '/Album/GetFileList',
+            data: { albumId:5},
+            success: function(data) {
+                $('#fileupload').fileupload('option', 'done').call($('#fileupload'), $.Event('done'), { result: { files: data.files } })
+                $('#fileupload').removeClass('fileupload-processing');
+            },
+            error: function (error) {
+                notification.show({
+                    title: "Error",
+                    message: error.statusText
+                }, "error");
+            }
 
-
-            $('#fileupload').fileupload('option', 'done').call($('#fileupload'), $.Event('done'), { result: { files: data.files } })
-            $('#fileupload').removeClass('fileupload-processing');
         }
-
-    }
     );
 </script>
