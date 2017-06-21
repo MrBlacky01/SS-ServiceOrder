@@ -6,6 +6,8 @@
 
 @Styles.Render("~/Content/Blueimp-Gallery")
 
+<span id="notification" style="display: none;"></span>
+
 <div class="row showServiceProvider-topMargin">
 
     <div class="col-md-4 col-sm-8 col-xs-12 col-sm-offset-2 col-md-offset-0 showServiceProvider-mobilePadding">
@@ -78,7 +80,7 @@
 </div>
 
 <div class="row">
-    <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+    <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" >
         <div class="slides"></div>
         <h3 class="title"></h3>
         <a class="prev">‹</a>
@@ -91,12 +93,76 @@
     {
         <input type="checkbox" id="ch-@album.Id" class="hide"/>
         <label for="ch-@album.Id">@album.Title</label>
-        <div>@album.Title+@album.Id</div>
+        <div id="@album.Title"></div>
         <br/>
     }
 </div>
-<script>
 
+<script id="errorTemplate" type="text/x-kendo-template">
+    <div class="error-notification">
+        <img src="http://demos.telerik.com/kendo-ui/content/web/notification/error-icon.png" />
+        <h3>#= title #</h3>
+        <p>#= message #</p>
+    </div>
+</script>
+
+<script>
+    $(document).ready(function () {
+        var notification = $("#notification").kendoNotification({
+            position: {
+                pinned: true,
+                top: 50,
+                right: 30
+            },
+            autoHideAfter: 5000,
+            stacking: "down",
+            templates: [{
+                type: "error",
+                template: $("#errorTemplate").html()
+            }]
+        }).data("kendoNotification");
+
+        var albumsContainer = $("input+label+div");
+        var albumCheckBox = $("input:checkbox");
+        var albumId = [];
+        var albumOpen = [];
+        for(var i = 0; i< albumsContainer.length;i++) {
+            albumId.push(albumsContainer[i]);
+            albumOpen.push(false);
+        }
+        albumCheckBox.change(function(event) {
+            var index = albumCheckBox.index(this);
+            if (this.checked == true && albumOpen[index] == false) {
+                albumOpen[index] = true;
+                sendAjax(this.id.substring(3),index);
+            }
+        });
+
+        function sendAjax(albumIndex,index) {
+            $.ajax({
+                type: 'GET',
+                contentType: "application/json; charset=utf-8",
+                url: '/Album/GetFileList',
+                data: { albumId: albumIndex},
+                success: function(data) {
+                    var e = true;
+                    data.files.forEach(function (item, i, arr) {
+                        albumsContainer.eq(index).append("<a href=\"" + item.url + "\" title=\"" + item.name + "\" data-gallery=\"#blueimp-gallery-" + albumsContainer[index].id + "\" >" +
+                            "<img src=\"" + item.url + "\" alt=\"" + item.name + "\" class=\"imageThumbnailSize\"/>" +
+                            "</a>");
+                    });                
+                },
+                error: function (error) {
+                    notification.show({
+                        title: "Error",
+                        message: error.statusText
+                    }, "error");
+                }
+
+            });
+        }
+
+    });
 </script>
 
 

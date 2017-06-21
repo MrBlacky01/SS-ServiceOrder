@@ -71,7 +71,7 @@
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             url: '/Album/GetFileList',
-            data: { albumId:5},
+            data: { albumId:@Model.Id},
             success: function(data) {
                 $('#fileupload').fileupload('option', 'done').call($('#fileupload'), $.Event('done'), { result: { files: data.files } })
                 $('#fileupload').removeClass('fileupload-processing');
