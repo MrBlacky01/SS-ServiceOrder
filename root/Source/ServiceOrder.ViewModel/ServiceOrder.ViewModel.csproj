@@ -80,6 +80,7 @@
     <Compile Include="ViewModels\Implementation\AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AlbumViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AlbumViewModels\ShortAlbumViewModel.cs" />
+    <Compile Include="ViewModels\Implementation\ManageViewModels\ManageIndexViewModel.cs" />
     <Compile Include="ViewModels\Implementation\Order\OrderViewModel.cs" />
     <Compile Include="ViewModels\Implementation\PhotoViewModels\AbstractDataUploadResult.cs" />
     <Compile Include="ViewModels\Implementation\PhotoViewModels\ErrorDataUploadResult.cs" />

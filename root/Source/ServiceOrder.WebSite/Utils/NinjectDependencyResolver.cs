@@ -29,6 +29,7 @@ namespace ServiceOrder.WebSite.Utils
             kernel.Bind<IServiceTypeService>().To<ServiceTypeService>();
             kernel.Bind<IRegionService>().To<RegionService>();
             kernel.Bind<IAccountService>().To<AccountService>();
+            kernel.Bind<IManageService>().To<ManageService>();
             kernel.Bind<IServiceProviderService>().To<ServiceProviderService>();
             kernel.Bind<IOrderService>().To<OrderService>();
             kernel.Bind<IAlbumService>().To<AlbumService>();

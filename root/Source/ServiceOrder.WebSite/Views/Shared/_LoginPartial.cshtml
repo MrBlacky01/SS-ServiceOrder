@@ -9,7 +9,7 @@
             @if (User.IsInRole("client"))
             {
                 <li>
-                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index","ServiceProviders", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index","Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                 </li>
             }
             else
@@ -17,14 +17,14 @@
                 if (User.IsInRole("service provider"))
                 {
                     <li>
-                        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Manage", "ServiceProviders", routeValues: null, htmlAttributes: new { title = "Manage" })
+                        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
                     </li>
                 }
                 else
                 {
                     if (User.IsInRole("admin"))
                     {
-                        <li>@Html.ActionLink("This is Boss","Index","Home")</li>
+                        <li>@Html.ActionLink("This is Boss", "Index", "Manage")</li>
                     }
                 }
             }

@@ -77,19 +77,6 @@ namespace ServiceOrder.Logic.Services.Implementations
             return result;
         }
 
-        public async Task<IdentityResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            var user = await UserManager.FindByIdAsync(model.Id);
-
-            var confirmPassword = await UserManager.CheckPasswordAsync(user, model.OldPassword);
-            if (!confirmPassword)
-            {
-                return new IdentityResult("Wrong password");
-            }
- 
-            return await UserManager.ChangePasswordAsync(user.Id, model.OldPassword, model.NewPassword); ;          
-        }
-
         public async Task SignIn(User user)
         {
              await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
