@@ -12,9 +12,5 @@ namespace ServiceOrder.Logic.Services
         ServiceOrderUserManager UserManager { get; set; }
 
         Task<IdentityResult> ChangePassword(ChangePasswordViewModel model);
-        Task<bool> IsEmailConfirmed(string userId);
-        Task<string> GenerateEmailConfirmCode(string userId);
-        Task<string> SendMessageToConfirmEmail(string userId, string backUrl);
-        Task<IdentityResult> ConfirmEmail(string userId, string code);
     }
 }

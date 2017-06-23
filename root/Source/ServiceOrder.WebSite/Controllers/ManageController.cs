@@ -27,39 +27,12 @@ namespace ServiceOrder.WebSite.Controllers
 
         // GET: /Manage/Index
         [HttpGet]
-        public async Task<ActionResult> Index()
-        {
-            var isConfirmed = await _manageService.IsEmailConfirmed(User.Identity.GetUserId());
-            var model = new ManageIndexViewModel {ConfirmedEmail = isConfirmed};
-            return View(model);
+        public ActionResult Index()
+        {         
+            return View();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> ConfirmEmail()
-        {
-            var userId = User.Identity.GetUserId();
-            var callbackUrl = Url.Action("ConfirmEmail", "Manage",
-                   new { userId = userId, code = await _manageService.GenerateEmailConfirmCode(userId) }, protocol: Request.Url.Scheme);
-            var result = await _manageService.SendMessageToConfirmEmail(userId,callbackUrl);
-            if (result.Equals(String.Empty))
-            {
-                return new HttpStatusCodeResult(200, "OK");
-            }
-            return new HttpStatusCodeResult(400, result);
-        }
-
-        // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
-        {
-            if (userId == null || code == null)
-            {
-                return View("MessageView",new ResultMessageViewModel() {Message = "Wrong parametrs"});
-            }
-            var result = await _manageService.ConfirmEmail(userId,code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }
+        
         
     /*private ApplicationSignInManager _signInManager;
     private ApplicationUserManager _userManager;

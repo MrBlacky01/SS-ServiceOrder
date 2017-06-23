@@ -1,6 +1,5 @@
-﻿@model ServiceOrder.ViewModel.ViewModels.Implementation.ManageViewModels.ManageIndexViewModel
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Manage";
 }
 
 <h2>Manage your personal information</h2>
@@ -9,7 +8,7 @@
 
 @Html.ActionLink("Change your password", "ChangePassword",null, new {@class="btn btn-default manage-buttons"})
     
-@if (Model.ConfirmedEmail )
+@*if (Model.ConfirmedEmail )
 {
     <p>You already confirm email</p>
 }
@@ -75,4 +74,4 @@ else
             });
         }
     });
-</script>
+</script>*@

@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ServiceOrder.Logic.Services;
+using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
 
 namespace ServiceOrder.WebSite.Controllers
@@ -40,7 +41,16 @@ namespace ServiceOrder.WebSite.Controllers
             {
                 return View(model);
             }
-            
+            var userId = await _accountService.GetIdByEmail(model.Email);
+            if (userId == null)
+            {
+                return View("MessageView", new ResultMessageViewModel() { Message = "There is no such user" });
+            }
+            var confirmed = await _accountService.IsEmailConfirmed(userId);
+            if (!confirmed)
+            {
+                return View("MessageView", new ResultMessageViewModel() {Message = "Please confirm your email first"});
+            }
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await _accountService.Login(model);
@@ -129,8 +139,15 @@ namespace ServiceOrder.WebSite.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
+                    var userId = await _accountService.GetIdByEmail(model.Email);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = userId, code = await _accountService.GenerateEmailConfirmCode(userId) }, protocol: Request.Url.Scheme);
+                    var resultConfirm = await _accountService.SendMessageToConfirmEmail(userId, callbackUrl);
+                    if (resultConfirm.Equals(String.Empty))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    //return new HttpStatusCodeResult(400, result);
+                    AddErrors(IdentityResult.Failed("Can't send message to confirm"));
                 }
                 AddErrors(result);
             }
@@ -139,19 +156,32 @@ namespace ServiceOrder.WebSite.Controllers
             return View(model);
         }
 
-        /*
-        //
+        [HttpPost]
+        public async Task<ActionResult> ConfirmEmail()
+        {
+            var userId = User.Identity.GetUserId();
+            var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                   new { userId = userId, code = await _accountService.GenerateEmailConfirmCode(userId) }, protocol: Request.Url.Scheme);
+            var result = await _accountService.SendMessageToConfirmEmail(userId, callbackUrl);
+            if (result.Equals(String.Empty))
+            {
+                return new HttpStatusCodeResult(200, "OK");
+            }
+            return new HttpStatusCodeResult(400, result);
+        }
+
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
+        [HttpGet]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
-                return View("Error");
+                return View("MessageView", new ResultMessageViewModel() { Message = "Wrong parametrs" });
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            var result = await _accountService.ConfirmEmail(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }*/
+        }
 
         //
         // GET: /Account/ForgotPassword

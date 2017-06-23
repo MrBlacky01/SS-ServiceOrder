@@ -16,6 +16,11 @@ namespace ServiceOrder.Logic.Services
         Task<SignInStatus> Login(LoginViewModel model);
         Task<IdentityResult> Register(RegisterViewModel registerModel);
         Task SignIn(User user);
+        Task<bool> IsEmailConfirmed(string userId);
+        Task<string> GenerateEmailConfirmCode(string userId);
+        Task<string> SendMessageToConfirmEmail(string userId, string backUrl);
+        Task<IdentityResult> ConfirmEmail(string userId, string code);
+        Task<string> GetIdByEmail(string email);
 
     }
 }
