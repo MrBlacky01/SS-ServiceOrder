@@ -8,6 +8,7 @@ using Microsoft.Owin.Security;
 using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
+using ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels;
 
 namespace ServiceOrder.WebSite.Controllers
 {
@@ -49,7 +50,7 @@ namespace ServiceOrder.WebSite.Controllers
             var confirmed = await _accountService.IsEmailConfirmed(userId);
             if (!confirmed)
             {
-                return View("MessageView", new ResultMessageViewModel() {Message = "Please confirm your email first"});
+                return View("ReconfirmEmail",new ReconfirmViewModel() {Email = model.Email});
             }
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
@@ -142,12 +143,8 @@ namespace ServiceOrder.WebSite.Controllers
                     var userId = await _accountService.GetIdByEmail(model.Email);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = userId, code = await _accountService.GenerateEmailConfirmCode(userId) }, protocol: Request.Url.Scheme);
                     var resultConfirm = await _accountService.SendMessageToConfirmEmail(userId, callbackUrl);
-                    if (resultConfirm.Equals(String.Empty))
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    //return new HttpStatusCodeResult(400, result);
-                    AddErrors(IdentityResult.Failed("Can't send message to confirm"));
+
+                    return View("ReconfirmEmail", new ReconfirmViewModel() { Email = model.Email });
                 }
                 AddErrors(result);
             }
@@ -157,9 +154,10 @@ namespace ServiceOrder.WebSite.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ConfirmEmail()
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string email)
         {
-            var userId = User.Identity.GetUserId();
+            var userId = await _accountService.GetIdByEmail(email);
             var callbackUrl = Url.Action("ConfirmEmail", "Account",
                    new { userId = userId, code = await _accountService.GenerateEmailConfirmCode(userId) }, protocol: Request.Url.Scheme);
             var result = await _accountService.SendMessageToConfirmEmail(userId, callbackUrl);

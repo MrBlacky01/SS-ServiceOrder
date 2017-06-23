@@ -1305,6 +1305,7 @@
     <Content Include="styles\fonts\glyphs\KendoUIGlyphs.woff" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ReconfirmEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
