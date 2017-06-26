@@ -9,6 +9,7 @@ using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels;
+using ServiceOrder.WebSite.Models;
 
 namespace ServiceOrder.WebSite.Controllers
 {
@@ -189,8 +190,6 @@ namespace ServiceOrder.WebSite.Controllers
             return View();
         }
 
-        /*
-        //
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
@@ -199,27 +198,30 @@ namespace ServiceOrder.WebSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                var userId = await _accountService.GetIdByEmail(model.Email);
+                if (userId == null || !(await _accountService.IsEmailConfirmed(userId)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
+                    return View("MessageView",
+                        new ResultMessageViewModel() {Message = "There is not user with such email"});
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                
+                 string code = await _accountService.GeneratePasswordResetTokenAsync(userId);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = userId, code = code }, protocol: Request.Url.Scheme);
+                var result = await _accountService.SendMessageToForgotPasswordEmail(userId, callbackUrl);
+                if (result.Equals(String.Empty))
+                {
+                    return View("MessageView",
+                        new ResultMessageViewModel() { Message = "Please, check your email to reset your password." });
+                }
+                return View("MessageView",
+                        new ResultMessageViewModel() { Message = "Something went wrong while sending email, try to resend." });
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
-        
 
-        //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
@@ -253,13 +255,12 @@ namespace ServiceOrder.WebSite.Controllers
                 {
                     return RedirectToAction("ResetPasswordConfirmation", "Account");
                 }
-                AddErrors(result);
-                return View();
+                return View("MessageView", new ResultMessageViewModel() {Message = "Something went wrong while reset password"});
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }         
+                return View("MessageView", new ResultMessageViewModel() { Message = exception.Message });
+            }
         }
 
         //
@@ -269,6 +270,10 @@ namespace ServiceOrder.WebSite.Controllers
         {
             return View();
         }
+
+        /*
+        
+        
         
         /*
         //

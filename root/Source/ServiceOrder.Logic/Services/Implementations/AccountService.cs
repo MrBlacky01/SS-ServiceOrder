@@ -92,10 +92,41 @@ namespace ServiceOrder.Logic.Services.Implementations
             return await UserManager.GenerateEmailConfirmationTokenAsync(userId);
         }
 
+        public async Task<string> GeneratePasswordResetTokenAsync(string userId)
+        {
+            return await UserManager.GeneratePasswordResetTokenAsync(userId);
+        }
+
+        public async Task<IdentityResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            var user = await UserManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                throw new Exception("There's no such user");
+            }
+            return await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+          
+        }
+
         public async Task<string> SendMessageToConfirmEmail(string userId, string backUrl)
         {
             var user = await UserManager.FindByIdAsync(userId);
-            var message = makeMessage(user.Email, backUrl);
+            var message = makeMessageToConfirm(user.Email, backUrl);
+            try
+            {
+                await UserManager.SendEmailAsync(user.Id, message.Subject, message.Body);
+                return "";
+            }
+            catch (Exception exception)
+            {
+                return exception.Message;
+            }
+        }
+
+        public async Task<string> SendMessageToForgotPasswordEmail(string userId, string backUrl)
+        {
+            var user = await UserManager.FindByIdAsync(userId);
+            var message = makeMessageToForgot(user.Email, backUrl);
             try
             {
                 await UserManager.SendEmailAsync(user.Id, message.Subject, message.Body);
@@ -131,14 +162,22 @@ namespace ServiceOrder.Logic.Services.Implementations
             _userManager = null;
         }
 
-        private IdentityMessage makeMessage(string userEmail, string backUrl)
+        private IdentityMessage makeMessageToConfirm(string userEmail, string backUrl)
         {
             var message = new IdentityMessage();
             message.Subject = "Confirm Email";
             message.Destination = userEmail;
-            /**/
             message.Body = "Please confirm your account by clicking <a href=\""
                + backUrl + "\">here</a>";
+            return message;
+        }
+
+        private IdentityMessage makeMessageToForgot(string userEmail, string backUrl)
+        {
+            var message = new IdentityMessage();
+            message.Subject = "Reset password Email";
+            message.Destination = userEmail;
+            message.Body = "Please reset your password by clicking <a href=\"" + backUrl + "\">here</a>";
             return message;
         }
     }

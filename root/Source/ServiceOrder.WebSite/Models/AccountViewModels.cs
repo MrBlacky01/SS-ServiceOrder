@@ -1,4 +1,6 @@
-﻿namespace ServiceOrder.WebSite.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ServiceOrder.WebSite.Models
 {
     /*public class ExternalLoginConfirmationViewModel
     {
@@ -97,13 +99,7 @@
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
-    }
-
-    public class ForgotPasswordViewModel
-    {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
     }*/
+
+    
 }

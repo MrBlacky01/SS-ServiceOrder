@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Implementation\AccountViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModels\Implementation\AccountViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Implementation\AccountViewModels\ResetPasswordViewModel.cs" />
