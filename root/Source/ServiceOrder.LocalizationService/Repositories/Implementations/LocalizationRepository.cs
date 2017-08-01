@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using ServiceOrder.LocalizationService.Models;
@@ -27,7 +28,10 @@ namespace ServiceOrder.LocalizationService.Repositories.Implementations
 
         public LocalizationPhrase GetById(ObjectId id)
         {
-            throw new NotImplementedException();
+            var query = Builders<LocalizationPhrase>.Filter.Eq(e => e.PhraseId, id);
+            var phrase = _database.GetCollection<LocalizationPhrase>(collectionName).Find(query).ToListAsync();
+
+            return phrase.Result.FirstOrDefault();
         }
 
         public void Create(LocalizationPhrase element)
@@ -36,13 +40,17 @@ namespace ServiceOrder.LocalizationService.Repositories.Implementations
         }
 
         public void Update(LocalizationPhrase element)
-        {
-            throw new NotImplementedException();
+        {           
+            var filterByKey = Builders<LocalizationPhrase>.Filter.Eq(e => e.PhraseKey, element.PhraseKey);
+            var filterByLocalizationType = Builders<LocalizationPhrase>.Filter.Eq(e => e.LocalizationType, element.LocalizationType);
+            var filter = Builders<LocalizationPhrase>.Filter.And(filterByLocalizationType, filterByKey);
+            _database.GetCollection<LocalizationPhrase>(collectionName).ReplaceOneAsync(filter, element);
         }
 
-        public bool Delete(ObjectId id)
+        public void Delete(ObjectId id)
         {
-            throw new NotImplementedException();
+            var query = Builders<LocalizationPhrase>.Filter.Eq(e => e.PhraseId, id);
+            _database.GetCollection<LocalizationPhrase>(collectionName).DeleteOneAsync(query);
         }
 
         public LocalizationPhrase Find(Func<LocalizationPhrase, bool> predicate)

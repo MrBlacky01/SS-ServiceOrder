@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Web.Http;
+using MongoDB.Bson;
 using ServiceOrder.LocalizationService.Models;
 using ServiceOrder.LocalizationService.Repositories.Implementations;
 
@@ -18,16 +15,19 @@ namespace ServiceOrder.LocalizationService.Controllers
         {
             repository = new LocalizationRepository();
         }
+
+        [HttpGet]
         // GET: api/localization
-        public IEnumerable<string> Get()
+        public IEnumerable<LocalizationPhrase> Get()
         {
-            return new string[] { "value1", "value2" };
+            return repository.GetAll();
         }
 
-        // GET: api/localization/5
-        public string Get(int id)
+        [HttpGet]
+        // GET: api/localization?id=24digitString
+        public LocalizationPhrase GetById(string id)
         {
-            return "value";
+            return repository.GetById(ObjectId.Parse(id));
         }
 
         // POST: api/localization
@@ -37,13 +37,16 @@ namespace ServiceOrder.LocalizationService.Controllers
         }
 
         // PUT: api/localization/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(string id,[FromBody]LocalizationPhrase value)
         {
+            value.PhraseId = ObjectId.Parse(id);
+            repository.Update(value);
         }
 
         // DELETE: api/localization/5
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            repository.Delete(ObjectId.Parse(id));
         }
     }
 }

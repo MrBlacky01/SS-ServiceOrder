@@ -14,7 +14,7 @@ namespace ServiceOrder.LocalizationService.Repositories.Interfaces
 
         void Update(T element);
 
-        bool Delete(ObjectId id);
+        void Delete(ObjectId id);
         T Find(Func<T, bool> predicate);
     }
 }
