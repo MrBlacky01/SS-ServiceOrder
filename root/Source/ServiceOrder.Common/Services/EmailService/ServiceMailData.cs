@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ServiceOrder.Common.Services.EmailService
+﻿namespace ServiceOrder.Common.Services.EmailService
 {
     public class ServiceMailData
     {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceOrder.Logic", "ServiceOrder.Logic\ServiceOrder.Logic.csproj", "{B0BFC73C-BD37-497E-81D0-F2EC1E16AF79}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceOrder.WebSite", "ServiceOrder.WebSite\ServiceOrder.WebSite.csproj", "{6796982A-B7B9-4B7D-9076-314F8722DB64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceOrder.ViewModel", "ServiceOrder.ViewModel\ServiceOrder.ViewModel.csproj", "{463B059D-2E33-4DC0-B2E0-36CB90194303}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceOrder.LocalizationService", "ServiceOrder.LocalizationService\ServiceOrder.LocalizationService.csproj", "{BBE91042-48BB-47BD-A192-0139DB2C46E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{463B059D-2E33-4DC0-B2E0-36CB90194303}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{463B059D-2E33-4DC0-B2E0-36CB90194303}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{463B059D-2E33-4DC0-B2E0-36CB90194303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBE91042-48BB-47BD-A192-0139DB2C46E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBE91042-48BB-47BD-A192-0139DB2C46E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBE91042-48BB-47BD-A192-0139DB2C46E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBE91042-48BB-47BD-A192-0139DB2C46E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
