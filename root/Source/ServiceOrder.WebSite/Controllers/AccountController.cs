@@ -9,7 +9,6 @@ using ServiceOrder.Logic.Services;
 using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AlbumViewModels;
-using ServiceOrder.WebSite.Models;
 
 namespace ServiceOrder.WebSite.Controllers
 {

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Security.Policy;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using Ninject.Activation;
-using ServiceOrder.DataProvider.Entities;
 using ServiceOrder.DataProvider.Identity;
 using ServiceOrder.DataProvider.Interfaces;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;

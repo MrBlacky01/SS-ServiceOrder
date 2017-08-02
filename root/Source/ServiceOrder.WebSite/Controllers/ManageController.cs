@@ -1,17 +1,8 @@
-﻿using System;
-using System.Configuration;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.WebPages;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
 using ServiceOrder.Logic.Services;
-using ServiceOrder.ViewModel.ViewModels.Implementation;
 using ServiceOrder.ViewModel.ViewModels.Implementation.AccountViewModels;
-using ServiceOrder.ViewModel.ViewModels.Implementation.ManageViewModels;
-using ServiceOrder.WebSite.Models;
 
 namespace ServiceOrder.WebSite.Controllers
 {

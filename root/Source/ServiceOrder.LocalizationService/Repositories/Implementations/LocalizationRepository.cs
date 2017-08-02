@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using ServiceOrder.LocalizationService.Models;
 using ServiceOrder.LocalizationService.Repositories.Interfaces;
@@ -20,43 +17,26 @@ namespace ServiceOrder.LocalizationService.Repositories.Implementations
             MakeIndex();
         }
 
-        public IEnumerable<LocalizationPhrase> GetAll()
-        {
-            return  _database.GetCollection<LocalizationPhrase>(collectionName).Find(new BsonDocument()).ToListAsync().Result;
-        }
-
-
-        public LocalizationPhrase GetById(ObjectId id)
-        {
-            var query = Builders<LocalizationPhrase>.Filter.Eq(e => e.PhraseId, id);
-            var phrase = _database.GetCollection<LocalizationPhrase>(collectionName).Find(query).ToListAsync();
-
-            return phrase.Result.FirstOrDefault();
-        }
-
         public void Create(LocalizationPhrase element)
         {
             _database.GetCollection<LocalizationPhrase>(collectionName).InsertOneAsync(element);
         }
 
-        public void Update(LocalizationPhrase element)
-        {           
-            var filterByKey = Builders<LocalizationPhrase>.Filter.Eq(e => e.PhraseKey, element.PhraseKey);
-            var filterByLocalizationType = Builders<LocalizationPhrase>.Filter.Eq(e => e.LocalizationType, element.LocalizationType);
-            var filter = Builders<LocalizationPhrase>.Filter.And(filterByLocalizationType, filterByKey);
+        public IEnumerable<LocalizationPhrase> Read(FilterDefinition<LocalizationPhrase> filter)
+        {
+            return _database.GetCollection<LocalizationPhrase>(collectionName).Find(filter).ToListAsync().Result;
+        }
+
+        public void Update(LocalizationPhrase element, FilterDefinition<LocalizationPhrase> filter)
+        {
             _database.GetCollection<LocalizationPhrase>(collectionName).ReplaceOneAsync(filter, element);
         }
 
-        public void Delete(ObjectId id)
+        public void Delete(FilterDefinition<LocalizationPhrase> filter)
         {
-            var query = Builders<LocalizationPhrase>.Filter.Eq(e => e.PhraseId, id);
-            _database.GetCollection<LocalizationPhrase>(collectionName).DeleteOneAsync(query);
+            _database.GetCollection<LocalizationPhrase>(collectionName).DeleteOneAsync(filter);
         }
 
-        public LocalizationPhrase Find(Func<LocalizationPhrase, bool> predicate)
-        {
-            throw new NotImplementedException();
-        }
 
         private IMongoDatabase Connect()
         {

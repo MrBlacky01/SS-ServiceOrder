@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using MongoDB.Driver;
 
 namespace ServiceOrder.LocalizationService.Repositories.Interfaces
 {
     public interface IRepository<T> where T:class 
-    {  
-        IEnumerable<T> GetAll();
-
-        T GetById(ObjectId id);
-
+    {
         void Create(T element);
+        IEnumerable<T> Read(FilterDefinition<T> filter);
 
-        void Update(T element);
+        void Update(T element, FilterDefinition<T> filter);
 
-        void Delete(ObjectId id);
-        T Find(Func<T, bool> predicate);
+        void Delete(FilterDefinition<T> filter);
     }
 }
