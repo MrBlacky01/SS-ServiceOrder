@@ -8,9 +8,10 @@ using AuthorizationService.Data;
 namespace AuthorizationService.Data.Migrations
 {
     [DbContext(typeof(AuthorizationServiceDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170809092719_PhotoIdMigration")]
+    partial class PhotoIdMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

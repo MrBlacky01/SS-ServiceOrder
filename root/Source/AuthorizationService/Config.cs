@@ -42,11 +42,11 @@ namespace AuthorizationService
 
                     ClientSecrets =
                     {
-                        new Secret("secret".Sha256())
+                        new Secret("mvc secret".Sha256())
                     },
 
-                    RedirectUris = { "http://localhost:5001//Account/Login" },
-                    PostLogoutRedirectUris = { "http://localhost:5001//Account/LogOff" },
+                    RedirectUris = { "http://localhost:5001/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc" },
 
                     AllowedScopes =
                     {
