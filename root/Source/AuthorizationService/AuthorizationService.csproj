@@ -11,6 +11,11 @@
   <PropertyGroup>
     <UserSecretsId>aspnet-AuthorizationService-8a9f5b18-48c0-47e9-beb7-b289ad42869b</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\css\custom.css" />
+    <Content Include="wwwroot\images\Black Dragon icon.png" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="IdentityServer4" Version="1.5.2" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="1.0.1" />
