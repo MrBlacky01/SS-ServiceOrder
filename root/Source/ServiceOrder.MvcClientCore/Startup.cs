@@ -67,7 +67,7 @@ namespace ServiceOrder.MvcClientCore
                 ClientSecret = "mvc secret",
 
                 ResponseType = "code id_token",
-                Scope = { "api/localization", "offline_access" },
+                Scope = { "localizationScope.owner", "offline_access", "mvcScope", "localizationScope.readOnly" },
 
                 GetClaimsFromUserInfoEndpoint = true,
                 SaveTokens = true

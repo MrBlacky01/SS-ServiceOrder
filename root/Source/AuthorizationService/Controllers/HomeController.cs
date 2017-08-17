@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AuthorizationService.IdentityServer;
-using IdentityServer4.Quickstart.UI;
+using AuthorizationService.IdentityServer.Home;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
 

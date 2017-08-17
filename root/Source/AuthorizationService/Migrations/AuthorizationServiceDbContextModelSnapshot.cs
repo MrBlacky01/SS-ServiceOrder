@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using AuthorizationService.Data;
 
-namespace AuthorizationService.Data.Migrations
+namespace AuthorizationService.Migrations
 {
     [DbContext(typeof(AuthorizationServiceDbContext))]
-    [Migration("20170809092719_PhotoIdMigration")]
-    partial class PhotoIdMigration
+    partial class AuthorizationServiceDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -47,8 +46,6 @@ namespace AuthorizationService.Data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<string>("PhotoId");
 
                     b.Property<string>("SecurityStamp");
 

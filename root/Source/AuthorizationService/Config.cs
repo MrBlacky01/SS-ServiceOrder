@@ -13,6 +13,8 @@ namespace AuthorizationService
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Email(),
+                new IdentityResource("mvcScope",new []{ "role", "admin", "serviceProvider","client"} )
             };
         }
 
@@ -20,7 +22,33 @@ namespace AuthorizationService
         {
             return new List<ApiResource>
             {
-                new ApiResource("api/localization", "Localization API")
+                new ApiResource
+                {
+                    Name = "localization",
+                    DisplayName = "Localization API",
+                    UserClaims = {"email"},
+                    Scopes =
+                    {
+                        new Scope
+                        {
+                            Name = "localizationScope.admin",
+                            DisplayName = "Admin access to localization API resource"
+                        },
+                        new Scope
+                        {
+                            Name = "localizationScope.owner",
+                            DisplayName = "Owner of resources in localization API resource",
+                            UserClaims = {"role"}
+                            
+                        },
+                        new Scope
+                        {
+                            Name = "localizationScope.readOnly",
+                            DisplayName = "Only read access in localization API resource",
+                            UserClaims = {"role"}
+                        }
+                    }
+                }
             };
         }
 
@@ -52,7 +80,10 @@ namespace AuthorizationService
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api/localization"
+                        IdentityServerConstants.StandardScopes.Email,
+                        "localizationScope.readOnly",
+                        "localizationScope.owner",
+                        "mvcScope"
                     },
                     AllowOfflineAccess = true
                 }
