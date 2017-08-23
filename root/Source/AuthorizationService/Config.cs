@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using IdentityServer4;
 using IdentityServer4.Models;
 
@@ -14,7 +16,7 @@ namespace AuthorizationService
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email(),
-                new IdentityResource("mvcScope",new []{ "role", "admin", "serviceProvider","client"} )
+                new IdentityResource("ServiceOrderMvcScope",new []{ "ServiceOrderMvc.roles" } )
             };
         }
 
@@ -62,11 +64,11 @@ namespace AuthorizationService
                 // OpenID Connect hybrid flow and client credentials client (MVC)
                 new Client
                 {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
+                    ClientId = "ServiceOrderMvc",
+                    ClientName = "ServiceOrder MVC Client",
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
 
-                    RequireConsent = true,
+                    RequireConsent = false,
 
                     ClientSecrets =
                     {
@@ -75,7 +77,7 @@ namespace AuthorizationService
 
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
                     PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-
+                    ClientUri = "http://localhost:5002/",
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -83,7 +85,13 @@ namespace AuthorizationService
                         IdentityServerConstants.StandardScopes.Email,
                         "localizationScope.readOnly",
                         "localizationScope.owner",
-                        "mvcScope"
+                        "ServiceOrderMvcScope"
+                    },
+                    Claims =
+                    {
+                        new Claim("ServiceOrderMvc.roles","admin"),
+                        new Claim("ServiceOrderMvc.roles","serviceProvider"),
+                        new Claim("ServiceOrderMvc.roles","client")
                     },
                     AllowOfflineAccess = true
                 }

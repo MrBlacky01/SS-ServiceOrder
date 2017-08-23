@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ServiceOrder.MvcClientCore
 {
@@ -63,14 +64,14 @@ namespace ServiceOrder.MvcClientCore
                 Authority = "http://localhost:5000",
                 RequireHttpsMetadata = false,
 
-                ClientId = "mvc",
+                ClientId = "ServiceOrderMvc",
                 ClientSecret = "mvc secret",
 
                 ResponseType = "code id_token",
-                Scope = { "localizationScope.owner", "offline_access", "mvcScope", "localizationScope.readOnly" },
+                Scope = { "localizationScope.owner", "offline_access", "ServiceOrderMvcScope", "localizationScope.readOnly", "email" },
 
                 GetClaimsFromUserInfoEndpoint = true,
-                SaveTokens = true
+                SaveTokens = true,
             });
 
             app.UseStaticFiles();

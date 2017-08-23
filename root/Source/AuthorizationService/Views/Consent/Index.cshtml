@@ -21,7 +21,7 @@
             <form asp-action="Index" class="consent-form">
                 <input type="hidden" asp-for="ReturnUrl" />
 
-                <div>Uncheck the permissions you do not wish to grant.</div>
+               <div>Uncheck the permissions you do not wish to grant.</div>
                 
                 @if (Model.IdentityScopes.Any())
                 {

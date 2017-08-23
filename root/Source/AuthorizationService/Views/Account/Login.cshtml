@@ -1,8 +1,4 @@
-﻿@using System.Collections.Generic
-@using AuthorizationService.IdentityServer.Account
-@using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Http.Authentication
-@model AuthorizationService.IdentityServer.Account.LoginViewModel
+﻿@model AuthorizationService.IdentityServer.Account.LoginViewModel
 @inject SignInManager<AuthorizationServiceUser> SignInManager
 @{
     ViewData["Title"] = "Log in";
@@ -14,7 +10,7 @@
             <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@Model.ReturnUrl" method="post" class="form-horizontal">
                 <h4>Use a local account to log in.</h4>
                 <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
+                <!--div asp-validation-summary="All" class="text-danger"></div-->
                 <div class="form-group">
                     <label asp-for="Email" class="col-md-2 control-label"></label>
                     <div class="col-md-10">

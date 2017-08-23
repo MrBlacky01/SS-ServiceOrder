@@ -2,14 +2,20 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthorizationService.Models.AccountViewModels;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Extensions;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthorizationService.IdentityServer.Account
 {
@@ -18,15 +24,18 @@ namespace AuthorizationService.IdentityServer.Account
         private readonly IClientStore _clientStore;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IServiceProvider _serviceProvider;
 
         public AccountService(
             IIdentityServerInteractionService interaction,
             IHttpContextAccessor httpContextAccessor,
-            IClientStore clientStore)
+            IClientStore clientStore,
+            IServiceProvider serviceProvider)
         {
             _interaction = interaction;
             _httpContextAccessor = httpContextAccessor;
             _clientStore = clientStore;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl)
@@ -159,6 +168,33 @@ namespace AuthorizationService.IdentityServer.Account
             }
 
             return vm;
+        }
+
+        public async Task<RegisterViewModel> BuildRegisterViewModelAsync(string returnUrl)
+        {
+            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            if (context?.ClientId != null)
+            {
+                var client = await _clientStore.FindClientByIdAsync(context?.ClientId);
+                var firstClaim = client?.Claims?.ElementAt(0);
+                if (firstClaim != null)
+                {
+                    using (var roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>())
+                    {
+                        var userClaims = await roleManager.GetClaimsAsync(await roleManager.FindByNameAsync(firstClaim.Type));
+                        var claimNames = new List<string>();
+                        foreach (var claim in userClaims)
+                        {
+                            if (claim.Value != "admin")
+                            {
+                                claimNames.Add(claim.Value);
+                            }
+                        }
+                        return new RegisterViewModel() { Roles = claimNames };
+                    }
+                }
+            }
+            return new RegisterViewModel();
         }
     }
 }

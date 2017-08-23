@@ -12,6 +12,7 @@ using System.Reflection;
 using AuthorizationService.Data;
 using AuthorizationService.Models;
 using AuthorizationService.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -66,7 +67,8 @@ namespace AuthorizationService
                         options.MigrationsAssembly(migrationsAssembly)))
                 .AddOperationalStore(builder =>
                     builder.UseSqlServer(connectionString, options =>
-                        options.MigrationsAssembly(migrationsAssembly)));
+                        options.MigrationsAssembly(migrationsAssembly)))
+                        .AddAspNetIdentity<AuthorizationServiceUser>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -113,7 +115,7 @@ namespace AuthorizationService
             app.UseMvcWithDefaultRoute();
         }
 
-        private void InitializeDatabase(IApplicationBuilder app)
+        private async void InitializeDatabase(IApplicationBuilder app)
         {
             using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
@@ -148,6 +150,29 @@ namespace AuthorizationService
                     }
                     context.SaveChanges();
                 }
+
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var clients = Config.GetClients();
+                foreach (var client in clients)
+                {
+                    var clientClaims = client.Claims;
+                    if (clientClaims.Any())
+                    {
+                        var roleName = clientClaims.ElementAt(0).Type;
+                        var roleExist = await roleManager.RoleExistsAsync(roleName);
+                        if (!roleExist)
+                        {
+                            var role = new IdentityRole(roleName);
+                            await roleManager.CreateAsync(role);
+                            foreach (var claim in clientClaims)
+                            {
+                                await roleManager.AddClaimAsync(role, claim);
+                            }
+                        }
+                    }
+                }
+
+               
             }
             
         }

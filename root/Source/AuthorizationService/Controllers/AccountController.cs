@@ -17,6 +17,7 @@ using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace AuthorizationService.Controllers
 {
@@ -41,7 +42,8 @@ namespace AuthorizationService.Controllers
             ILoggerFactory loggerFactory,
             IIdentityServerInteractionService interaction,
             IHttpContextAccessor httpContext,
-            IClientStore clientStore)
+            IClientStore clientStore,
+            IServiceProvider serviceProvider)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -51,7 +53,8 @@ namespace AuthorizationService.Controllers
             _interaction = interaction;
             _clientStore = clientStore;
 
-            _account = new AccountService(interaction, httpContext, clientStore);
+            _account = new AccountService(interaction, httpContext, clientStore,serviceProvider);
+            _account = new AccountService(interaction, httpContext, clientStore,serviceProvider);
         }
 
         //
@@ -221,10 +224,15 @@ namespace AuthorizationService.Controllers
         // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public async Task<IActionResult> Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            RegisterViewModel registerViewModel = null;
+            if (returnUrl != null)
+            {
+                registerViewModel = await _account.BuildRegisterViewModelAsync(returnUrl);
+            }
+            return View(registerViewModel);
         }
 
         //
@@ -238,6 +246,12 @@ namespace AuthorizationService.Controllers
             if (ModelState.IsValid)
             {
                 var user = new AuthorizationServiceUser { UserName = model.Email, Email = model.Email};
+                user.Claims.Add(new IdentityUserClaim<string>() 
+                {
+                    ClaimType = "email",
+                    ClaimValue = model.Email
+                });
+                //user.Roles.Add();
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

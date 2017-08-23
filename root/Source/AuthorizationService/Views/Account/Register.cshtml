@@ -30,6 +30,24 @@
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
     </div>
+
+    @if (Model?.Roles != null)
+    {
+        <div class="form-group">
+            <label asp-for="Role" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="Role" asp-items="@Model.Roles.Select(a => new SelectListItem
+                                                  {
+                                                      Text = a,
+                                                      Value = a,
+                                                      Selected = false
+                                                  })"
+                        class="form-control"></select>
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+        </div>
+    }
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <button type="submit" class="btn btn-default">Register</button>

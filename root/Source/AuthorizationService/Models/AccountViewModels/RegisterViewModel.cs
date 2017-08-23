@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuthorizationService.Models.AccountViewModels
 {
@@ -19,5 +20,10 @@ namespace AuthorizationService.Models.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+
+        public List<string> Roles { get; set; }
     }
 }

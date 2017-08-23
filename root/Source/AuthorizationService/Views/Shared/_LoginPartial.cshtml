@@ -1,4 +1,5 @@
-﻿@inject SignInManager<AuthorizationServiceUser> SignInManager
+﻿@using AuthorizationService.IdentityServer.Account
+@inject SignInManager<AuthorizationServiceUser> SignInManager
 @inject UserManager<AuthorizationServiceUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
@@ -16,8 +17,19 @@
 }
 else
 {
+    if (Model == null || Model.GetType() != typeof(LoginViewModel))
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+            <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+        </ul>
+    }
+    else
+    {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Register" asp-route-returnurl="@Model.ReturnUrl">Register</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Login" asp-route-returnurl="@Model.ReturnUrl">Log in</a></li>
     </ul>
+    }
+
 }
