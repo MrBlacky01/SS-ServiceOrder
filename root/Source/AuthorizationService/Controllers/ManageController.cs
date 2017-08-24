@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using AuthorizationService.Models;
 using AuthorizationService.Models.ManageViewModels;
+using AuthorizationService.Models.UserData;
 using AuthorizationService.Services;
 
 namespace AuthorizationService.Controllers

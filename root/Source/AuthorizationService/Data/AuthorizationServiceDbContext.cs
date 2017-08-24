@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using AuthorizationService.Models;
+using AuthorizationService.Models.UserData;
 
 namespace AuthorizationService.Data
 {

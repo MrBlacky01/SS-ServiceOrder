@@ -9,6 +9,7 @@ using IdentityServer4.EntityFramework.Mappers;
 
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Security.Claims;
 using AuthorizationService.Data;
 using AuthorizationService.Models.UserData;
 using AuthorizationService.Services;
@@ -161,7 +162,14 @@ namespace AuthorizationService
                         {
                             var role = new IdentityRole(clientRoleName);
                             await roleManager.CreateAsync(role);
-                            var clientClaims = context.IdentityResources.Where(src => src.Name == clientRoleName);
+                            var clientClaims = context.IdentityResources.FirstOrDefault(src => src.Name == clientRoleName)?.UserClaims;
+                            if (clientClaims != null)
+                            {
+                                foreach (var claim in clientClaims)
+                                {
+                                    await roleManager.AddClaimAsync(role, new Claim(clientRoleName, claim.Type));
+                                }
+                            }
                         }
                     }
                  
