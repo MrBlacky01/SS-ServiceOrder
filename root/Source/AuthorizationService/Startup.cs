@@ -10,7 +10,7 @@ using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using AuthorizationService.Data;
-using AuthorizationService.Models;
+using AuthorizationService.Models.UserData;
 using AuthorizationService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -52,8 +52,7 @@ namespace AuthorizationService
             services.AddIdentity<AuthorizationServiceUser, IdentityRole>()
                 .AddEntityFrameworkStores<AuthorizationServiceDbContext>()
                 .AddDefaultTokenProviders();
-
-            services.AddDbContext<AuthorizationServiceDbContext>();
+                
            
 
             // Add application services.
@@ -155,21 +154,17 @@ namespace AuthorizationService
                 var clients = Config.GetClients();
                 foreach (var client in clients)
                 {
-                    var clientClaims = client.Claims;
-                    if (clientClaims.Any())
+                    var clientRoleName = client.ClientId + ".roles";
+                    if (client.AllowedScopes.Any(source => source == clientRoleName))
                     {
-                        var roleName = clientClaims.ElementAt(0).Type;
-                        var roleExist = await roleManager.RoleExistsAsync(roleName);
-                        if (!roleExist)
+                        if (!await roleManager.RoleExistsAsync(clientRoleName))
                         {
-                            var role = new IdentityRole(roleName);
+                            var role = new IdentityRole(clientRoleName);
                             await roleManager.CreateAsync(role);
-                            foreach (var claim in clientClaims)
-                            {
-                                await roleManager.AddClaimAsync(role, claim);
-                            }
+                            var clientClaims = context.IdentityResources.Where(src => src.Name == clientRoleName);
                         }
                     }
+                 
                 }
 
                

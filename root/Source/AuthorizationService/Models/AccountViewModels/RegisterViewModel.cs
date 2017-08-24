@@ -22,8 +22,9 @@ namespace AuthorizationService.Models.AccountViewModels
         public string ConfirmPassword { get; set; }
 
         [Display(Name = "Role")]
-        public string Role { get; set; }
+        public string Claim { get; set; }
 
-        public List<string> Roles { get; set; }
+        public List<string> Claims { get; set; }
+        public string Role { get; set; }
     }
 }

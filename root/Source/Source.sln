@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceOrder.Logic", "ServiceOrder.Logic\ServiceOrder.Logic.csproj", "{B0BFC73C-BD37-497E-81D0-F2EC1E16AF79}"
 EndProject
@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalizationServiceCore", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationService", "AuthorizationService\AuthorizationService.csproj", "{AD042F52-E4C6-42F9-A7A2-362335AFCF27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceOrder.MvcClientCore", "ServiceOrder.MvcClientCore\ServiceOrder.MvcClientCore.csproj", "{5C60AF26-C3AC-4D62-90CF-78A93A1BBBB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceOrder.MvcClientCore", "ServiceOrder.MvcClientCore\ServiceOrder.MvcClientCore.csproj", "{5C60AF26-C3AC-4D62-90CF-78A93A1BBBB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,5 +66,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CF599F02-A659-4E1B-AECC-AFEC74A01A6D}
 	EndGlobalSection
 EndGlobal

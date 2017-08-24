@@ -175,13 +175,13 @@ namespace AuthorizationService.IdentityServer.Account
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
             if (context?.ClientId != null)
             {
-                var client = await _clientStore.FindClientByIdAsync(context?.ClientId);
-                var firstClaim = client?.Claims?.ElementAt(0);
-                if (firstClaim != null)
+                var roleName = context.ClientId + ".roles";
+                if ((await _clientStore.FindClientByIdAsync(context.ClientId)).AllowedScopes
+                    .Any(src => src == roleName))
                 {
                     using (var roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>())
                     {
-                        var userClaims = await roleManager.GetClaimsAsync(await roleManager.FindByNameAsync(firstClaim.Type));
+                        var userClaims = await roleManager.GetClaimsAsync(await roleManager.FindByNameAsync(roleName));
                         var claimNames = new List<string>();
                         foreach (var claim in userClaims)
                         {
@@ -190,9 +190,10 @@ namespace AuthorizationService.IdentityServer.Account
                                 claimNames.Add(claim.Value);
                             }
                         }
-                        return new RegisterViewModel() { Roles = claimNames };
+                        return new RegisterViewModel() { Claims = claimNames, Role = roleName };
                     }
                 }
+                
             }
             return new RegisterViewModel();
         }

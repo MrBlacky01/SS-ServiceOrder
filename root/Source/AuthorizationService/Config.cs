@@ -16,7 +16,7 @@ namespace AuthorizationService
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email(),
-                new IdentityResource("ServiceOrderMvcScope",new []{ "ServiceOrderMvc.roles" } )
+                new IdentityResource("ServiceOrderMvc.roles",new []{ "serviceProvider", "admin" , "client" } )
             };
         }
 
@@ -39,15 +39,13 @@ namespace AuthorizationService
                         new Scope
                         {
                             Name = "localizationScope.owner",
-                            DisplayName = "Owner of resources in localization API resource",
-                            UserClaims = {"role"}
+                            DisplayName = "Owner of resources in localization API resource"
                             
                         },
                         new Scope
                         {
                             Name = "localizationScope.readOnly",
-                            DisplayName = "Only read access in localization API resource",
-                            UserClaims = {"role"}
+                            DisplayName = "Only read access in localization API resource"
                         }
                     }
                 }
@@ -78,6 +76,7 @@ namespace AuthorizationService
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
                     PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
                     ClientUri = "http://localhost:5002/",
+
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -85,13 +84,7 @@ namespace AuthorizationService
                         IdentityServerConstants.StandardScopes.Email,
                         "localizationScope.readOnly",
                         "localizationScope.owner",
-                        "ServiceOrderMvcScope"
-                    },
-                    Claims =
-                    {
-                        new Claim("ServiceOrderMvc.roles","admin"),
-                        new Claim("ServiceOrderMvc.roles","serviceProvider"),
-                        new Claim("ServiceOrderMvc.roles","client")
+                        "ServiceOrderMvc.roles"
                     },
                     AllowOfflineAccess = true
                 }
