@@ -31,6 +31,15 @@ namespace ServiceOrder.MvcClientCore
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("Admin", policy => policy.RequireRole("ServiceOrderMvc.roles").RequireClaim("admin"));
+                option.AddPolicy("ServiceProvider", policy => policy.RequireRole("ServiceOrderMvc.roles").RequireClaim("serviceProvider"));
+                option.AddPolicy("Client", policy => policy.RequireRole("ServiceOrderMvc.roles").RequireClaim("client"));
+            });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

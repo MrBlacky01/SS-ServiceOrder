@@ -250,10 +250,13 @@ namespace AuthorizationService.Controllers
                     ClaimType = "email",
                     ClaimValue = model.Email
                 });
+
                 //user.Roles.Add();
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, model.Role);
+                    await _userManager.AddClaimAsync(user, new Claim(model.Role, model.Claim));
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

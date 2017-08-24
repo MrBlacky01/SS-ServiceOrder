@@ -26,6 +26,7 @@ namespace ServiceOrder.MvcClientCore.Controllers
             return View();
         }
 
+        [Authorize(Policy = "ServiceProvider")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
