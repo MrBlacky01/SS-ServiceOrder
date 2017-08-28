@@ -86,6 +86,7 @@ namespace AuthorizationService
                         "localizationScope.owner",
                         "ServiceOrderMvc.roles"
                     },
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     AllowOfflineAccess = true
                 }
             };

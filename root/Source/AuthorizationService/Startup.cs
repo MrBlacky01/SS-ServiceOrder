@@ -11,8 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Security.Claims;
 using AuthorizationService.Data;
+using AuthorizationService.IdentityServer;
 using AuthorizationService.Models.UserData;
 using AuthorizationService.Services;
+using IdentityServer4.AspNetIdentity;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -59,6 +62,8 @@ namespace AuthorizationService
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<IProfileService, IdentityProfileService>();
+
 
             services.AddIdentityServer()
                 .AddTemporarySigningCredential()
@@ -68,7 +73,8 @@ namespace AuthorizationService
                 .AddOperationalStore(builder =>
                     builder.UseSqlServer(connectionString, options =>
                         options.MigrationsAssembly(migrationsAssembly)))
-                        .AddAspNetIdentity<AuthorizationServiceUser>();
+                .AddAspNetIdentity<AuthorizationServiceUser>()
+                .AddProfileService<IdentityProfileService>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -155,20 +161,21 @@ namespace AuthorizationService
                 var clients = Config.GetClients();
                 foreach (var client in clients)
                 {
-                    var clientRoleName = client.ClientId + ".roles";
-                    if (client.AllowedScopes.Any(source => source == clientRoleName))
+                    var clientScopeName = client.ClientId + ".roles";
+                    if (client.AllowedScopes.Any(source => source == clientScopeName))
                     {
-                        if (!await roleManager.RoleExistsAsync(clientRoleName))
+                        var clientClaims = context.IdentityResources.FirstOrDefault(src => src.Name == clientScopeName)?.UserClaims;
+                        if (clientClaims != null)
                         {
-                            var role = new IdentityRole(clientRoleName);
-                            await roleManager.CreateAsync(role);
-                            var clientClaims = context.IdentityResources.FirstOrDefault(src => src.Name == clientRoleName)?.UserClaims;
-                            if (clientClaims != null)
+                            foreach (var claim in clientClaims)
                             {
-                                foreach (var claim in clientClaims)
+                                if (!await roleManager.RoleExistsAsync(claim.Type))
                                 {
-                                    await roleManager.AddClaimAsync(role, new Claim(clientRoleName, claim.Type));
+                                    var role = new IdentityRole(claim.Type);
+                                    await roleManager.CreateAsync(role);
+                                    await roleManager.AddClaimAsync(role, new Claim("clientScope",clientScopeName));
                                 }
+                                    
                             }
                         }
                     }

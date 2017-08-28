@@ -31,20 +31,20 @@
         </div>
     </div>
 
-    @if (Model?.Claims != null)
+    @if (Model?.Roles != null)
     {
-        <input asp-for="Role" value="@Model.Role" hidden="true"/>
+        <input asp-for="Claim" value="@Model.Claim" hidden="true"/>
         <div class="form-group">
-            <label asp-for="Claim" class="col-md-2 control-label"></label>
+            <label asp-for="Role" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="Claim" asp-items="@Model.Claims.Select(a => new SelectListItem
+                <select asp-for="Role" asp-items="@Model.Roles.Select(a => new SelectListItem
                                                    {
                                                        Text = a,
                                                        Value = a,
                                                        Selected = false
                                                    })"
                         class="form-control"></select>
-                <span asp-validation-for="Claim" class="text-danger"></span>
+                <span asp-validation-for="Role" class="text-danger"></span>
             </div>
         </div>
     }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,16 +33,41 @@ namespace ServiceOrder.MvcClientCore
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+
+
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = "Cookies";
+                    options.DefaultChallengeScheme = "oidc";
+                })
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.ClientId = "ServiceOrderMvc";
+                    options.ClientSecret = "mvc secret";
+                    options.SignInScheme = "Cookies";
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    options.ResponseType = "code id_token";
+                    options.Scope.Add("localizationScope.owner");
+                    options.Scope.Add("offline_access");
+                    options.Scope.Add("ServiceOrderMvc.roles");
+                    options.Scope.Add("localizationScope.readOnly");
+                    options.Scope.Add("email");
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.SaveTokens = true;
+
+                });
+
 
             services.AddAuthorization(option =>
             {
-                option.AddPolicy("Admin", policy => policy.RequireRole("ServiceOrderMvc.roles").RequireClaim("admin"));
-                option.AddPolicy("ServiceProvider", policy => policy.RequireRole("ServiceOrderMvc.roles").RequireClaim("serviceProvider"));
-                option.AddPolicy("Client", policy => policy.RequireRole("ServiceOrderMvc.roles").RequireClaim("client"));
+                option.AddPolicy("Admin", policy => policy.RequireClaim("role", "admin").RequireClaim("clientScope", "ServiceOrderMvc.roles"));
+                option.AddPolicy("ServiceProvider", policy => policy.RequireClaim("role","serviceProvider").RequireClaim("clientScope", "ServiceOrderMvc.roles"));
+                option.AddPolicy("Client", policy => policy.RequireClaim("role", "client").RequireClaim("clientScope", "ServiceOrderMvc.roles"));
             });
 
-
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +88,8 @@ namespace ServiceOrder.MvcClientCore
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            app.UseAuthentication();
+            /*app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationScheme = "Cookies"
             });
@@ -81,7 +110,8 @@ namespace ServiceOrder.MvcClientCore
 
                 GetClaimsFromUserInfoEndpoint = true,
                 SaveTokens = true,
-            });
+                
+            });*/
 
             app.UseStaticFiles();
 

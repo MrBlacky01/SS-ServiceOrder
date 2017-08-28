@@ -465,7 +465,7 @@ namespace AuthorizationService.Data.Migrations.IdentityServer.ConfigurationDb
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ClientClaim", b =>
                 {
                     b.HasOne("IdentityServer4.EntityFramework.Entities.Client", "Client")
-                        .WithMany("Claims")
+                        .WithMany("Roles")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

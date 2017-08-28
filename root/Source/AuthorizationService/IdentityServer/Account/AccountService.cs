@@ -175,22 +175,23 @@ namespace AuthorizationService.IdentityServer.Account
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
             if (context?.ClientId != null)
             {
-                var roleName = context.ClientId + ".roles";
+                var clientScopeTitle = context.ClientId + ".roles";
                 if ((await _clientStore.FindClientByIdAsync(context.ClientId)).AllowedScopes
-                    .Any(src => src == roleName))
+                    .Any(src => src == clientScopeTitle))
                 {
                     using (var roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>())
                     {
-                        var userClaims = await roleManager.GetClaimsAsync(await roleManager.FindByNameAsync(roleName));
-                        var claimNames = new List<string>();
-                        foreach (var claim in userClaims)
+                        var userRoles =
+                            roleManager.Roles.Where(src => src.Claims.Any(claim => claim.ClaimValue == clientScopeTitle));
+                        var roleList = new List<string>();
+                        foreach (var role in userRoles)
                         {
-                            if (claim.Value != "admin")
+                            if (role.Name != "admin")
                             {
-                                claimNames.Add(claim.Value);
+                                roleList.Add(role.Name);
                             }
                         }
-                        return new RegisterViewModel() { Claims = claimNames, Role = roleName };
+                        return new RegisterViewModel() { Roles = roleList, Claim = clientScopeTitle };
                     }
                 }
                 
