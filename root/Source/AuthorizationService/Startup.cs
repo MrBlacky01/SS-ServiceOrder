@@ -1,5 +1,4 @@
-﻿using IdentityServer4;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,7 +13,6 @@ using AuthorizationService.Data;
 using AuthorizationService.IdentityServer;
 using AuthorizationService.Models.UserData;
 using AuthorizationService.Services;
-using IdentityServer4.AspNetIdentity;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -40,6 +38,7 @@ namespace AuthorizationService
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+            Config.InitializeConfiguration(Configuration);
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -178,11 +177,23 @@ namespace AuthorizationService
                                     
                             }
                         }
-                    }
-                 
+                    }             
+                }
+                if(!await roleManager.RoleExistsAsync(Configuration["authorize_service:admin_role"]))
+                {
+                    var adminRole = new IdentityRole(Configuration["authorize_service:admin_role"]);
+                    await roleManager.CreateAsync(adminRole);
+                    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AuthorizationServiceUser>>();
+                    var adminUser = new AuthorizationServiceUser
+                    {
+                        Email = Configuration["authorize_service:admin:email"],
+                        UserName = Configuration["authorize_service:admin:email"]
+                    };
+                    await userManager.CreateAsync(adminUser, Configuration["authorize_service:admin:password"]);
+                    await userManager.AddToRoleAsync(adminUser, adminRole.Name);
                 }
 
-               
+
             }
             
         }

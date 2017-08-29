@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using IdentityServer4;
 using IdentityServer4.Models;
+using IdentityServer4.Test;
+using Microsoft.Extensions.Configuration;
 
 namespace AuthorizationService
 {
     public class Config
     {
+        private static IConfigurationRoot Configuration { get; set; }
+
+        public static void InitializeConfiguration(IConfigurationRoot configuration)
+        {
+            Configuration = configuration;
+        }
         // scopes define the resources in your system
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
@@ -26,8 +34,8 @@ namespace AuthorizationService
             {
                 new ApiResource
                 {
-                    Name = "localization",
-                    DisplayName = "Localization API",
+                    Name =  Configuration["localization_api:name"],
+                    DisplayName =  Configuration["localization_api:display_name"],
                     UserClaims = {"email"},
                     Scopes =
                     {
@@ -62,20 +70,20 @@ namespace AuthorizationService
                 // OpenID Connect hybrid flow and client credentials client (MVC)
                 new Client
                 {
-                    ClientId = "ServiceOrderMvc",
-                    ClientName = "ServiceOrder MVC Client",
+                    ClientId =  Configuration["service_order_client:client_id"],
+                    ClientName = Configuration["service_order_client:client_name"],
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
 
                     RequireConsent = false,
 
                     ClientSecrets =
                     {
-                        new Secret("mvc secret".Sha256())
+                        new Secret(Configuration["service_order_client:client_secrets"].Sha256())
                     },
 
-                    RedirectUris = { "http://localhost:5002/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-                    ClientUri = "http://localhost:5002/",
+                    RedirectUris = {Configuration["service_order_client:redirect_uri"] },
+                    PostLogoutRedirectUris = { Configuration["service_order_client:post_logout_redirect_uris"] },
+                    ClientUri = Configuration["service_order_client:client_uri"],
 
                     AllowedScopes =
                     {

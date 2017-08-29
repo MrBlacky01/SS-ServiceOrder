@@ -113,6 +113,7 @@ namespace ServiceOrder.MvcClientCore
                 
             });*/
 
+            app.UseStatusCodePagesWithReExecute("/home/errorstatus/{0}.html");
             app.UseStaticFiles();
 
 

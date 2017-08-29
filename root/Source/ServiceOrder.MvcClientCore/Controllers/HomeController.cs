@@ -16,7 +16,7 @@ namespace ServiceOrder.MvcClientCore.Controllers
             return View();
         }
 
-        [Authorize]
+        [Authorize(Policy = "Client")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -38,5 +38,7 @@ namespace ServiceOrder.MvcClientCore.Controllers
         {
             return View();
         }
+
+       
     }
 }
